@@ -2,15 +2,17 @@
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
-;; Author: Serghei Iakovlev
+;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Version: 0.0.1
 ;; URL: https://github.com/sergeyklay/zephir-mode
 
 (defconst zephir-mode-version-number "0.0.1"
   "Zephir Mode version number.")
 
-(defconst php-mode-modified "2017-07-26"
+(defconst zephir-mode-modified "2017-07-26"
   "Zephir Mode build date.")
+
+;; This file is not part of GNU Emacs.
 
 ;;; License
 
@@ -28,3 +30,17 @@
 ;; along with this file; if not, write to the Free Software
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
+
+;;; Code:
+
+(defgroup zephir nil
+  "Major mode for editing Zephir code."
+  :tag "Zephir"
+  :prefix "zephir-"
+  :group 'languages
+  :link '(url-link :tag "Official Site" "https://github.com/sergeyklay/zephir-mode")
+  :link '(url-link :tag "Language Site" "https://zephir-lang.com"))
+
+(provide 'zephir-mode)
+
+;;; zephir-mode.el ends here
