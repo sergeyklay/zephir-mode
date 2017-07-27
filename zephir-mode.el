@@ -2,9 +2,11 @@
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
-;; Author: Serghei Iakovlev (serghei@phalconphp.com)
-;; Version: 0.0.1
-;; URL: https://github.com/sergeyklay/zephir-mode
+;; Author:     Serghei Iakovlev (serghei@phalconphp.com)
+;; Maintainer: Serghei Iakovlev
+;; Version:    0.0.1
+;; URL:        https://github.com/sergeyklay/zephir-mode
+;; Keywords:   zephir languages oop php
 
 (defconst zephir-mode-version-number "0.0.1"
   "Zephir Mode version number.")
@@ -31,7 +33,22 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
 
+;;; Usage
+
+;; Put this file in your Emacs lisp path (eg. site-lisp) and add to
+;; your .emacs file:
+;;
+;;   (require 'zephir-mode)
+
 ;;; Code:
+
+(require 'cc-mode)
+(eval-when-compile
+  (require 'cc-langs)
+  (require 'cc-fonts))
+
+(eval-and-compile
+  (c-add-language 'zephir-mode 'java-mode))
 
 (defgroup zephir nil
   "Major mode for editing Zephir code."
