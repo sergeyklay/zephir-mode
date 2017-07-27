@@ -58,6 +58,20 @@
   :link '(url-link :tag "Official Site" "https://github.com/sergeyklay/zephir-mode")
   :link '(url-link :tag "Language Site" "https://zephir-lang.com"))
 
+;;;###autoload
+(define-derived-mode zephir-mode c-mode "Zephir"
+  "A major mode for editing Zephir code.
+
+\\{zephir-mode-map}
+"
+
+  (c-initialize-cc-mode t)
+  (c-init-language-vars zephir-mode)
+  (c-common-init 'zephir-mode))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.zep\\'" . zephir-mode))
+
 (provide 'zephir-mode)
 
 ;;; zephir-mode.el ends here
