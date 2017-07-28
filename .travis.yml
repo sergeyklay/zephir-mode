@@ -26,4 +26,4 @@ before_install:
 script:
   # Make sure the exact emacs version can be found in the build output
   - emacs -Q --batch --eval '(message (emacs-version))'
-  # - make test
+  - make test
