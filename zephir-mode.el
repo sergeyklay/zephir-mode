@@ -6,7 +6,7 @@
 ;; Maintainer: Serghei Iakovlev
 ;; Version:    0.0.1
 ;; URL:        https://github.com/sergeyklay/zephir-mode
-;; Keywords:   zephir languages oop php
+;; Keywords:   zephir languages oop
 
 (defconst zephir-mode-version-number "0.0.1"
   "Zephir Mode version number.")
@@ -50,6 +50,8 @@
 (eval-and-compile
   (c-add-language 'zephir-mode 'java-mode))
 
+;; Local variables
+;;;###autoload
 (defgroup zephir nil
   "Major mode for editing Zephir code."
   :tag "Zephir"
@@ -57,6 +59,433 @@
   :group 'languages
   :link '(url-link :tag "Official Site" "https://github.com/sergeyklay/zephir-mode")
   :link '(url-link :tag "Language Site" "https://zephir-lang.com"))
+
+(defsubst zephir-in-string-p ()
+  (nth 3 (syntax-ppss)))
+
+(defsubst zephir-in-comment-p ()
+  (nth 4 (syntax-ppss)))
+
+(defsubst zephir-in-string-or-comment-p ()
+  (nth 8 (syntax-ppss)))
+
+(defcustom zephir-lineup-cascaded-calls nil
+  "Indent chained method calls to the previous line"
+  :type 'boolean)
+
+(defun zephir-create-regexp-for-method (visibility)
+  "Make a regular expression for methods with the given `visiblity'.
+
+`visibility' must be a string that names the visibility for a Zephir
+method, e.g. 'public'.  The parameter `visibility' can itself also
+be a regular expression.
+
+The regular expression this function returns will check for other
+keywords that can appear in method signatures, e.g. 'final' and
+'static'.  The regular expression will have one capture group
+which will be the name of the method."
+  (concat
+   ;; Initial space with possible 'abstract' or 'final' keywords
+   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
+   ;; 'static' keyword may come either before or after visibility
+   "\\(?:" visibility "\\(?:\\s-+static\\)?\\|\\(?:static\\s-+\\)?" visibility "\\)\\s-+"
+   ;; Make sure 'function' comes next with some space after
+   "function\\s-+"
+   ;; Capture the name as the first group and the regexp and make sure
+   ;; by the end we see the opening parenthesis for the parameters.
+   "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
+
+(defun zephir-create-regexp-for-classlike (type)
+  "Accepts a `type' of a 'classlike' object as a string, such as
+'class' or 'interface', and returns a regexp as a string which
+can be used to match against definitions for that classlike."
+  (concat
+   ;; First see if 'abstract' or 'final' appear, although really these
+   ;; are not valid for all values of `type' that the function
+   ;; accepts.
+   "^\\s-*\\(?:\\(?:abstract\\|final\\)\\s-+\\)?"
+   ;; The classlike type
+   type
+   ;; Its name, which is the first captured group in the regexp.  We
+   ;; allow backslashes in the name to handle namespaces, but again
+   ;; this is not necessarily correct for all values of `type'.
+   "\\s-+\\(\\(?:\\sw\\|\\\\\\|\\s_\\)+\\)"))
+
+(defvar zephir-imenu-generic-expression
+  `(("Namespaces"
+     ,(zephir-create-regexp-for-classlike "namespace") 1)
+    ("Classes"
+     ,(zephir-create-regexp-for-classlike "class") 1)
+    ("Interfaces"
+     ,(zephir-create-regexp-for-classlike "interface") 1)
+    ("All Methods"
+     ,(zephir-create-regexp-for-method "\\(?:\\sw\\|\\s_\\)+") 1)
+    ("Internal Methods"
+     ,(zephir-create-regexp-for-method "internal") 1)
+    ("Private Methods"
+     ,(zephir-create-regexp-for-method "private") 1)
+    ("Protected Methods"
+     ,(zephir-create-regexp-for-method "protected")  1)
+    ("Public Methods"
+     ,(zephir-create-regexp-for-method "public") 1)
+    ("Anonymous Functions"
+     "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
+    ("Named Functions"
+     "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
+  "Imenu generic expression for Zephir Mode. See `imenu-generic-expression'.")
+
+(defvar zephir-mode-map
+  (let ((map (make-sparse-keymap)))
+    ;; By default Zephir Mode binds C-M-h to c-mark-function, which it
+    ;; inherits from cc-mode.  But there are situations where
+    ;; c-mark-function fails to properly mark a function.  For
+    ;; example, if we use c-mark-function within a method definition
+    ;; then the region will expand beyond the method and into the
+    ;; class definition itself.
+    ;;
+    ;; Changing the default to mark-defun provides behavior that users
+    ;; are more likely to expect.
+    (define-key map (kbd "C-M-h") 'mark-defun)
+
+    ;; Many packages based on cc-mode provide the 'C-c C-w' binding
+    ;; to toggle Subword Mode.  See the page
+    ;;
+    ;;     https://www.gnu.org/software/emacs/manual/html_node/ccmode/Subword-Movement.html
+    ;;
+    ;; for more information about Submode Word.
+    (if (boundp 'subword-mode)
+        (if subword-mode
+            (subword-mode nil)
+          (subword-mode t)))
+
+    ;; We inherit c-beginning-of-defun and c-end-of-defun from CC Mode
+    ;; but we have two replacement functions specifically for Zephir. We
+    ;; remap the commands themselves and not their default
+    ;; key-bindings so that our zephir-specific versions will work even
+    ;; if the user has reconfigured their keys, e.g. if they rebind
+    ;; c-end-of-defun to something other than C-M-e.
+    (define-key map [remap c-beginning-of-defun] 'zephir-beginning-of-defun)
+    (define-key map [remap c-end-of-defun] 'zephir-end-of-defun)
+
+    ;; Use the Emacs standard indentation binding. This may upset c-mode
+    ;; which does not follow this at the moment, but I see no better
+    ;; choice.
+    (define-key map [tab] 'indent-for-tab-command)
+    map)
+    "Keymap for `zephir-mode'")
+
+(c-lang-defconst c-identifier-ops
+  zephir '(
+           (left-assoc "\\" "::" "->")
+           (prefix "\\" "::")))
+
+;; Allow '\' when scanning from open brace back to defining
+;; construct like class
+(c-lang-defconst c-block-prefix-disallowed-chars
+  zephir (cl-set-difference (c-lang-const c-block-prefix-disallowed-chars)
+                            '(?\\)))
+
+;; Allow $ so variables are recognized in cc-mode and remove @. This
+;; makes cc-mode highlight variables and their type hints in arglists.
+(c-lang-defconst c-symbol-start
+  zephir (concat "[" c-alpha "_$]"))
+
+(c-lang-defconst c-assignment-operators
+  ;; falls back to java, so no need to specify the language
+  zephir (append (remove ">>>=" (c-lang-const c-assignment-operators))
+                 '(".=")))
+
+(c-lang-defconst beginning-of-defun-function
+  zephir 'zephir-beginning-of-defun)
+
+(c-lang-defconst end-of-defun-function
+  zephir 'zephir-end-of-defun)
+
+(c-lang-defconst c-primitive-type-kwds
+  zephir '("int" "bool" "boolean" "float" "double" "long"
+           "string" "object" "void"))
+
+(c-lang-defconst c-class-decl-kwds
+  "Keywords introducing declarations where the following block (if any)
+contains another declaration level that should be considered a class."
+  zephir '("class" "interface"))
+
+(c-lang-defconst c-brace-list-decl-kwds
+  "Keywords introducing declarations where the following block (if any)
+is a brace list.
+
+Zephir does not have an \"enum\"-like keyword."
+  zephir nil)
+
+(c-lang-defconst c-typeless-decl-kwds
+  zephir (append (c-lang-const c-class-decl-kwds) '("function")))
+
+(c-lang-defconst c-modifier-kwds
+  zephir '("abstract" "const" "final" "static"))
+
+(c-lang-defconst c-protection-kwds
+  "Access protection label keywords in classes."
+  zephir '("private" "protected" "public"))
+
+(c-lang-defconst c-postfix-decl-spec-kwds
+  zephir '("implements" "extends"))
+
+(c-lang-defconst c-type-list-kwds
+  zephir '("new" "use" "implements" "extends" "namespace" "instanceof" "insteadof"))
+
+(c-lang-defconst c-ref-list-kwds
+  zephir nil)
+
+(c-lang-defconst c-block-stmt-2-kwds
+  zephir (append '("elseif" "foreach" "declare")
+                 (remove "synchronized" (c-lang-const c-block-stmt-2-kwds))))
+
+(c-lang-defconst c-simple-stmt-kwds
+  zephir (append '("echo" "print" "die" "exit")
+                 (c-lang-const c-simple-stmt-kwds)))
+
+(c-lang-defconst c-constant-kwds
+  zephir '("true"
+           "false"
+           "null"))
+
+(c-lang-defconst c-lambda-kwds
+  zephir '("function"
+           "use"))
+
+(c-lang-defconst c-other-block-decl-kwds
+  zephir '("namespace"))
+
+(c-lang-defconst c-other-kwds
+  "Keywords not accounted for by any other `*-kwds' language constant."
+  zephir '(
+           "and"
+           "array"
+           "callable"
+           "iterable"
+           "as"
+           "break"
+           "catch all"
+           "catch"
+           "clone"
+           "default"
+           "empty"
+           "enddeclare"
+           "endfor"
+           "endforeach"
+           "endif"
+           "endswitch"
+           "endwhile"
+           "eval"
+           "global"
+           "isset"
+           "list"
+           "or"
+           "parent"
+           "static"
+           "unset"
+           "var"
+           "xor"
+           "yield"
+           "yield from"
+
+           ;;; self for static references:
+           "self"
+           ))
+
+(c-lang-defconst c-enums-contain-decls
+  zephir nil)
+
+(c-lang-defconst c-nonlabel-token-key
+  "Regexp matching things that can't occur in generic colon labels.
+
+This overrides cc-mode `c-nonlabel-token-key' to support switching on
+double quoted strings and true/false/null.
+
+Note: this regexp is also applied to goto-labels, a future improvement
+might be to handle switch and goto labels differently."
+  zephir (concat
+          ;; All keywords except `c-label-kwds' and `c-constant-kwds'.
+          (c-make-keywords-re t
+            (cl-set-difference (c-lang-const c-keywords)
+                               (append (c-lang-const c-label-kwds)
+                                       (c-lang-const c-constant-kwds))
+                               :test 'string-equal))))
+
+(defconst zephir-beginning-of-defun-regexp
+  "^\\s-*\\(?:\\(?:abstract\\|final\\|internal\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
+  "Regular expression for a Zephir function.")
+
+(defun zephir-beginning-of-defun (&optional arg)
+  "Move to the beginning of the ARGth Zephir function from point.
+Implements Zephir version of `beginning-of-defun-function'."
+  (interactive "p")
+  (let ((arg (or arg 1)))
+    (while (> arg 0)
+      (re-search-backward zephir-beginning-of-defun-regexp
+                          nil 'noerror)
+      (setq arg (1- arg)))
+    (while (< arg 0)
+      (end-of-line 1)
+      (let ((opoint (point)))
+        (beginning-of-defun 1)
+        (forward-list 2)
+        (forward-line 1)
+        (if (eq opoint (point))
+            (re-search-forward zephir-beginning-of-defun-regexp
+                               nil 'noerror))
+        (setq arg (1+ arg))))))
+
+(defun zephir-end-of-defun (&optional arg)
+  "Move the end of the ARGth Zephir function from point.
+Implements Zephir version of `end-of-defun-function'
+
+See `zephir-beginning-of-defun'."
+  (interactive "p")
+  (zephir-beginning-of-defun (- (or arg 1))))
+
+(defcustom zephir-mode-warn-if-mumamo-off t
+  "Warn once per buffer if you try to indent a buffer without
+mumamo-mode turned on. Detects if there are any HTML tags in the
+buffer before warning, but this is is not very smart; e.g. if you
+have any tags inside a Zephir string, it will be fooled."
+  :type '(choice (const :tag "Warg" t) (const "Don't warn" nil)))
+
+(defvar zephir-warned-bad-indent nil)
+
+(defun zephir-cautious-indent-region (start end &optional quiet)
+  (if (or (not zephir-mode-warn-if-mumamo-off)
+          zephir-warned-bad-indent)
+      (funcall 'c-indent-region start end quiet)))
+
+(defun zephir-cautious-indent-line ()
+  (if (or (not zephir-mode-warn-if-mumamo-off)
+          zephir-warned-bad-indent)
+      (let ((here (point))
+            doit)
+        (move-beginning-of-line nil)
+        ;; Don't indent heredoc end mark
+        (save-match-data
+          (unless (and (looking-at "[a-zA-Z0-9_]+;\n")
+                       (zephir-in-string-p))
+            (setq doit t)))
+        (goto-char here)
+        (when doit
+          (funcall 'c-indent-line)))))
+
+(defun zephir-lineup-cascaded-calls (langelem)
+  "Line up chained methods using `c-lineup-cascaded-calls',
+but only if the setting is enabled"
+  (if zephir-lineup-cascaded-calls
+      (c-lineup-cascaded-calls langelem)))
+
+(defun zephir-lineup-string-cont (langelem)
+  "Line up string toward equal sign or dot
+e.g.
+$str = 'some'
+     . 'string';
+this ^ lineup"
+  (save-excursion
+    (goto-char (cdr langelem))
+    (let (ret finish)
+      (while (and (not finish) (re-search-forward "[=.]" (line-end-position) t))
+        (unless (zephir-in-string-or-comment-p)
+          (setq finish t
+                ret (vector (1- (current-column))))))
+      ret)))
+
+(defun zephir-lineup-arglist-intro (langelem)
+  (save-excursion
+    (goto-char (cdr langelem))
+    (vector (+ (current-column) c-basic-offset))))
+
+(defun zephir-lineup-arglist-close (langelem)
+  (save-excursion
+    (goto-char (cdr langelem))
+    (vector (current-column))))
+
+(defun zephir-lineup-arglist (_langelem)
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at-p "\\s-*->") '+ 0)))
+
+(defun zephir-lineup-hanging-semicolon (_langelem)
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
+
+(c-add-style
+ "zephir"
+ '((c-basic-offset . 4)
+   (c-offsets-alist . ((arglist-close . zephir-lineup-arglist-close)
+                       (arglist-cont . (first zephir-lineup-cascaded-calls 0))
+                       (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
+                       (arglist-intro . zephir-lineup-arglist-intro)
+                       (case-label . +)
+                       (class-open . 0)
+                       (comment-intro . 0)
+                       (inlambda . 0)
+                       (inline-open . 0)
+                       (namespace-open . 0)
+                       (lambda-intro-cont . +)
+                       (label . +)
+                       (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
+                       (substatement-open . 0)
+                       (topmost-intro-cont . (first zephir-lineup-cascaded-calls +))))))
+
+(defconst zephir-heredoc-start-re
+  "<<<\\(?:\\w+\\|'\\w+'\\)$"
+  "Regular expression for the start of a Zephir heredoc.")
+
+(defun zephir-heredoc-end-re (heredoc-start)
+  "Build a regular expression for the end of a heredoc started by
+the string `heredoc-start'."
+  ;; Extract just the identifier without <<< and quotes.
+  (string-match "\\w+" heredoc-start)
+  (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
+
+(defun zephir-heredoc-syntax ()
+  "Mark the boundaries of searched heredoc."
+  (goto-char (match-beginning 0))
+  (c-put-char-property (point) 'syntax-table (string-to-syntax "|"))
+  (if (re-search-forward (zephir-heredoc-end-re (match-string 0)) nil t)
+      (goto-char (match-end 1))
+    ;; Did not find the delimiter so go to the end of the buffer.
+    (goto-char (point-max)))
+  (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
+
+(defun zephir-syntax-propertize-extend-region (start end)
+  "Extend the propertize region if `start' or `end' falls inside a Zephir heredoc."
+  (let ((new-start)
+        (new-end))
+    (goto-char start)
+    (when (re-search-backward zephir-heredoc-start-re nil t)
+      (let ((maybe (point)))
+        (when (and (re-search-forward
+                    (zephir-heredoc-end-re (match-string 0)) nil t)
+                   (> (point) start))
+          (setq new-start maybe))))
+    (goto-char end)
+    (when (re-search-backward zephir-heredoc-start-re nil t)
+      (if (re-search-forward
+           (zephir-heredoc-end-re (match-string 0)) nil t)
+          (when (> (point) end)
+            (setq new-end (point)))
+        (setq new-end (point-max))))
+    (when (or new-start new-end)
+      (cons (or new-start start) (or new-end end)))))
+
+(defun zephir-syntax-propertize-function (start end)
+  "Apply propertize rules from `start' to `end'."
+  (goto-char start)
+  (while (and (< (point) end)
+              (re-search-forward zephir-heredoc-start-re end t))
+    (zephir-heredoc-syntax))
+  (goto-char start)
+  (while (re-search-forward "['\"]" end t)
+    (when (zephir-in-comment-p)
+      (c-put-char-property (match-beginning 0)
+                           'syntax-table (string-to-syntax "_")))))
 
 ;; Faces
 
@@ -167,7 +596,54 @@
   (set (make-local-variable font-lock-builtin-face) 'zephir-builtin)
   (set (make-local-variable font-lock-function-name-face) 'zephir-function-name)
   (set (make-local-variable font-lock-variable-name-face) 'zephir-variable-name)
-  (set (make-local-variable font-lock-constant-face) 'zephir-constant))
+  (set (make-local-variable font-lock-constant-face) 'zephir-constant)
+
+  (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
+  (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
+  (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
+  (modify-syntax-entry ?#    "< b" zephir-mode-syntax-table)
+  (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
+  (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
+
+  (set (make-local-variable 'syntax-propertize-via-font-lock)
+       '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
+         ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
+
+  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
+               #'zephir-syntax-propertize-extend-region)
+  (set (make-local-variable 'syntax-propertize-function)
+       #'zephir-syntax-propertize-function)
+  (setq imenu-generic-expression zephir-imenu-generic-expression)
+
+  ;; Zephir vars are case-sensitive
+  (setq case-fold-search t)
+
+  (setq indent-line-function 'zephir-cautious-indent-line)
+  (setq indent-region-function 'zephir-cautious-indent-region)
+
+  ;; syntax-begin-function is obsolete in Emacs 25.1
+  (with-no-warnings
+    (set (make-local-variable 'syntax-begin-function)
+         'c-beginning-of-syntax))
+
+  ;; We map the zephir-{beginning,end}-of-defun functions so that they
+  ;; replace the similar commands that we inherit from CC Mode.
+  ;; Because of our remapping we may not actually need to keep the
+  ;; following two local variables, but we keep them for now until we
+  ;; are completely sure their removal will not break any current
+  ;; behavior or backwards compatibility.
+  (set (make-local-variable 'beginning-of-defun-function)
+       'zephir-beginning-of-defun)
+  (set (make-local-variable 'end-of-defun-function)
+       'zephir-end-of-defun)
+
+  (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
+       nil)
+  (set (make-local-variable 'defun-prompt-regexp)
+       "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
+  (set (make-local-variable 'add-log-current-defun-header-regexp)
+       zephir-beginning-of-defun-regexp)
+  )
 
 ;; Font Lock
 
