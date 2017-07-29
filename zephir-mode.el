@@ -89,7 +89,8 @@
   :prefix "zephir-"
   :group 'languages
   :link '(url-link :tag "Official Site" "https://github.com/sergeyklay/zephir-mode")
-  :link '(url-link :tag "Language Site" "https://zephir-lang.com"))
+  :link '(url-link :tag "Zephir Forum" "https://forum.zephir-lang.com")
+  :link '(url-link :tag "Zephir Language" "https://zephir-lang.com"))
 
 (defsubst zephir-in-string-p ()
   (nth 3 (syntax-ppss)))
