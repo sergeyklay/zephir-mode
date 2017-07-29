@@ -88,6 +88,27 @@
   (require 'regexp-opt)
   (defvar syntax-propertize-via-font-lock))
 
+;; Work around emacs bug#18845, cc-mode expects cl to be loaded
+;; while zephir-mode only uses cl-lib (without compatibility aliases)
+(eval-and-compile
+  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
+      (require 'cl)))
+
+;; In emacs 24.4 and 24.5, lines after functions with a return type
+;; are incorrectly analyzed as member-init-cont.
+;;                                        ;
+;; Before emacs 24.4, c member initializers are not supported this
+;; way. Starting from emacs 25.1, cc-mode only detects member
+;; initializers when the major mode is c++-mode.
+(eval-and-compile
+  (if (and (= emacs-major-version 24) (or (= emacs-minor-version 4)
+                                          (= emacs-minor-version 5)))
+      (defun c-back-over-member-initializers ()
+        ;; Override of cc-engine.el, cc-mode in emacs 24.4 and 24.5 are too
+        ;; optimistic in recognizing c member initializers. Since we don't
+        ;; need it in zephir-mode, just return nil.
+        nil)))
+
 ;; Local variables
 ;;;###autoload
 (defgroup zephir nil
@@ -586,7 +607,7 @@ the string `heredoc-start'."
 
 (defface zephir-paamayim-nekudotayim '((t (:inherit default)))
   "Zephir Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
-  :group 'php-faces)
+  :group 'zephir-faces)
 
 (defface zephir-type '((t (:inherit font-lock-type-face)))
   "Zephir Mode face used to highlight types."
@@ -786,7 +807,7 @@ the string `heredoc-start'."
      ;; Highlight all statically accessed class names as constant,
      ;; another valid option would be using type-face, but using
      ;; constant-face because this is how it works in c++-mode.
-     ("\\(\\sw+\\)\\(::\\)" (1 'zephir-constant) (2 'php-paamayim-nekudotayim))
+     ("\\(\\sw+\\)\\(::\\)" (1 'zephir-constant) (2 'zephir-paamayim-nekudotayim))
 
      ;; Highlight class name after "use .. as"
      ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
