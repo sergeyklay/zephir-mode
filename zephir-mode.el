@@ -60,14 +60,21 @@
 ;;; Code:
 
 (require 'cc-mode)
+
+;; These are only required at compile time to get the sources for the
+;; language constants.  (The cc-fonts require and the font-lock
+;; related constants could additionally be put inside an
+;; (eval-after-load "font-lock" ...) but then some trickery is
+;; necessary to get them compiled.)
 (eval-when-compile
   (require 'cc-langs)
   (require 'cc-fonts))
 
-;; Boilerplate from other `cc-mode' derived modes. See
-;; http://cc-mode.sourceforge.net/derived-mode-ex.el for details on how this all
-;; fits together.
 (eval-and-compile
+  ;; Make our mode known to the language constant system.  Use Java
+  ;; mode as the fallback for the constants we don't change here.
+  ;; This needs to be done also at compile time since the language
+  ;; constants are evaluated then.
   (c-add-language 'zephir-mode 'java-mode))
 
 (require 'font-lock)
@@ -173,6 +180,7 @@ can be used to match against definitions for that classlike."
            zephir-mode-version-number zephir-mode-modified))
 
 (defvar zephir-mode-map
+  ;; Add bindings which are only useful for Zephir Mode
   (let ((map (make-sparse-keymap)))
     ;; By default Zephir Mode binds C-M-h to c-mark-function, which it
     ;; inherits from cc-mode.  But there are situations where
@@ -210,7 +218,7 @@ can be used to match against definitions for that classlike."
     ;; choice.
     (define-key map [tab] 'indent-for-tab-command)
     map)
-    "Keymap for `zephir-mode'")
+    "Keymap used in `zephir-mode' buffers.")
 
 (c-lang-defconst c-identifier-ops
   zephir '(
@@ -725,10 +733,10 @@ the string `heredoc-start'."
           zephir-phpdoc-font-lock-doc-comments)))))
 
 (defconst zephir-font-lock-keywords-1 (c-lang-const c-matchers-1 zephir)
-  "Basic highlighting for Zephir Mode.")
+  "Minimal highlighting for Zephir Mode.")
 
 (defconst zephir-font-lock-keywords-2 (c-lang-const c-matchers-2 zephir)
-  "Medium level highlighting for Zephir Mode.")
+  "Fast normal highlighting for Zephir Mode.")
 
 (defconst zephir-font-lock-keywords-3
   (append
@@ -789,7 +797,7 @@ the string `heredoc-start'."
 
      ;; Highlight class names used as nullable type hints
      ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)))
-  "Detailed highlighting for Zephir Mode.")
+  "Accurate normal highlighting for Zephir Mode.")
 
 (defvar zephir-font-lock-keywords zephir-font-lock-keywords-3
   "Default expressions to highlight in Zephir Mode.")
