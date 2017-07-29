@@ -12,7 +12,7 @@
 (defconst zephir-mode-version-number "0.0.1"
   "Zephir Mode version number.")
 
-(defconst zephir-mode-modified "2017-07-26"
+(defconst zephir-mode-modified "2017-07-30"
   "Zephir Mode build date.")
 
 ;; This file is not part of GNU Emacs.
@@ -165,6 +165,12 @@ can be used to match against definitions for that classlike."
     ("Named Functions"
      "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for Zephir Mode. See `imenu-generic-expression'.")
+
+(defun zephir-mode-version ()
+  "Display string describing the version of Zephir Mode."
+  (interactive)
+  (message "Zephir Mode %s of %s"
+           zephir-mode-version-number zephir-mode-modified))
 
 (defvar zephir-mode-map
   (let ((map (make-sparse-keymap)))
