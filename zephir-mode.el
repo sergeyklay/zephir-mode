@@ -384,9 +384,7 @@ See `zephir-beginning-of-defun'."
 
 (defcustom zephir-mode-warn-if-mumamo-off t
   "Warn once per buffer if you try to indent a buffer without
-mumamo-mode turned on. Detects if there are any HTML tags in the
-buffer before warning, but this is is not very smart; e.g. if you
-have any tags inside a Zephir string, it will be fooled."
+mumamo-mode turned on."
   :type '(choice (const :tag "Warg" t) (const "Don't warn" nil)))
 
 (defvar zephir-warned-bad-indent nil)
