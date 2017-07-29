@@ -2,11 +2,12 @@
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
-;; Author:     Serghei Iakovlev (serghei@phalconphp.com)
+;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version:    0.0.1
-;; URL:        https://github.com/sergeyklay/zephir-mode
-;; Keywords:   zephir languages oop
+;; Version: 0.0.1
+;; URL: https://github.com/sergeyklay/zephir-mode
+;; Keywords: zephir languages oop
+;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst zephir-mode-version-number "0.0.1"
   "Zephir Mode version number.")
@@ -50,6 +51,12 @@
 ;; Since it inherits much functionality from c-mode, look there too
 ;;  Programming/Languages/C
 
+;;; Commentary:
+
+;; Zephir Mode is a major mode for editing Zephir source code.  It's an
+;; extension of C mode; thus it inherits all C mode's navigation
+;; functionality.  But it colors according to the Zephir grammar.
+
 ;;; Code:
 
 (require 'cc-mode)
@@ -64,6 +71,11 @@
   (c-add-language 'zephir-mode 'java-mode))
 
 (require 'font-lock)
+(require 'add-log)
+(require 'custom)
+(require 'speedbar)
+
+(require 'cl-lib)
 
 ;; Local variables
 ;;;###autoload
