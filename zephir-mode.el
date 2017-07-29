@@ -540,6 +540,10 @@ the string `heredoc-start'."
   "Zephir Mode face used to object operators (->)."
   :group 'zephir-faces)
 
+(defface zephir-paamayim-nekudotayim '((t (:inherit default)))
+  "Zephir Mode face used to highlight \"Paamayim Nekudotayim\" scope resolution operators (::)."
+  :group 'php-faces)
+
 (defface zephir-type '((t (:inherit font-lock-type-face)))
   "Zephir Mode face used to highlight types."
   :group 'zephir-faces)
@@ -643,9 +647,116 @@ the string `heredoc-start'."
        "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
   (set (make-local-variable 'add-log-current-defun-header-regexp)
        zephir-beginning-of-defun-regexp)
-  )
+
+  (when (>= emacs-major-version 25)
+    (with-silent-modifications
+      (save-excursion
+        (zephir-syntax-propertize-function (point-min) (point-max))))))
 
 ;; Font Lock
+(defconst zephir-phpdoc-type-keywords
+  (list "string" "integer" "int" "boolean" "bool" "float"
+        "double" "object" "mixed" "array" "resource"
+        "void" "null" "false" "true" "self" "static"
+        "callable" "iterable" "number"))
+
+(defconst zephir-phpdoc-type-tags
+  (list "param" "property" "property-read" "property-write" "return" "var"))
+
+(defconst zephir-phpdoc-font-lock-doc-comments
+  `(("{@[-[:alpha:]]+\\s-\\([^}]*\\)}" ; "{@foo ...}" markup.
+     (0 'zephir-doc-annotation-tag prepend nil)
+     (1 'zephir-string prepend nil))
+    (,(rx (group "$") (group (in "A-Za-z_") (* (in "0-9A-Za-z_"))))
+     (1 'zephir-doc-variable-sigil prepend nil)
+     (2 'zephir-variable-name prepend nil))
+    ("\\(\\$\\)\\(this\\)\\>" (1 'zephir-doc-$this-sigil prepend nil) (2 'zephir-doc-$this prepend nil))
+    (,(concat "\\s-@" (regexp-opt zephir-phpdoc-type-tags) "\\s-+"
+              "\\(" (rx (+ (? "?") (? "\\") (+ (in "0-9A-Z_a-z")) (? "[]") (? "|"))) "\\)+")
+     1 'zephir-string prepend nil)
+    (,(concat "\\(?:|\\|\\?\\|\\s-\\)\\("
+              (regexp-opt zephir-phpdoc-type-keywords 'words)
+              "\\)")
+     1 font-lock-type-face prepend nil)
+    ("https?://[^\n\t ]+"
+     0 'link prepend nil)
+    ("^\\(?:/\\*\\)?\\(?:\\s \\|\\*\\)*\\(@[[:alpha:]][-[:alpha:]\\]*\\)" ; "@foo ..." markup.
+     1 'zephir-doc-annotation-tag prepend nil)))
+
+(defvar zephir-phpdoc-font-lock-keywords
+  `((,(lambda (limit)
+        (c-font-lock-doc-comments "/\\*\\*" limit
+          zephir-phpdoc-font-lock-doc-comments)))))
+
+(defconst zephir-font-lock-keywords-1 (c-lang-const c-matchers-1 zephir)
+  "Basic highlighting for Zephir Mode.")
+
+(defconst zephir-font-lock-keywords-2 (c-lang-const c-matchers-2 zephir)
+  "Medium level highlighting for Zephir Mode.")
+
+(defconst zephir-font-lock-keywords-3
+  (append
+   zephir-phpdoc-font-lock-keywords
+   ;; zephir-mode patterns *before* cc-mode:
+   ;;  only add patterns here if you want to prevent cc-mode from applying
+   ;;  a different face.
+   '(
+     ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
+     ;; not in $obj->var()
+     ("\\(->\\)\\(\\sw+\\)\\s-*(" (1 'zephir-object-op) (2 'zephir-method-call))
+
+     ;; Highlight special variables
+     ("\\(\\$\\)\\(this\\|that\\)\\_>" (1 'zephir-$this-sigil) (2 'zephir-$this))
+     ("\\(\\$\\)\\([a-zA-Z0-9_]+\\)" (1 'zephir-variable-sigil) (2 'zephir-variable-name))
+     ("\\(->\\)\\([a-zA-Z0-9_]+\\)" (1 'zephir-object-op) (2 'zephir-property-name))
+
+     ;; Highlight function/method names
+     ("\\<function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1 'zephir-function-name)
+
+     ;; The dollar sign should not get a variable-name face, below
+     ;; pattern resets the face to default in case cc-mode sets the
+     ;; variable-name face (cc-mode does this for variables prefixed
+     ;; with type, like in arglist)
+     ("\\(\\$\\)\\(\\sw+\\)" 1 'zephir-variable-sigil)
+
+     ;; Support the ::class constant in PHP5.6
+     ("\\sw+\\(::\\)\\(class\\)\\b" (1 'zephir-paamayim-nekudotayim) (2 'zephir-constant)))
+
+   ;; cc-mode patterns
+   (c-lang-const c-matchers-3 zephir)
+
+   ;; zephir-mode patterns *after* cc-mode:
+   ;;   most patterns should go here, faces will only be applied if not
+   ;;   already fontified by another pattern. Note that using OVERRIDE
+   ;;   is usually overkill.
+   `(
+     ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
+     ;; not in $obj->var()
+     ("->\\(\\sw+\\)\\s-*(" 1 'zephir-method-call)
+
+     ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'zephir-property-name)
+
+     ;; Highlight all upper-cased symbols as constant
+     ("\\<\\([A-Z_][A-Z0-9_]+\\)\\>" 1 'zephir-constant)
+
+     ;; Highlight all statically accessed class names as constant,
+     ;; another valid option would be using type-face, but using
+     ;; constant-face because this is how it works in c++-mode.
+     ("\\(\\sw+\\)\\(::\\)" (1 'zephir-constant) (2 'php-paamayim-nekudotayim))
+
+     ;; Highlight class name after "use .. as"
+     ("\\<as\\s-+\\(\\sw+\\)" 1 font-lock-type-face)
+
+     ;; Highlight return types in functions and methods.
+     ("function.+:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)" 1 font-lock-type-face)
+     (")\\s-*:\\s-*\\??\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*\{" 1 font-lock-type-face)
+
+     ;; Highlight class names used as nullable type hints
+     ("\\?\\(\\(:?\\sw\\|\\s_\\)+\\)\\s-+\\$" 1 font-lock-type-face)))
+  "Detailed highlighting for Zephir Mode.")
+
+(defvar zephir-font-lock-keywords zephir-font-lock-keywords-3
+  "Default expressions to highlight in Zephir Mode.")
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.zep\\'" . zephir-mode))
