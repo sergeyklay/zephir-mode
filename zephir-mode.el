@@ -77,6 +77,10 @@
 
 (require 'cl-lib)
 
+(eval-when-compile
+  (require 'regexp-opt)
+  (defvar syntax-propertize-via-font-lock))
+
 ;; Local variables
 ;;;###autoload
 (defgroup zephir nil
