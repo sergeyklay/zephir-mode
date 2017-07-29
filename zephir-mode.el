@@ -40,6 +40,16 @@
 ;;
 ;;   (require 'zephir-mode)
 
+;; To use abbrev-mode, add lines like this:
+;;   (add-hook 'zephir-mode-hook
+;;     '(lambda () (define-abbrev zephir-mode-abbrev-table "ex" "extends")))
+
+;; Many options available under Help:Customize
+;; Options specific to zephir-mode are in
+;;  Programming/Languages/Php
+;; Since it inherits much functionality from c-mode, look there too
+;;  Programming/Languages/C
+
 ;;; Code:
 
 (require 'cc-mode)
@@ -47,8 +57,13 @@
   (require 'cc-langs)
   (require 'cc-fonts))
 
+;; Boilerplate from other `cc-mode' derived modes. See
+;; http://cc-mode.sourceforge.net/derived-mode-ex.el for details on how this all
+;; fits together.
 (eval-and-compile
   (c-add-language 'zephir-mode 'java-mode))
+
+(require 'font-lock)
 
 ;; Local variables
 ;;;###autoload
