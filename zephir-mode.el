@@ -2,11 +2,11 @@
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
-;; Author:           Serghei Iakovlev (serghei@phalconphp.com)
-;; Maintainer:       Serghei Iakovlev
-;; Version:          0.1.0
-;; URL:              https://github.com/sergeyklay/zephir-mode
-;; Keywords:         zephir, programming, languages, php, php-extensions, zend-engine
+;; Author: Serghei Iakovlev (serghei@phalconphp.com)
+;; Maintainer: Serghei Iakovlev
+;; Version: 0.1.0
+;; URL: https://github.com/sergeyklay/zephir-mode
+;; Keywords: languages
 ;; Package-Requires: ((emacs "24"))
 
 (defconst zephir-mode-version-number "0.1.0"
@@ -914,3 +914,7 @@ Key bindings:
 (provide 'zephir-mode)
 
 ;;; zephir-mode.el ends here
+
+;; Local Variables:
+;; firestarter: ert-run-tests-interactively
+;; End:
