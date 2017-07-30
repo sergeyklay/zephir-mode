@@ -5,7 +5,7 @@ PACKAGE-NAME=zephir-mode.el
 all: checkdoc test
 
 checkdoc:
-	$(EMACS) -Q -L . -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
+	${CASK} exec $(EMACS) -Q -L . -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
 
 package-lint:
 	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" \
