@@ -666,7 +666,6 @@ the string `heredoc-start'."
   (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
-  (modify-syntax-entry ?#    "< b" zephir-mode-syntax-table)
   (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
   (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
 
