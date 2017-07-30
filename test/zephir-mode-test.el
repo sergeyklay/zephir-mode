@@ -26,8 +26,15 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
 
+;;; Commentary:
+
+;;   Automate tests from the "test" directory using `ert', which comes bundled
+;; with Emacs >= 24.1.
+
 ;;; Code:
 
 (require 'zephir-mode)
+(require 'ert)
+(require 'cl-lib)
 
 ;;; zephir-mode-test.el ends here
