@@ -3,10 +3,19 @@
 [![licence][license-badge]][license]
 [![travis badge][travis-badge]][travis-link]
 
-A GNU Emacs major mode for editing Zephir code.
+Provides font-locking, indentation and navigation support for the
+[Zephir programming language][zephir] .
 
 The mode heavily inspired by [`php-mode`][php-mode] and based on the
 [`derived-mode-ex.el`][derived-mode] code supported with the `cc-mode`.
+
+- [Installation](#installation)
+  - [Using MELPA](#using-melpa)
+  - [Manual Install](#manula-install)
+- [Usage](#usage)
+- [Changes](#changes)
+- [External Links](#external-links)
+- [License](#license)
 
 ## Installation
 
@@ -71,6 +80,29 @@ setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
 5. To use Zephir Mode, call `zephir-mode` after you opened an Zephir file:
     <kbd>M</kbd> <kbd>x</kbd> `zephir-mode`
 
+## Usage
+
+| Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
+| --- | --- |
+| `zephir-mode` | Switches to Zephir Mode. |
+| `zephir-mode-version` | Print version info for Zephir Mode. |
+| `zephir-mode-open-github` | Go to the Zephir Mode GitHub page. |
+| `zephir-open-website-home` | Go to the Zephir website. |
+| `zephir-current-class` | Insert current class name if cursor in class context. |
+| `zephir-current-namespace` | Insert current namespace if cursor in namespace context. |
+
+This mode inherit `c-beginning-of-defun` and `c-end-of-defun` from CC Mode but
+it have two replacement functions specifically for Zephir.  Zephir Mode remap
+the commands themselves and not their default key-bindings so that
+zephir-specific versions will work even if the user has reconfigured their keys,
+e.g. if they rebind `c-end-of-defun` to something other than
+<kbd>C</kbd> <kbd>M</kbd> <kbd>e</kbd> .
+
+| Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
+| --- | --- |
+| `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
+| `zephir-end-of-defun` | Move to the end of the current or next function. |
+
 ## Changes
 
 To see what has changed in recent versions of Zephir Mode,
@@ -88,6 +120,7 @@ Zephir Mode is open source software licensed under the
 
 [license-badge]: https://img.shields.io/badge/license-GPL_3-green.svg
 [license]: https://www.gnu.org/licenses/gpl-3.0.txt
+[zephir]: https://zephir-lang.com
 [travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [php-mode]: https://github.com/ejmr/php-mode
