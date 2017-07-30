@@ -269,8 +269,8 @@ can be used to match against definitions for that classlike."
   zephir 'zephir-end-of-defun)
 
 (c-lang-defconst c-primitive-type-kwds
-  zephir '("int" "bool" "boolean" "float" "double" "long"
-           "string" "object" "void"))
+  zephir '("uint" "int" "bool" "boolean" "float" "double" "long"
+           "ulong" "char" "string" "resource" "void" "null"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
@@ -344,7 +344,9 @@ Zephir does not have an \"enum\"-like keyword."
            "endswitch"
            "endwhile"
            "eval"
-           "global"
+           "fetch"
+           "globals_get"
+           "globals_set"
            "isset"
            "list"
            "or"
@@ -663,6 +665,8 @@ the string `heredoc-start'."
   (set (make-local-variable font-lock-variable-name-face) 'zephir-variable-name)
   (set (make-local-variable font-lock-constant-face) 'zephir-constant)
 
+  ;; Modifying the Emacs Syntax Table.  See the page
+  ;;     https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html
   (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
   (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
