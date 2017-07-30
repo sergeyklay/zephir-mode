@@ -141,12 +141,15 @@
   :link '(url-link :tag "Zephir Language" "https://zephir-lang.com"))
 
 (defsubst zephir-in-string-p ()
+  "Return t if if point is inside a string."
   (nth 3 (syntax-ppss)))
 
 (defsubst zephir-in-comment-p ()
+  "Return t if if point is inside a comment."
   (nth 4 (syntax-ppss)))
 
 (defsubst zephir-in-string-or-comment-p ()
+  "Return t if if point is inside a comment or a string."
   (nth 8 (syntax-ppss)))
 
 (defcustom zephir-lineup-cascaded-calls nil
@@ -472,33 +475,7 @@ See `zephir-beginning-of-defun'."
   (interactive "p")
   (zephir-beginning-of-defun (- (or arg 1))))
 
-(defcustom zephir-mode-warn-if-mumamo-off t
-  "Warn once per buffer if you try to indent a buffer without mumamo-mode turned on."
-  :type '(choice (const :tag "Warg" t) (const "Don't warn" nil)))
-
 
-(defvar zephir-warned-bad-indent nil)
-
-(defun zephir-cautious-indent-region (start end &optional quiet)
-  (if (or (not zephir-mode-warn-if-mumamo-off)
-          zephir-warned-bad-indent)
-      (funcall 'c-indent-region start end quiet)))
-
-(defun zephir-cautious-indent-line ()
-  (if (or (not zephir-mode-warn-if-mumamo-off)
-          zephir-warned-bad-indent)
-      (let ((here (point))
-            doit)
-        (move-beginning-of-line nil)
-        ;; Don't indent heredoc end mark
-        (save-match-data
-          (unless (and (looking-at "[a-zA-Z0-9_]+;\n")
-                       (zephir-in-string-p))
-            (setq doit t)))
-        (goto-char here)
-        (when doit
-          (funcall 'c-indent-line)))))
-
 (defun zephir-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls', but only if the setting is enabled."
   (if zephir-lineup-cascaded-calls
@@ -875,9 +852,6 @@ Key bindings:
 
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
-
-  (setq indent-line-function 'zephir-cautious-indent-line)
-  (setq indent-region-function 'zephir-cautious-indent-region)
 
   ;; syntax-begin-function is obsolete in Emacs 25.1
   (with-no-warnings
