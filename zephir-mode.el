@@ -57,6 +57,9 @@
 ;; extension of C mode; thus it inherits all C mode's navigation
 ;; functionality.  But it colors according to the Zephir grammar.
 
+;; Note: The interface used in this file requires CC Mode 5.30 or
+;; later.
+
 ;;; Code:
 
 (require 'cc-mode)
@@ -269,6 +272,18 @@ can be used to match against definitions for that classlike."
   zephir 'zephir-end-of-defun)
 
 (c-lang-defconst c-primitive-type-kwds
+  "Primitive type keywords.  As opposed to the other keyword lists, the
+keywords listed here are fontified with the type face instead of the
+keyword face.
+
+If any of these also are on `c-type-list-kwds', `c-ref-list-kwds',
+`c-colon-type-list-kwds', `c-paren-nontype-kwds', `c-paren-type-kwds',
+`c-<>-type-kwds', or `c-<>-arglist-kwds' then the associated clauses
+will be handled.
+
+Do not try to modify this list for end user customizations; the
+`*-font-lock-extra-types' variable, where `*' is the mode prefix, is
+the appropriate place for that."
   zephir '("uint" "int" "bool" "boolean" "float" "double" "long"
            "ulong" "char" "string" "resource" "void" "null"))
 
@@ -332,21 +347,11 @@ Zephir does not have an \"enum\"-like keyword."
            "iterable"
            "as"
            "break"
-           "catch all"
            "catch"
            "clone"
-           "default"
            "empty"
-           "enddeclare"
-           "endfor"
-           "endforeach"
-           "endif"
-           "endswitch"
-           "endwhile"
            "eval"
            "fetch"
-           "globals_get"
-           "globals_set"
            "isset"
            "list"
            "or"
