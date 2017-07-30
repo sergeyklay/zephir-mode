@@ -60,6 +60,21 @@
 ;; Note: The interface used in this file requires CC Mode 5.30 or
 ;; later.
 
+;;; Bugs:
+;;   Bug tracking is currently handled using the GitHub issue tracker at
+;;   https://github.com/sergeyklay/zephir-mode/issues
+
+;;; Notes:
+
+;;; TODO:
+;;   Issues with this code are managed via the project issue management
+;;   on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
+
+;;; History:
+;;   History is tracked in the Git repository rather than in this file.
+;;   See https://github.com/sergeyklay/zephir-mode/commits/master
+
+;;----------------------------------------------------------------------------
 ;;; Code:
 
 (require 'cc-mode)
