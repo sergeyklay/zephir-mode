@@ -1,13 +1,27 @@
-emacs ?= emacs
-all: test
+EMACS=emacs
+CASK=cask
+PACKAGE-NAME=zephir-mode.el
 
-test: clean
-	cask exec $(emacs) -Q -batch -L . -l zephir-mode-test.el -l zephir-mode.el -f ert-run-tests-batch-and-exit
+all: checkdoc test
 
-compile:
-	$(emacs) -Q -batch -f batch-byte-compile zephir-mode.el
+checkdoc:
+	$(EMACS) -Q -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
+
+package-lint:
+	${CASK} exec $(EMACS) -Q --batch -l "package-lint.el" \
+	-f "package-lint-batch-and-exit" ${PACKAGE-NAME}
+
+build: package-lint
+	${CASK} exec  $(EMACS) -Q --batch \
+	--eval "(progn \
+		(setq byte-compile-error-on-warn t)  \
+		(batch-byte-compile))" ${PACKAGE-NAME}
+
+test: build
+	${CASK} exec ert-runner
 
 clean:
-	rm -f zephir-mode.elc
+	@rm -f *.elc
+	@rm -rf .cask
 
-.PHONY: all clean test
+.PHONY: all checkdoc package-lint test build clean

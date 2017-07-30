@@ -4,9 +4,8 @@
 
 ;; Author:     Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version:    0.0.1
+;; Version:    0.1.0
 ;; URL:        https://github.com/sergeyklay/zephir-mode
-;; Keywords:   zephir languages oop php
 
 ;; This file is not part of GNU Emacs.
 
