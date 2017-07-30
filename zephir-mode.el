@@ -9,7 +9,7 @@
 ;; Keywords:         zephir languages oop
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
-(defconst zephir-mode-version-number "0.0.1"
+(defconst zephir-mode-version-number "0.1.0"
   "Zephir Mode version number.")
 
 (defconst zephir-mode-modified "2017-07-30"
