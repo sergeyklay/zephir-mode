@@ -15,6 +15,11 @@ versions of Emacs but this is not guaranteed. Bug reports for problems related
 to using Zephir Mode with older versions of Emacs will most like _not_ be
 addressed.
 
+The master of all the material is the Git repository at
+https://github.com/sergeyklay/zephir-mode .
+
+### Using MELPA
+
 The best way of installing this major mode, at least for GNU Emacs 24, is to
 use the packaging system. Add MELPA or MELPA Stable to the list of repositories
 to access this mode. For those who want only formal, tagged releases use
@@ -41,8 +46,30 @@ package listing and install from there. MELPA tracks this Git repository and
 updates relatively soon after each commit or formal release. For more detail on
 setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
 
-The master of all the material is the Git repository at
-https://github.com/sergeyklay/zephir-mode .
+### Manual Install
+
+1. Download `zephir-mode.el`
+
+2. Put the file in your Elisp common folder like `$HOME/.emacs.d/lisp/`
+
+3. Then you can include like this:`
+  ```elisp
+  (add-to-list 'load-path
+               (expand-file-name "lisp" user-emacs-directory))
+  ```
+4. Add **either** of the two following lines to your initialization file. The
+   first only loads adoc mode when necessary, the 2nd always during startup
+   of GNU Emacs.
+   ```elisp
+   (autoload 'zephir-mode "zephir-mode" nil t)
+   ;; OR
+   (require 'zephir-mode)
+   ```
+4. Optionally byte compile adoc-mode.el for faster startup:
+   <kbd>M</kbd> <kbd>x</kbd> `byte-compile`
+
+5. To use Zephir Mode, call `zephir-mode` after you opened an Zephir file:
+    <kbd>M</kbd> <kbd>x</kbd> `zephir-mode`
 
 ## Changes
 
