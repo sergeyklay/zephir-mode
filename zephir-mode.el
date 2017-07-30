@@ -140,6 +140,9 @@
   :link '(url-link :tag "Zephir Forum" "https://forum.zephir-lang.com")
   :link '(url-link :tag "Zephir Language" "https://zephir-lang.com"))
 
+(defvar zephir-website-url "https://zephir-lang.com"
+  "Official website of Zephir programming language.")
+
 (defsubst zephir-in-string-p ()
   "Return t if if point is inside a string."
   (nth 3 (syntax-ppss)))
@@ -479,7 +482,7 @@ See `zephir-beginning-of-defun'."
 (defun zephir-lineup-cascaded-calls (langelem)
   "Line up chained methods using `c-lineup-cascaded-calls' by using LANGELEM.
 
-Line up methods only if the `zephir-lineup-cascaded-calls' setting is enabled."
+Line up methods only if the setting is enabled."
   (if zephir-lineup-cascaded-calls
       (c-lineup-cascaded-calls langelem)))
 
@@ -757,6 +760,18 @@ this ^ lineup"
   (let ((matched (zephir-get-current-element zephir--re-namespace-pattern)))
     (when matched
       (insert (concat matched zephir-namespace-suffix-when-insert)))))
+
+;;;###autoload
+(defun zephir-mode-open-github ()
+  "Go to the Zephir Mode GitHub page."
+  (interactive)
+  (browse-url "https://github.com/sergeyklay/zephir-mode"))
+
+;;;###autoload
+(defun zephir-open-website-home ()
+  "Go to the Zephir website."
+  (interactive)
+  (browse-url zephir-website-url))
 
 
 ;;; Initialization
