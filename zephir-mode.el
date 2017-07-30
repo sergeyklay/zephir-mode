@@ -289,7 +289,16 @@ the appropriate place for that."
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)
-contains another declaration level that should be considered a class."
+contains another declaration level that should be considered a class.
+
+If any of these also are on `c-type-list-kwds', `c-ref-list-kwds',
+`c-colon-type-list-kwds', `c-paren-nontype-kwds', `c-paren-type-kwds',
+`c-<>-type-kwds', or `c-<>-arglist-kwds' then the associated clauses
+will be handled.
+
+Note that presence on this list does not automatically treat the
+following identifier as a type; the keyword must also be present on
+`c-type-prefix-kwds' or `c-type-list-kwds' to accomplish that."
   zephir '("class" "interface"))
 
 (c-lang-defconst c-brace-list-decl-kwds
