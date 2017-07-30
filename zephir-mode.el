@@ -91,6 +91,9 @@
   (require 'regexp-opt)
   (defvar syntax-propertize-via-font-lock))
 
+;; muffle the warnings about using undefined functions
+(declare-function c-populate-syntax-table "cc-langs.el" (table))
+
 ;; Work around emacs bug#18845, cc-mode expects cl to be loaded
 ;; while zephir-mode only uses cl-lib (without compatibility aliases)
 (eval-and-compile
