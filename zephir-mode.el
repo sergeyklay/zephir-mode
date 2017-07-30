@@ -511,53 +511,8 @@ this ^ lineup"
     (goto-char (cdr langelem))
     (vector (current-column))))
 
-(defconst zephir-heredoc-start-re
-  "<<<\\(?:\\w+\\|'\\w+'\\)$"
-  "Regular expression for the start of a Zephir heredoc.")
-
-(defun zephir-heredoc-end-re (heredoc-start)
-  "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
-  ;; Extract just the identifier without <<< and quotes.
-  (string-match "\\w+" heredoc-start)
-  (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
-
-(defun zephir-heredoc-syntax ()
-  "Mark the boundaries of searched heredoc."
-  (goto-char (match-beginning 0))
-  (c-put-char-property (point) 'syntax-table (string-to-syntax "|"))
-  (if (re-search-forward (zephir-heredoc-end-re (match-string 0)) nil t)
-      (goto-char (match-end 1))
-    ;; Did not find the delimiter so go to the end of the buffer.
-    (goto-char (point-max)))
-  (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
-
-(defun zephir-syntax-propertize-extend-region (start end)
-  "Extend the propertize region if START or END falls inside a Zephir heredoc."
-  (let ((new-start)
-        (new-end))
-    (goto-char start)
-    (when (re-search-backward zephir-heredoc-start-re nil t)
-      (let ((maybe (point)))
-        (when (and (re-search-forward
-                    (zephir-heredoc-end-re (match-string 0)) nil t)
-                   (> (point) start))
-          (setq new-start maybe))))
-    (goto-char end)
-    (when (re-search-backward zephir-heredoc-start-re nil t)
-      (if (re-search-forward
-           (zephir-heredoc-end-re (match-string 0)) nil t)
-          (when (> (point) end)
-            (setq new-end (point)))
-        (setq new-end (point-max))))
-    (when (or new-start new-end)
-      (cons (or new-start start) (or new-end end)))))
-
 (defun zephir-syntax-propertize-function (start end)
   "Apply propertize rules from START to END."
-  (goto-char start)
-  (while (and (< (point) end)
-              (re-search-forward zephir-heredoc-start-re end t))
-    (zephir-heredoc-syntax))
   (goto-char start)
   (while (re-search-forward "['\"]" end t)
     (when (zephir-in-comment-p)
@@ -837,8 +792,6 @@ Key bindings:
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
          ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
 
-  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
-               #'zephir-syntax-propertize-extend-region)
   (set (make-local-variable 'syntax-propertize-function)
        #'zephir-syntax-propertize-function)
 

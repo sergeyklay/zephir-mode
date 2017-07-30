@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog][keep-cl] and this project adheres
 to [Semantic Versioning][semver] .
 
 ## [Unreleased]
+### Changed
+- Removed unused `heredoc` functionality
 
 ## 0.1.0 - 2017-07-30
 ### Added
