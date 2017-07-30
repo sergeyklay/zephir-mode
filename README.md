@@ -53,10 +53,10 @@ setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
 2. Put the file in your Elisp common folder like `$HOME/.emacs.d/lisp/`
 
 3. Then you can include like this:`
-  ```elisp
-  (add-to-list 'load-path
-               (expand-file-name "lisp" user-emacs-directory))
-  ```
+   ```elisp
+   (add-to-list 'load-path
+                (expand-file-name "lisp" user-emacs-directory))
+   ```
 4. Add **either** of the two following lines to your initialization file. The
    first only loads adoc mode when necessary, the 2nd always during startup
    of GNU Emacs.
