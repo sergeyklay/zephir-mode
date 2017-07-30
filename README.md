@@ -2,11 +2,10 @@
 
 [![travis badge][travis-badge]][travis-link]
 
-This project introduces Zephir Mode for GNU Emacs.
+A GNU Emacs major mode for editing Zephir code.
 
-The code borrowed from or heavily inspired by [`php-mode`][php-mode]. This mode
-based on the [`derived-mode-ex.el`][derived-mode] code supported with the
-`cc-mode`.
+The mode heavily inspired by [`php-mode`][php-mode] and based on the
+[`derived-mode-ex.el`][derived-mode] code supported with the `cc-mode`.
 
 ## Installation
 

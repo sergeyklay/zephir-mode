@@ -6,7 +6,7 @@
 ;; Maintainer:       Serghei Iakovlev
 ;; Version:          0.1.0
 ;; URL:              https://github.com/sergeyklay/zephir-mode
-;; Keywords:         zephir languages oop
+;; Keywords:         zephir programming language emacs cc-mode
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst zephir-mode-version-number "0.1.0"
@@ -34,17 +34,24 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
 
+;; This file contains several functions and variables adapted from the
+;; code in https://github.com/ejmr/php-mode
+
 ;;; Usage
 
 ;; Put this file in your Emacs lisp path (eg. site-lisp) and add to
 ;; your .emacs file:
 ;;
 ;;   (require 'zephir-mode)
-
+;;
 ;; To use abbrev-mode, add lines like this:
 ;;   (add-hook 'zephir-mode-hook
 ;;     '(lambda () (define-abbrev zephir-mode-abbrev-table "ex" "extends")))
-
+;;
+;; Note: The interface used in this file requires CC Mode 5.30 or
+;; later.  You can check your cc-mode with the command M-x c-version.
+;; You can get the latest version of cc-mode at http://cc-mode.sourceforge.net
+;;
 ;; Many options available under Help:Customize
 ;; Options specific to zephir-mode are in
 ;;  Programming/Languages/Php
@@ -53,24 +60,24 @@
 
 ;;; Commentary:
 
-;; Zephir Mode is a major mode for editing Zephir source code.  It's an
-;; extension of C mode; thus it inherits all C mode's navigation
-;; functionality.  But it colors according to the Zephir grammar.
-
-;; Note: The interface used in this file requires CC Mode 5.30 or
-;; later.
+;;   Zephir Mode is a major mode for editing Zephir source code.  It's an
+;;   extension of C mode; thus it inherits all C mode's navigation
+;;   functionality.  But it colors according to the Zephir grammar.
 
 ;;; Bugs:
+
 ;;   Bug tracking is currently handled using the GitHub issue tracker at
 ;;   https://github.com/sergeyklay/zephir-mode/issues
 
 ;;; Notes:
 
 ;;; TODO:
+
 ;;   Issues with this code are managed via the project issue management
 ;;   on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
 
 ;;; History:
+
 ;;   History is tracked in the Git repository rather than in this file.
 ;;   See https://github.com/sergeyklay/zephir-mode/commits/master
 
@@ -262,6 +269,9 @@ can be used to match against definitions for that classlike."
     (define-key map [tab] 'indent-for-tab-command)
     map)
     "Keymap used in `zephir-mode' buffers.")
+
+
+;;; CC configuration
 
 (c-lang-defconst c-identifier-ops
   zephir '(
@@ -860,7 +870,6 @@ the string `heredoc-start'."
   "Default expressions to highlight in Zephir Mode.")
 
 
-
 (defcustom zephir-namespace-suffix-when-insert "\\"
   "Suffix for inserted namespace."
   :group 'zephir
