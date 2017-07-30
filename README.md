@@ -2,8 +2,11 @@
 
 [![travis badge][travis-badge]][travis-link]
 
-This project introduces Zephir Mode for GNU Emacs. The code borrowed from or
-heavily inspired by [`php-mode`][php-mode].
+This project introduces Zephir Mode for GNU Emacs.
+
+The code borrowed from or heavily inspired by [`php-mode`][php-mode]. This mode
+based on the [`derived-mode-ex.el`][derived-mode] code supported with the
+`cc-mode`.
 
 ## Installation
 
@@ -15,3 +18,4 @@ addressed.
 [travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [php-mode]: https://github.com/ejmr/php-mode
+[derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
