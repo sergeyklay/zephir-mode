@@ -7,7 +7,7 @@
 ;; Version:          0.1.0
 ;; URL:              https://github.com/sergeyklay/zephir-mode
 ;; Keywords:         zephir programming languages php php-extensions zend-engine
-;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
+;; Package-Requires: ((emacs "24"))
 
 (defconst zephir-mode-version-number "0.1.0"
   "Zephir Mode version number.")
