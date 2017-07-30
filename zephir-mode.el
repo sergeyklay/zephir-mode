@@ -424,6 +424,30 @@ might be to handle switch and goto labels differently."
                                        (c-lang-const c-constant-kwds))
                                :test 'string-equal))))
 
+(defconst zephir-c-style
+  '("java"
+    (c-basic-offset . 4)
+    (indent-tabs-mode . t)
+    (fill-column . 80)
+    (c-offsets-alist . ((arglist-close . zephir-lineup-arglist-close)
+                        (arglist-cont . (first zephir-lineup-cascaded-calls 0))
+                        (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
+                        (arglist-intro . zephir-lineup-arglist-intro)
+                        (case-label . +)
+                        (class-open . 0)
+                        (comment-intro . 0)
+                        (inlambda . 0)
+                        (inline-open . 0)
+                        (namespace-open . 0)
+                        (lambda-intro-cont . +)
+                        (label . +)
+                        (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
+                        (substatement-open . 0)
+                        (topmost-intro-cont . (first zephir-lineup-cascaded-calls +)))))
+  "The default Zephir styles.")
+
+(c-add-style "zephir" zephir-c-style)
+
 (defconst zephir-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|internal\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
   "Regular expression for a Zephir function.")
@@ -524,25 +548,6 @@ this ^ lineup"
   (save-excursion
     (beginning-of-line)
     (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
-
-(c-add-style
- "zephir"
- '((c-basic-offset . 4)
-   (c-offsets-alist . ((arglist-close . zephir-lineup-arglist-close)
-                       (arglist-cont . (first zephir-lineup-cascaded-calls 0))
-                       (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
-                       (arglist-intro . zephir-lineup-arglist-intro)
-                       (case-label . +)
-                       (class-open . 0)
-                       (comment-intro . 0)
-                       (inlambda . 0)
-                       (inline-open . 0)
-                       (namespace-open . 0)
-                       (lambda-intro-cont . +)
-                       (label . +)
-                       (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
-                       (substatement-open . 0)
-                       (topmost-intro-cont . (first zephir-lineup-cascaded-calls +))))))
 
 (defconst zephir-heredoc-start-re
   "<<<\\(?:\\w+\\|'\\w+'\\)$"
@@ -692,77 +697,6 @@ the string `heredoc-start'."
   "Face used to class names in doc-comment."
   :group 'zephir-faces)
 
-;;;###autoload
-(define-derived-mode zephir-mode c-mode "Zephir"
-  "A major mode for editing Zephir code.
-
-\\{zephir-mode-map}
-"
-
-  (c-initialize-cc-mode t)
-  (c-init-language-vars zephir-mode)
-  (c-common-init 'zephir-mode)
-
-  (set (make-local-variable font-lock-string-face) 'zephir-string)
-  (set (make-local-variable font-lock-keyword-face) 'zephir-keyword)
-  (set (make-local-variable font-lock-builtin-face) 'zephir-builtin)
-  (set (make-local-variable font-lock-function-name-face) 'zephir-function-name)
-  (set (make-local-variable font-lock-variable-name-face) 'zephir-variable-name)
-  (set (make-local-variable font-lock-constant-face) 'zephir-constant)
-
-  ;; Modifying the Emacs Syntax Table.  See the page
-  ;;     https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html
-  (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
-  (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
-  (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
-  (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
-  (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
-
-  (set (make-local-variable 'syntax-propertize-via-font-lock)
-       '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
-         ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
-
-  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
-               #'zephir-syntax-propertize-extend-region)
-  (set (make-local-variable 'syntax-propertize-function)
-       #'zephir-syntax-propertize-function)
-
-  (setq imenu-generic-expression zephir-imenu-generic-expression)
-
-  ;; Zephir vars are case-sensitive
-  (setq case-fold-search t)
-
-  (setq indent-line-function 'zephir-cautious-indent-line)
-  (setq indent-region-function 'zephir-cautious-indent-region)
-
-  ;; syntax-begin-function is obsolete in Emacs 25.1
-  (with-no-warnings
-    (set (make-local-variable 'syntax-begin-function)
-         'c-beginning-of-syntax))
-
-  ;; We map the zephir-{beginning,end}-of-defun functions so that they
-  ;; replace the similar commands that we inherit from CC Mode.
-  ;; Because of our remapping we may not actually need to keep the
-  ;; following two local variables, but we keep them for now until we
-  ;; are completely sure their removal will not break any current
-  ;; behavior or backwards compatibility.
-  (set (make-local-variable 'beginning-of-defun-function)
-       'zephir-beginning-of-defun)
-  (set (make-local-variable 'end-of-defun-function)
-       'zephir-end-of-defun)
-
-  (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
-       nil)
-  (set (make-local-variable 'defun-prompt-regexp)
-       "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
-  (set (make-local-variable 'add-log-current-defun-header-regexp)
-       zephir-beginning-of-defun-regexp)
-
-  (when (>= emacs-major-version 25)
-    (with-silent-modifications
-      (save-excursion
-        (zephir-syntax-propertize-function (point-min) (point-max))))))
-
 
 ;; Font Lock
 (defconst zephir-phpdoc-type-keywords
@@ -907,6 +841,81 @@ the string `heredoc-start'."
   (let ((matched (zephir-get-current-element zephir--re-namespace-pattern)))
     (when matched
       (insert (concat matched zephir-namespace-suffix-when-insert)))))
+
+
+;;; Initialization
+
+;;;###autoload
+(define-derived-mode zephir-mode c-mode "Zephir"
+  "A major mode for editing Zephir code.
+
+Key bindings:
+\\{zephir-mode-map}
+"
+
+  (c-initialize-cc-mode t)
+  (c-init-language-vars zephir-mode)
+  (c-common-init 'zephir-mode)
+
+  (set (make-local-variable font-lock-string-face) 'zephir-string)
+  (set (make-local-variable font-lock-keyword-face) 'zephir-keyword)
+  (set (make-local-variable font-lock-builtin-face) 'zephir-builtin)
+  (set (make-local-variable font-lock-function-name-face) 'zephir-function-name)
+  (set (make-local-variable font-lock-variable-name-face) 'zephir-variable-name)
+  (set (make-local-variable font-lock-constant-face) 'zephir-constant)
+
+  ;; Modifying the Emacs Syntax Table.  See the page
+  ;;     https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html
+  (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
+  (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
+  (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
+  (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
+  (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
+
+  (set (make-local-variable 'syntax-propertize-via-font-lock)
+       '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
+         ("\\(\'\\)\\(\\\\.\\|[^\'\n\\]\\)*\\(\'\\)" (1 "\"") (3 "\""))))
+
+  (add-to-list (make-local-variable 'syntax-propertize-extend-region-functions)
+               #'zephir-syntax-propertize-extend-region)
+  (set (make-local-variable 'syntax-propertize-function)
+       #'zephir-syntax-propertize-function)
+
+  (setq imenu-generic-expression zephir-imenu-generic-expression)
+
+  ;; Zephir vars are case-sensitive
+  (setq case-fold-search t)
+
+  (setq indent-line-function 'zephir-cautious-indent-line)
+  (setq indent-region-function 'zephir-cautious-indent-region)
+
+  ;; syntax-begin-function is obsolete in Emacs 25.1
+  (with-no-warnings
+    (set (make-local-variable 'syntax-begin-function)
+         'c-beginning-of-syntax))
+
+  ;; We map the zephir-{beginning,end}-of-defun functions so that they
+  ;; replace the similar commands that we inherit from CC Mode.
+  ;; Because of our remapping we may not actually need to keep the
+  ;; following two local variables, but we keep them for now until we
+  ;; are completely sure their removal will not break any current
+  ;; behavior or backwards compatibility.
+  (set (make-local-variable 'beginning-of-defun-function)
+       'zephir-beginning-of-defun)
+  (set (make-local-variable 'end-of-defun-function)
+       'zephir-end-of-defun)
+
+  (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
+       nil)
+  (set (make-local-variable 'defun-prompt-regexp)
+       "^\\s-*function\\s-+&?\\s-*\\(\\(\\sw\\|\\s_\\)+\\)\\s-*")
+  (set (make-local-variable 'add-log-current-defun-header-regexp)
+       zephir-beginning-of-defun-regexp)
+
+  (when (>= emacs-major-version 25)
+    (with-silent-modifications
+      (save-excursion
+        (zephir-syntax-propertize-function (point-min) (point-max))))))
 
 
 ;;;###autoload
