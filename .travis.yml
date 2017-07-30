@@ -4,7 +4,9 @@ language: emacs-lisp
 sudo: false
 
 cache:
-  - directories:
+  apt: true
+  timeout: 691200
+  directories:
       # Cache stable Emacs binaries (saves 1min per job)
       - "$HOME/emacs/"
 
@@ -14,6 +16,9 @@ matrix:
   fast_finish: true
   allow_failures:
     - env: EMACS_VERSION=snapshot
+
+git:
+  depth: 1
 
 env:
   matrix:
@@ -28,12 +33,12 @@ before_install:
   # Configure $PATH: Executables are installed to $HOME/bin
   - export PATH="$HOME/bin:$PATH"
   # Download the makefile to emacs-travis.mk
-  - wget 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
+  - wget --quiet 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
   # Install Emacs (according to $EMACS_VERSION) and Cask
-  - make -f emacs-travis.mk install_emacs
-  - make -f emacs-travis.mk install_cask
+  - make -s -f emacs-travis.mk install_emacs
+  - make -s -f emacs-travis.mk install_cask
   # Install Texinfo
-  - make -f emacs-travis.mk install_texinfo
+  - make -s -f emacs-travis.mk install_texinfo
 
 install:
   # Install dependencies
