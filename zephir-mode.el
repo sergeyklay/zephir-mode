@@ -625,10 +625,6 @@ the string `heredoc-start'."
   "Zephir Mode face used to highlight sigils($) of $this variable."
   :group 'zephir-faces)
 
-(defface zephir-zephir-tag '((t (:inherit font-lock-constant-face)))
-  "Zephir Mode face used to highlight ZEPHIR tags."
-  :group 'zephir-faces)
-
 (defface zephir-doc-annotation-tag '((t . (:inherit font-lock-constant-face)))
   "Zephir Mode face used to highlight annotation tags in doc-comment."
   :group 'zephir-faces)
@@ -682,6 +678,7 @@ the string `heredoc-start'."
                #'zephir-syntax-propertize-extend-region)
   (set (make-local-variable 'syntax-propertize-function)
        #'zephir-syntax-propertize-function)
+
   (setq imenu-generic-expression zephir-imenu-generic-expression)
 
   ;; Zephir vars are case-sensitive
