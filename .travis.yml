@@ -48,6 +48,12 @@ install:
 script:
   # Make sure the exact emacs version can be found in the build output
   - emacs -Q --batch --eval '(message (emacs-version))'
-
   - make checkdoc
   - make test
+
+notifications:
+  email:
+    recipients:
+      - serghei@phalconphp.com
+    on_success: change
+    on_failure: always
