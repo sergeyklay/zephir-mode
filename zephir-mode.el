@@ -6,7 +6,7 @@
 ;; Maintainer:       Serghei Iakovlev
 ;; Version:          0.1.0
 ;; URL:              https://github.com/sergeyklay/zephir-mode
-;; Keywords:         zephir programming languages emacs cc-mode
+;; Keywords:         zephir programming languages php php-extensions zend-engine
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst zephir-mode-version-number "0.1.0"
@@ -63,6 +63,12 @@
 ;;   Zephir Mode is a major mode for editing Zephir source code.  It's an
 ;;   extension of C mode; thus it inherits all C mode's navigation
 ;;   functionality.  But it colors according to the Zephir grammar.
+;;
+;;   Zephir -- is a high level language that eases the creation and
+;;   maintainability of extensions for PHP.  Zephir extensions are
+;;   exported to C code that can be compiled and optimized by major C
+;;   compilers such as gcc/clang/vc++.  Functionality is exposed to the
+;;   PHP language.  For more information see https://zephir-lang.com
 
 ;;; Bugs:
 
