@@ -6,7 +6,7 @@
 ;; Maintainer:       Serghei Iakovlev
 ;; Version:          0.1.0
 ;; URL:              https://github.com/sergeyklay/zephir-mode
-;; Keywords:         zephir programming languages php php-extensions zend-engine
+;; Keywords:         zephir, programming, languages, php, php-extensions, zend-engine
 ;; Package-Requires: ((emacs "24"))
 
 (defconst zephir-mode-version-number "0.1.0"
@@ -39,7 +39,7 @@
 
 ;;; Usage
 
-;; Put this file in your Emacs lisp path (eg. site-lisp) and add to
+;;   Put this file in your Emacs lisp path (eg. site-lisp) and add to
 ;; your .emacs file:
 ;;
 ;;   (require 'zephir-mode)
@@ -61,31 +61,31 @@
 ;;; Commentary:
 
 ;;   Zephir Mode is a major mode for editing Zephir source code.  It's an
-;;   extension of C mode; thus it inherits all C mode's navigation
-;;   functionality.  But it colors according to the Zephir grammar.
+;; extension of C mode; thus it inherits all C mode's navigation
+;; functionality.  But it colors according to the Zephir grammar.
 ;;
 ;;   Zephir -- is a high level language that eases the creation and
-;;   maintainability of extensions for PHP.  Zephir extensions are
-;;   exported to C code that can be compiled and optimized by major C
-;;   compilers such as gcc/clang/vc++.  Functionality is exposed to the
-;;   PHP language.  For more information see https://zephir-lang.com
+;; maintainability of extensions for PHP.  Zephir extensions are
+;; exported to C code that can be compiled and optimized by major C
+;; compilers such as gcc/clang/vc++.  Functionality is exposed to the
+;; PHP language.  For more information see https://zephir-lang.com
 
 ;;; Bugs:
 
 ;;   Bug tracking is currently handled using the GitHub issue tracker at
-;;   https://github.com/sergeyklay/zephir-mode/issues
+;; https://github.com/sergeyklay/zephir-mode/issues
 
 ;;; Notes:
 
 ;;; TODO:
 
 ;;   Issues with this code are managed via the project issue management
-;;   on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
+;; on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
 
 ;;; History:
 
 ;;   History is tracked in the Git repository rather than in this file.
-;;   See https://github.com/sergeyklay/zephir-mode/commits/master
+;; See https://github.com/sergeyklay/zephir-mode/commits/master
 
 ;;----------------------------------------------------------------------------
 ;;; Code:
@@ -914,7 +914,3 @@ Key bindings:
 (provide 'zephir-mode)
 
 ;;; zephir-mode.el ends here
-
-;; Local Variables:
-;; firestarter: ert-run-tests-interactively
-;; End:
