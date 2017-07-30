@@ -1,29 +1,46 @@
+# Based on https://github.com/flycheck/emacs-travis
+
 language: emacs-lisp
-sudo: required
+sudo: false
+
+cache:
+  - directories:
+      # Cache stable Emacs binaries (saves 1min per job)
+      - "$HOME/emacs/"
+
+# Allow Emacs snapshot builds to fail and don't wait for these as they can take
+# a looooong time
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: EMACS_VERSION=snapshot
 
 env:
   matrix:
-    - EMACS_VERSION=emacs-24.3-bin
-    - EMACS_VERSION=emacs-24.4-bin
-    - EMACS_VERSION=emacs-24.5-bin
-    - EMACS_VERSION=emacs-25.1-bin
-    - EMACS_VERSION=emacs-snapshot
+    - EMACS_VERSION=24.3
+    - EMACS_VERSION=24.4
+    - EMACS_VERSION=24.5
+    - EMACS_VERSION=25.1
+    - EMACS_VERSION=25.2
+    - EMACS_VERSION=snapshot
 
 before_install:
-  # Use the ubuntu emacs teams regularly updated snapshot packages
-  - '[[ "$EMACS_VERSION" != "emacs-snapshot" ]] || sudo add-apt-repository -y ppa:ubuntu-elisp/ppa'
-  - '[[ "$EMACS_VERSION" != "emacs-snapshot" ]] || sudo apt-get update -qq'
-  - '[[ "$EMACS_VERSION" != "emacs-snapshot" ]] || sudo apt-get install -qq $EMACS_VERSION'
-  - '[[ "$EMACS_VERSION" != "emacs-snapshot" ]] || sudo apt-get install -qq emacs-snapshot-el emacs-snapshot-nox'
+  # Configure $PATH: Executables are installed to $HOME/bin
+  - export PATH="$HOME/bin:$PATH"
+  # Download the makefile to emacs-travis.mk
+  - wget 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
+  # Install Emacs (according to $EMACS_VERSION) and Cask
+  - make -f emacs-travis.mk install_emacs
+  - make -f emacs-travis.mk install_cask
+  # Install Texinfo
+  - make -f emacs-travis.mk install_texinfo
 
-  # Use emacs version manager for all other versions
-  - sudo mkdir /usr/local/evm
-  - sudo chown travis:travis /usr/local/evm
-  - export PATH="/home/travis/.evm/bin:$PATH"
-  - curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash
-  - evm install $EMACS_VERSION --use || true
+install:
+  # Install dependencies
+  - cask install
 
 script:
   # Make sure the exact emacs version can be found in the build output
   - emacs -Q --batch --eval '(message (emacs-version))'
-  # - make test
+  - make compile
+  - make test

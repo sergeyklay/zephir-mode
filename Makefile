@@ -1,18 +1,13 @@
-EMACS ?= emacs
-ELS = zephir-mode.el zephir-mode-test.el
-ELCS = $(ELS:.el=.elc)
+emacs ?= emacs
+all: test
 
-%.elc: %.el
-	$(EMACS) -Q -batch -L . -f batch-byte-compile $<
+test: clean
+	cask exec $(emacs) -Q -batch -L . -l zephir-mode-test.el -l zephir-mode.el -f ert-run-tests-batch-and-exit
 
-all: $(ELCS)
+compile:
+	$(emacs) -Q -batch -f batch-byte-compile d-mode.el
 
 clean:
-	rm -f $(ELCS)
-
-test:
-	make clean
-	make all
-	$(EMACS) -Q -batch -L . -l zephir-mode-test.el -f ert-run-tests-batch-and-exit
+	rm -f zephir-mode.elc
 
 .PHONY: all clean test
