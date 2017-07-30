@@ -469,7 +469,7 @@ Implements Zephir version of `beginning-of-defun-function'."
 
 (defun zephir-end-of-defun (&optional arg)
   "Move the end of the ARGth Zephir function from point.
-Implements Zephir version of `end-of-defun-function'
+Implements Zephir version of `end-of-defun-function'.
 
 See `zephir-beginning-of-defun'."
   (interactive "p")
@@ -477,14 +477,16 @@ See `zephir-beginning-of-defun'."
 
 
 (defun zephir-lineup-cascaded-calls (langelem)
-  "Line up chained methods using `c-lineup-cascaded-calls', but only if the setting is enabled."
+  "Line up chained methods using `c-lineup-cascaded-calls' by using LANGELEM.
+
+Line up methods only if the `zephir-lineup-cascaded-calls' setting is enabled."
   (if zephir-lineup-cascaded-calls
       (c-lineup-cascaded-calls langelem)))
 
 (defun zephir-lineup-string-cont (langelem)
-  "Line up string toward equal sign or dot.
+  "Line up string toward equal sign or dot by using LANGELEM.
 
-Example:
+eg.
 $str = 'some'
      . 'string';
 this ^ lineup"
@@ -498,19 +500,16 @@ this ^ lineup"
       ret)))
 
 (defun zephir-lineup-arglist-intro (langelem)
+  "Line up arguments list by using LANGELEM."
   (save-excursion
     (goto-char (cdr langelem))
     (vector (+ (current-column) c-basic-offset))))
 
 (defun zephir-lineup-arglist-close (langelem)
+  "Line up arguments list by using LANGELEM."
   (save-excursion
     (goto-char (cdr langelem))
     (vector (current-column))))
-
-(defun zephir-lineup-arglist (_langelem)
-  (save-excursion
-    (beginning-of-line)
-    (if (looking-at-p "\\s-*->") '+ 0)))
 
 (defconst zephir-heredoc-start-re
   "<<<\\(?:\\w+\\|'\\w+'\\)$"
