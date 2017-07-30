@@ -2,11 +2,11 @@
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
-;; Author: Serghei Iakovlev (serghei@phalconphp.com)
-;; Maintainer: Serghei Iakovlev
-;; Version: 0.0.1
-;; URL: https://github.com/sergeyklay/zephir-mode
-;; Keywords: zephir languages oop
+;; Author:           Serghei Iakovlev (serghei@phalconphp.com)
+;; Maintainer:       Serghei Iakovlev
+;; Version:          0.1.0
+;; URL:              https://github.com/sergeyklay/zephir-mode
+;; Keywords:         zephir languages oop
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst zephir-mode-version-number "0.0.1"
