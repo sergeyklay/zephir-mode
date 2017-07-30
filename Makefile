@@ -5,14 +5,14 @@ PACKAGE-NAME=zephir-mode.el
 all: checkdoc test
 
 checkdoc:
-	$(EMACS) -Q -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
+	$(EMACS) -Q -L . -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
 
 package-lint:
-	${CASK} exec $(EMACS) -Q --batch -l "package-lint.el" \
+	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" \
 	-f "package-lint-batch-and-exit" ${PACKAGE-NAME}
 
 build: package-lint
-	${CASK} exec  $(EMACS) -Q --batch \
+	${CASK} exec  $(EMACS) -Q -L . --batch \
 	--eval "(progn \
 		(setq byte-compile-error-on-warn t)  \
 		(batch-byte-compile))" ${PACKAGE-NAME}
