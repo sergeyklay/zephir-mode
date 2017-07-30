@@ -859,6 +859,28 @@ the string `heredoc-start'."
 (defvar zephir-font-lock-keywords zephir-font-lock-keywords-3
   "Default expressions to highlight in Zephir Mode.")
 
+(defcustom zephir-namespace-suffix-when-insert "\\"
+  "Suffix for inserted namespace."
+  :group 'zephir
+  :type 'string)
+
+(defvar zephir--re-namespace-pattern
+  (zephir-create-regexp-for-classlike "namespace"))
+
+(defun zephir-get-current-element (re-pattern)
+  "Return backward matched element by `re-patern'."
+  (save-excursion
+    (when (re-search-backward re-pattern nil t)
+      (match-string-no-properties 1))))
+
+;;;###autoload
+(defun zephir-current-namespace ()
+  "Insert current namespace if cursor in namespace context."
+  (interactive)
+  (let ((matched (zephir-get-current-element zephir--re-namespace-pattern)))
+    (when matched
+      (insert (concat matched zephir-namespace-suffix-when-insert)))))
+
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.zep\\'" . zephir-mode))
