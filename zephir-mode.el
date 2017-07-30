@@ -512,11 +512,6 @@ this ^ lineup"
     (beginning-of-line)
     (if (looking-at-p "\\s-*->") '+ 0)))
 
-(defun zephir-lineup-hanging-semicolon (_langelem)
-  (save-excursion
-    (beginning-of-line)
-    (if (looking-at-p "\\s-*;\\s-*$") 0 '+)))
-
 (defconst zephir-heredoc-start-re
   "<<<\\(?:\\w+\\|'\\w+'\\)$"
   "Regular expression for the start of a Zephir heredoc.")
