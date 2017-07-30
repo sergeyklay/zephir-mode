@@ -6,7 +6,7 @@
 ;; Maintainer:       Serghei Iakovlev
 ;; Version:          0.1.0
 ;; URL:              https://github.com/sergeyklay/zephir-mode
-;; Keywords:         zephir programming language emacs cc-mode
+;; Keywords:         zephir programming languages emacs cc-mode
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 
 (defconst zephir-mode-version-number "0.1.0"
@@ -144,11 +144,11 @@
   (nth 8 (syntax-ppss)))
 
 (defcustom zephir-lineup-cascaded-calls nil
-  "Indent chained method calls to the previous line"
+  "Indent chained method calls to the previous line."
   :type 'boolean)
 
 (defun zephir-create-regexp-for-method (visibility)
-  "Make a regular expression for methods with the given `visiblity'.
+  "Make a regular expression for methods with the given VISIBILITY.
 
 `visibility' must be a string that names the visibility for a Zephir
 method, e.g. 'public'.  The parameter `visibility' can itself also
@@ -170,8 +170,9 @@ which will be the name of the method."
    "\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("))
 
 (defun zephir-create-regexp-for-classlike (type)
-  "Accepts a `type' of a 'classlike' object as a string, such as
-'class' or 'interface', and returns a regexp as a string which
+  "Accepts a TYPE of a 'classlike' object as a string.
+
+The TYPE may be 'class' or 'interface', and returns a regexp as a string which
 can be used to match against definitions for that classlike."
   (concat
    ;; First see if 'abstract' or 'final' appear, although really these
@@ -206,7 +207,7 @@ can be used to match against definitions for that classlike."
      "\\<\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*=\\s-*function\\s-*(" 1)
     ("Named Functions"
      "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
-  "Imenu generic expression for Zephir Mode. See `imenu-generic-expression'.")
+  "Imenu generic expression for Zephir Mode.  See `imenu-generic-expression'.")
 
 (defun zephir-mode-version ()
   "Display string describing the version of Zephir Mode."
@@ -466,8 +467,7 @@ See `zephir-beginning-of-defun'."
   (zephir-beginning-of-defun (- (or arg 1))))
 
 (defcustom zephir-mode-warn-if-mumamo-off t
-  "Warn once per buffer if you try to indent a buffer without
-mumamo-mode turned on."
+  "Warn once per buffer if you try to indent a buffer without mumamo-mode turned on."
   :type '(choice (const :tag "Warg" t) (const "Don't warn" nil)))
 
 
@@ -494,14 +494,14 @@ mumamo-mode turned on."
           (funcall 'c-indent-line)))))
 
 (defun zephir-lineup-cascaded-calls (langelem)
-  "Line up chained methods using `c-lineup-cascaded-calls',
-but only if the setting is enabled"
+  "Line up chained methods using `c-lineup-cascaded-calls', but only if the setting is enabled."
   (if zephir-lineup-cascaded-calls
       (c-lineup-cascaded-calls langelem)))
 
 (defun zephir-lineup-string-cont (langelem)
-  "Line up string toward equal sign or dot
-e.g.
+  "Line up string toward equal sign or dot.
+
+Example:
 $str = 'some'
      . 'string';
 this ^ lineup"
@@ -539,8 +539,7 @@ this ^ lineup"
   "Regular expression for the start of a Zephir heredoc.")
 
 (defun zephir-heredoc-end-re (heredoc-start)
-  "Build a regular expression for the end of a heredoc started by
-the string `heredoc-start'."
+  "Build a regular expression for the end of a heredoc started by the string HEREDOC-START."
   ;; Extract just the identifier without <<< and quotes.
   (string-match "\\w+" heredoc-start)
   (concat "^\\(" (match-string 0 heredoc-start) "\\)\\W"))
@@ -556,7 +555,7 @@ the string `heredoc-start'."
   (c-put-char-property (1- (point)) 'syntax-table (string-to-syntax "|")))
 
 (defun zephir-syntax-propertize-extend-region (start end)
-  "Extend the propertize region if `start' or `end' falls inside a Zephir heredoc."
+  "Extend the propertize region if START or END falls inside a Zephir heredoc."
   (let ((new-start)
         (new-end))
     (goto-char start)
@@ -577,7 +576,7 @@ the string `heredoc-start'."
       (cons (or new-start start) (or new-end end)))))
 
 (defun zephir-syntax-propertize-function (start end)
-  "Apply propertize rules from `start' to `end'."
+  "Apply propertize rules from START to END."
   (goto-char start)
   (while (and (< (point) end)
               (re-search-forward zephir-heredoc-start-re end t))
@@ -806,7 +805,7 @@ the string `heredoc-start'."
   (zephir-create-regexp-for-classlike (regexp-opt '("class" "interface"))))
 
 (defun zephir-get-current-element (re-pattern)
-  "Return backward matched element by `re-patern'."
+  "Return backward matched element by RE-PATTERN."
   (save-excursion
     (when (re-search-backward re-pattern nil t)
       (match-string-no-properties 1))))
