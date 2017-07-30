@@ -44,6 +44,11 @@ setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
 The master of all the material is the Git repository at
 https://github.com/sergeyklay/zephir-mode .
 
+## Changes
+
+To see what has changed in recent versions of Zephir Mode,
+see the [CHANGELOG.md][changelog] .
+
 ## External Links
 
 * [Zephir Forum][forum]
@@ -52,7 +57,7 @@ https://github.com/sergeyklay/zephir-mode .
 ## License
 
 Zephir Mode is open source software licensed under the
-GNU General Public Licence version 3.
+[GNU General Public Licence version 3][license] .
 
 [license-badge]: https://img.shields.io/badge/license-GPL_3-green.svg
 [license]: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -60,5 +65,6 @@ GNU General Public Licence version 3.
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [php-mode]: https://github.com/ejmr/php-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
+[changelog]: ./CHANGELOG.md
 [forum]: https://forum.zephir-lang.com
 [language]: https://zephir-lang.com
