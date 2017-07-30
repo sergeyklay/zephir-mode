@@ -112,6 +112,7 @@
         ;; need it in zephir-mode, just return nil.
         nil)))
 
+
 ;; Local variables
 ;;;###autoload
 (defgroup zephir nil
@@ -432,6 +433,7 @@ See `zephir-beginning-of-defun'."
 mumamo-mode turned on."
   :type '(choice (const :tag "Warg" t) (const "Don't warn" nil)))
 
+
 (defvar zephir-warned-bad-indent nil)
 
 (defun zephir-cautious-indent-region (start end &optional quiet)
@@ -568,6 +570,7 @@ the string `heredoc-start'."
       (c-put-char-property (match-beginning 0)
                            'syntax-table (string-to-syntax "_")))))
 
+
 ;; Faces
 
 ;;;###autoload
@@ -732,6 +735,7 @@ the string `heredoc-start'."
       (save-excursion
         (zephir-syntax-propertize-function (point-min) (point-max))))))
 
+
 ;; Font Lock
 (defconst zephir-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
@@ -837,6 +841,7 @@ the string `heredoc-start'."
 (defvar zephir-font-lock-keywords zephir-font-lock-keywords-3
   "Default expressions to highlight in Zephir Mode.")
 
+
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.zep\\'" . zephir-mode))
 
