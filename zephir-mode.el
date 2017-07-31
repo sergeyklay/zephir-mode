@@ -697,7 +697,6 @@ this ^ lineup"
      ;; Highlight variables, e.g. 'var' in '$var' and '$obj->var', but
      ;; not in $obj->var()
      ("->\\(\\sw+\\)\\s-*(" 1 'zephir-method-call)
-
      ("\\(\\$\\|->\\)\\([a-zA-Z0-9_]+\\)" 2 'zephir-property-name)
 
      ;; Highlight all upper-cased symbols as constant
