@@ -68,9 +68,9 @@ setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
    (add-to-list 'load-path
                 (expand-file-name "lisp" user-emacs-directory))
    ```
-4. Add **either** of the two following lines to your initialization file. The
-   first only loads adoc mode when necessary, the 2nd always during startup
-   of GNU Emacs.
+4. Add **either** of the two following lines to your initialization file.
+   The first only loads Zephir Mode when necessary, the 2nd always during
+   startup of GNU Emacs.
    ```elisp
    (autoload 'zephir-mode "zephir-mode" nil t)
    ;; OR
