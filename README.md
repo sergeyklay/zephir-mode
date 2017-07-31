@@ -6,13 +6,15 @@
 Provides font-locking, indentation and navigation support for the
 [Zephir programming language][zephir] .
 
-The mode heavily inspired by [`php-mode`][php-mode] and based on the
-[`derived-mode-ex.el`][derived-mode] code supported with the `cc-mode`.
+The mode based on the [`derived-mode-ex.el`][derived-mode] code
+supported with the `cc-mode`.
 
 - [Installation](#installation)
   - [Using MELPA](#using-melpa)
   - [Manual Install](#manula-install)
 - [Usage](#usage)
+  - [Interactive Commands](#interactive-commands)
+  - [Keymapping](#keymapping)
 - [Changes](#changes)
 - [External Links](#external-links)
 - [License](#license)
@@ -82,6 +84,8 @@ setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
 
 ## Usage
 
+### Interactive Commands
+
 | Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
 | --- | --- |
 | `zephir-mode` | Switches to Zephir Mode. |
@@ -103,6 +107,12 @@ e.g. if they rebind `c-end-of-defun` to something other than
 | `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
 | `zephir-end-of-defun` | Move to the end of the current or next function. |
 
+Any file that matches the glob `*.zep` is automatically opened in `zephir-mode`.
+
+### Keymapping
+
+Keymaps can be added to the `zephir-mode-map` variable.
+
 ## Changes
 
 To see what has changed in recent versions of Zephir Mode,
@@ -123,7 +133,6 @@ Zephir Mode is open source software licensed under the
 [zephir]: https://zephir-lang.com
 [travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
-[php-mode]: https://github.com/ejmr/php-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md
 [forum]: https://forum.zephir-lang.com
