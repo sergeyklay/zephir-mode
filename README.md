@@ -76,7 +76,7 @@ setting up see [MELPA Getting Started](https://melpa.org/#/getting-started).
    ;; OR
    (require 'zephir-mode)
    ```
-5. Optionally byte compile adoc-mode.el for faster startup:
+5. Optionally byte compile `zephir-mode.el` for faster startup:
    <kbd>M</kbd> <kbd>x</kbd> `byte-compile`
 
 ## Usage
