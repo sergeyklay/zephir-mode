@@ -87,7 +87,7 @@
 ;;   History is tracked in the Git repository rather than in this file.
 ;; See https://github.com/sergeyklay/zephir-mode/commits/master
 
-;;----------------------------------------------------------------------------
+
 ;;; Code:
 
 (require 'cc-mode)
@@ -136,9 +136,10 @@
   :tag "Zephir"
   :prefix "zephir-"
   :group 'languages
-  :link '(url-link :tag "Official Site" "https://github.com/sergeyklay/zephir-mode")
+  :link '(url-link :tag "GitHub" "https://github.com/sergeyklay/zephir-mode")
   :link '(url-link :tag "Zephir Forum" "https://forum.zephir-lang.com")
-  :link '(url-link :tag "Zephir Language" "https://zephir-lang.com"))
+  :link '(url-link :tag "Official Site" "https://zephir-lang.com")
+  :link '(emacs-commentary-link :tag "Commentary" "zephir-mode"))
 
 (defvar zephir-website-url "https://zephir-lang.com"
   "Official website of Zephir programming language.")

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog][keep-cl] and this project adheres
 to [Semantic Versioning][semver] .
 
 ## [Unreleased]
+### Changed
+- Updated Mode info
 
 ## [0.2.0] - 2017-07-31
 ### Added
