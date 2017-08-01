@@ -423,26 +423,37 @@ might be to handle switch and goto labels differently."
                                        (c-lang-const c-constant-kwds))
                                :test 'string-equal))))
 
+;; Create Zephir Mode style.
 (defconst zephir-c-style
-  '("java"
-    (c-basic-offset . 4)
-    (indent-tabs-mode . t)
-    (fill-column . 80)
-    (c-offsets-alist . ((arglist-close . zephir-lineup-arglist-close)
-                        (arglist-cont . (first zephir-lineup-cascaded-calls 0))
-                        (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
-                        (arglist-intro . zephir-lineup-arglist-intro)
-                        (case-label . +)
-                        (class-open . 0)
-                        (comment-intro . 0)
-                        (inlambda . 0)
-                        (inline-open . 0)
-                        (namespace-open . 0)
-                        (lambda-intro-cont . +)
-                        (label . +)
-                        (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
-                        (substatement-open . 0)
-                        (topmost-intro-cont . (first zephir-lineup-cascaded-calls +)))))
+  '(
+  ;; Debug
+  (c-echo-syntactic-information-p . t)
+  ;; The <TAB> simply indents the current line.
+  (c-tab-always-indent . t)
+  ;; Specifies the extra offset for the line.
+  (c-comment-only-line-offset . 4)
+  ;; An alist which associates an offset with each syntactic symbol.
+  (c-offsets-alist . (
+                      ;; The parenthesis that closes the argument list.
+                      (arglist-close . zephir-lineup-arglist-close)
+                      ;; Lines that continue argument lists.
+                      (arglist-cont . (first zephir-lineup-cascaded-calls 0))
+                      ;; Lines that continue an argument list with close parenthesis.
+                      (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
+                      ;; The first line following the open parenthesis.
+                      (arglist-intro . zephir-lineup-arglist-intro)
+                      (case-label . +)
+                      (class-open . 0)
+                      (comment-intro . 0)
+                      (inlambda . 0)
+                      (inline-open . 0)
+                      (namespace-open . 0)
+                      (lambda-intro-cont . +)
+                      (label . +)
+                      (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
+                      (substatement-open . 0)
+                      (topmost-intro-cont . (first zephir-lineup-cascaded-calls +))
+                      (c-set-offset . 0))))
   "The default Zephir styles.")
 
 (c-add-style "zephir" zephir-c-style)
