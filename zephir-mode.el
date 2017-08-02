@@ -442,21 +442,30 @@ might be to handle switch and goto labels differently."
                       (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
                       ;; The first line following the open parenthesis.
                       (arglist-intro . zephir-lineup-arglist-intro)
+                      ;; To indent switch/case
                       (case-label . +)
+                      ;; On a brace that opens a class definition.
                       (class-open . 0)
+                      ;; On a line containing only a comment introduction.
                       (comment-intro . 0)
+                      ;; Like inclass, but used inside lambda (i.e. anonymous) functions.
                       (inlambda . 0)
+                      ;; On a brace that opens an in-class inline method.
                       (inline-open . 0)
-                      (namespace-open . 0)
+                      ;; (namespace-open . 0)
                       (lambda-intro-cont . +)
+                      ;; On any ordinary label.
                       (label . +)
+                      ;; On a continuation line of a statement.
                       (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
+                      ;; On the brace that opens a substatement block.
                       (substatement-open . 0)
+                      ;; On the topmost definition continuation lines.
                       (topmost-intro-cont . (first zephir-lineup-cascaded-calls +))
-                      (c-set-offset . 0))))
+                      )))
   "The default Zephir styles.")
 
-(c-add-style "zephir" zephir-c-style)
+ (c-add-style "zephir" zephir-c-style)
 
 (defconst zephir-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|internal\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
