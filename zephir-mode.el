@@ -425,7 +425,7 @@ might be to handle switch and goto labels differently."
 
 ;; Create Zephir Mode style.
 (defconst zephir-c-style
-  '(
+  '("java"
   ;; Debug
   (c-echo-syntactic-information-p . t)
   ;; The <TAB> simply indents the current line.
@@ -434,6 +434,8 @@ might be to handle switch and goto labels differently."
   (c-comment-only-line-offset . 4)
   ;; An alist which associates an offset with each syntactic symbol.
   (c-offsets-alist . (
+                      ;; Whether tabs are used for indentation
+                      (indent-tabs-mode . t)
                       ;; The parenthesis that closes the argument list.
                       (arglist-close . zephir-lineup-arglist-close)
                       ;; Lines that continue argument lists.
@@ -452,7 +454,8 @@ might be to handle switch and goto labels differently."
                       (inlambda . 0)
                       ;; On a brace that opens an in-class inline method.
                       (inline-open . 0)
-                      ;; (namespace-open . 0)
+                      ;; On a line continuing the header of a lambda function
+                      ;; between the lambda keyword and the function body
                       (lambda-intro-cont . +)
                       ;; On any ordinary label.
                       (label . +)
@@ -461,8 +464,7 @@ might be to handle switch and goto labels differently."
                       ;; On the brace that opens a substatement block.
                       (substatement-open . 0)
                       ;; On the topmost definition continuation lines.
-                      (topmost-intro-cont . (first zephir-lineup-cascaded-calls +))
-                      )))
+                      (topmost-intro-cont . (first zephir-lineup-cascaded-calls +)))))
   "The default Zephir styles.")
 
  (c-add-style "zephir" zephir-c-style)
