@@ -434,8 +434,6 @@ might be to handle switch and goto labels differently."
   (c-comment-only-line-offset . 4)
   ;; An alist which associates an offset with each syntactic symbol.
   (c-offsets-alist . (
-                      ;; Whether tabs are used for indentation
-                      (indent-tabs-mode . t)
                       ;; The parenthesis that closes the argument list.
                       (arglist-close . zephir-lineup-arglist-close)
                       ;; Lines that continue argument lists.
@@ -467,7 +465,22 @@ might be to handle switch and goto labels differently."
                       (topmost-intro-cont . (first zephir-lineup-cascaded-calls +)))))
   "The default Zephir styles.")
 
- (c-add-style "zephir" zephir-c-style)
+(c-add-style "zephir" zephir-c-style)
+
+;; Customizations for Zephir Mode.
+(defun zephir-enable-coding-style ()
+  "Enables standard Zephir coding style."
+  (interactive)
+  ;; Set zephir style for the current buffer
+  (c-set-style "zephir")
+  ;; other customizations
+  (setq tab-width 4
+        ;; Whether tabs are used for indentation
+        indent-tabs-mode t)
+  ;; we like auto-newline, but not hungry-delete
+  (c-toggle-auto-newline 1))
+
+(add-hook 'c-mode-common-hook 'zephir-enable-coding-style)
 
 (defconst zephir-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|internal\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
@@ -836,6 +849,9 @@ Key bindings:
 
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
+
+  ;; Zephir coding standards
+  (c-set-style "zephir")
 
   ;; syntax-begin-function is obsolete in Emacs 25.1
   (with-no-warnings

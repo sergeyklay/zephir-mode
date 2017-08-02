@@ -8,6 +8,7 @@ to [Semantic Versioning][semver] .
 ## [Unreleased]
 ### Changed
 - Updated Mode info
+- Enabled Zephir Mode offset style
 
 ## [0.2.0] - 2017-07-31
 ### Added
