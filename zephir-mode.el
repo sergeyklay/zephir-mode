@@ -4,12 +4,12 @@
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
 ;; Package-Requires: ((emacs "24"))
 
-(defconst zephir-mode-version-number "0.3.1"
+(defconst zephir-mode-version-number "0.3.2"
   "Zephir Mode version number.")
 
 (defconst zephir-mode-modified "2017-08-03"
