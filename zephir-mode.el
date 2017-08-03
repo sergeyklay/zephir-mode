@@ -850,9 +850,6 @@ Key bindings:
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
 
-  ;; Zephir coding standards
-  (c-set-style "zephir")
-
   ;; syntax-begin-function is obsolete in Emacs 25.1
   (with-no-warnings
     (set (make-local-variable 'syntax-begin-function)
