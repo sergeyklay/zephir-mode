@@ -426,6 +426,10 @@ might be to handle switch and goto labels differently."
 ;; Create Zephir Mode style.
 (defconst zephir-c-style
   '("java"
+    ;; Debug: The syntactic analysis for the current line is shown in the echo area.
+    (c-echo-syntactic-information-p . t)
+    ;; Debug: Certain syntactic errors are reported with a ding and a message.
+    (c-report-syntactic-errors . t)
     ;; The <TAB> simply indents the current line.
     (c-tab-always-indent . t)
     ;; Specifies the extra offset for the line.
@@ -482,7 +486,9 @@ might be to handle switch and goto labels differently."
 
 (defconst zephir-beginning-of-defun-regexp
   "^\\s-*\\(?:\\(?:abstract\\|final\\|internal\\|private\\|protected\\|public\\|static\\)\\s-+\\)*function\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*("
-  "Regular expression for a Zephir function.")
+  "Regular expression for a Zephir function.
+
+Return name of function definition point is in, or nil.")
 
 (defun zephir-beginning-of-defun (&optional arg)
   "Move to the beginning of the ARGth Zephir function from point.
