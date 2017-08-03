@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog][keep-cl] and this project adheres
 to [Semantic Versioning][semver] .
 
 ## [Unreleased]
+
+## [0.3.1] - 2017-08-03
 ### Changed
 - Fixed support of [Speedbar][speedbar] to observe Zephir files
+- Updated the documentation
 
 ## [0.3.0] - 2017-08-03
 ### Added
@@ -28,7 +31,8 @@ to [Semantic Versioning][semver] .
 ### Added
 - Initial stable release
 
-[Unreleased]: https://github.com/sergeyklay/zephir-mode/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/sergeyklay/zephir-mode/compare/0.3.1...HEAD
+[0.3.1]: https://github.com/sergeyklay/zephir-mode/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/sergeyklay/zephir-mode/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/sergeyklay/zephir-mode/compare/0.1.0...0.2.0
 [keep-cl]: http://keepachangelog.com
