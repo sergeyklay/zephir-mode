@@ -37,6 +37,10 @@ older versions of Emacs will most like _not_ be addressed.
 The master of all the material is the Git repository at
 https://github.com/sergeyklay/zephir-mode .
 
+**NOTE**: The `master` branch will always contain the latest stable version.
+If you wish to check older versions or newer ones currently under development,
+please switch to the relevant [branch][branches]/[tag][tags].
+
 ### Manual Install
 
 1. Download `zephir-mode.el`
@@ -112,6 +116,8 @@ Zephir Mode is open source software licensed under the
 [license-badge]: https://img.shields.io/badge/license-GPL_3-green.svg
 [license]: https://www.gnu.org/licenses/gpl-3.0.txt
 [speedbar]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html
+[branches]: https://github.com/sergeyklay/zephir-mode/branches
+[tags]: https://github.com/sergeyklay/zephir-mode/tags
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
 [travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
