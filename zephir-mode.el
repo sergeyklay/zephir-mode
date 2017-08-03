@@ -4,12 +4,12 @@
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.0
+;; Version: 0.3.1
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
 ;; Package-Requires: ((emacs "24"))
 
-(defconst zephir-mode-version-number "0.3.0"
+(defconst zephir-mode-version-number "0.3.1"
   "Zephir Mode version number.")
 
 (defconst zephir-mode-modified "2017-08-03"
@@ -838,7 +838,9 @@ Key bindings:
   ;;     https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html
   (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
   (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
+  ;; ' is a string delimiter
   (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
+  ;; \n is a comment ender
   (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
   (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
 
