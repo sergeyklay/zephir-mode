@@ -60,9 +60,10 @@
 
 ;;; Commentary:
 
-;;   Zephir Mode is a major mode for editing Zephir source code.  It's an
-;; extension of C mode; thus it inherits all C mode's navigation
-;; functionality.  But it colors according to the Zephir grammar.
+;;   GNU Emacs major mode for editing Zephir code.
+
+;;   It developed  as an extension of C mode; thus it inherits all C mode's
+;; navigation functionality.  But it colors according to the Zephir grammar.
 ;;
 ;;   Zephir -- is a high level language that eases the creation and
 ;; maintainability of extensions for PHP.  Zephir extensions are
