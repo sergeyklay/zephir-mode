@@ -87,11 +87,11 @@ Any file that matches the glob `*.zep` is automatically opened in `zephir-mode`.
 
 ### Keymapping
 
+Keymaps can be added to the `zephir-mode-map` variable.
+
 ## Support
 
 Feel free to ask question or make suggestions in our [issue tracker][issues].
-
-Keymaps can be added to the `zephir-mode-map` variable.
 
 ## Changes
 
