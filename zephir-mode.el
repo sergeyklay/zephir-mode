@@ -426,43 +426,41 @@ might be to handle switch and goto labels differently."
 ;; Create Zephir Mode style.
 (defconst zephir-c-style
   '("java"
-  ;; Debug
-  (c-echo-syntactic-information-p . t)
-  ;; The <TAB> simply indents the current line.
-  (c-tab-always-indent . t)
-  ;; Specifies the extra offset for the line.
-  (c-comment-only-line-offset . 4)
-  ;; An alist which associates an offset with each syntactic symbol.
-  (c-offsets-alist . (
-                      ;; The parenthesis that closes the argument list.
-                      (arglist-close . zephir-lineup-arglist-close)
-                      ;; Lines that continue argument lists.
-                      (arglist-cont . (first zephir-lineup-cascaded-calls 0))
-                      ;; Lines that continue an argument list with close parenthesis.
-                      (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
-                      ;; The first line following the open parenthesis.
-                      (arglist-intro . zephir-lineup-arglist-intro)
-                      ;; To indent switch/case
-                      (case-label . +)
-                      ;; On a brace that opens a class definition.
-                      (class-open . 0)
-                      ;; On a line containing only a comment introduction.
-                      (comment-intro . 0)
-                      ;; Like inclass, but used inside lambda (i.e. anonymous) functions.
-                      (inlambda . 0)
-                      ;; On a brace that opens an in-class inline method.
-                      (inline-open . 0)
-                      ;; On a line continuing the header of a lambda function
-                      ;; between the lambda keyword and the function body
-                      (lambda-intro-cont . +)
-                      ;; On any ordinary label.
-                      (label . +)
-                      ;; On a continuation line of a statement.
-                      (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
-                      ;; On the brace that opens a substatement block.
-                      (substatement-open . 0)
-                      ;; On the topmost definition continuation lines.
-                      (topmost-intro-cont . (first zephir-lineup-cascaded-calls +)))))
+    ;; The <TAB> simply indents the current line.
+    (c-tab-always-indent . t)
+    ;; Specifies the extra offset for the line.
+    (c-comment-only-line-offset . 4)
+    ;; An alist which associates an offset with each syntactic symbol.
+    (c-offsets-alist . (
+                        ;; The parenthesis that closes the argument list.
+                        (arglist-close . zephir-lineup-arglist-close)
+                        ;; Lines that continue argument lists.
+                        (arglist-cont . (first zephir-lineup-cascaded-calls 0))
+                        ;; Lines that continue an argument list with close parenthesis.
+                        (arglist-cont-nonempty . (first zephir-lineup-cascaded-calls c-lineup-arglist))
+                        ;; The first line following the open parenthesis.
+                        (arglist-intro . zephir-lineup-arglist-intro)
+                        ;; To indent switch/case
+                        (case-label . +)
+                        ;; On a brace that opens a class definition.
+                        (class-open . 0)
+                        ;; On a line containing only a comment introduction.
+                        (comment-intro . 0)
+                        ;; Like inclass, but used inside lambda (i.e. anonymous) functions.
+                        (inlambda . 0)
+                        ;; On a brace that opens an in-class inline method.
+                        (inline-open . 0)
+                        ;; On a line continuing the header of a lambda function
+                        ;; between the lambda keyword and the function body
+                        (lambda-intro-cont . +)
+                        ;; On any ordinary label.
+                        (label . +)
+                        ;; On a continuation line of a statement.
+                        (statement-cont . (first zephir-lineup-cascaded-calls zephir-lineup-string-cont +))
+                        ;; On the brace that opens a substatement block.
+                        (substatement-open . 0)
+                        ;; On the topmost definition continuation lines.
+                        (topmost-intro-cont . (first zephir-lineup-cascaded-calls +)))))
   "The default Zephir styles.")
 
 (c-add-style "zephir" zephir-c-style)
