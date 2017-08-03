@@ -4,26 +4,34 @@
 [![travis badge][travis-badge]][travis-link]
 
 Provides font-locking, indentation and navigation support for the
-[Zephir programming language][zephir] .
+[Zephir][zephir] programming language for [GNU Emacs][emacs] .
 
 The mode based on the [`derived-mode-ex.el`][derived-mode] code
 supported with the `cc-mode`.
 
+- [Features](#features)
 - [Installation](#installation)
-  - [Using MELPA](#using-melpa)
+  - [Manual Install](#manual-install)
 - [Usage](#usage)
   - [Interactive Commands](#interactive-commands)
   - [Keymapping](#keymapping)
+- [Support](#support)
 - [Changes](#changes)
 - [External Links](#external-links)
 - [License](#license)
 
+## Features
+
+1. Syntax highlighting
+2. Indentation and alignment of expressions and statements
+3. Tag navigation (aka `imenu`)
+
 ## Installation
 
 Known to work with GNU Emacs 24 and later. Zephir Mode may work with older
-versions of Emacs but this is not guaranteed. Bug reports for problems related
-to using Zephir Mode with older versions of Emacs will most like _not_ be
-addressed.
+versions of Emacs, or with other flavors of Emacs (e.g. XEmacs) but this is
+_not_ guaranteed. Bug reports for problems related to using Zephir Mode with
+older versions of Emacs will most like _not_ be addressed.
 
 The master of all the material is the Git repository at
 https://github.com/sergeyklay/zephir-mode .
@@ -79,6 +87,10 @@ Any file that matches the glob `*.zep` is automatically opened in `zephir-mode`.
 
 ### Keymapping
 
+## Support
+
+Feel free to ask question or make suggestions in our [issue tracker][issues].
+
 Keymaps can be added to the `zephir-mode-map` variable.
 
 ## Changes
@@ -98,10 +110,12 @@ Zephir Mode is open source software licensed under the
 
 [license-badge]: https://img.shields.io/badge/license-GPL_3-green.svg
 [license]: https://www.gnu.org/licenses/gpl-3.0.txt
+[emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
 [travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md
+[issues]: https://github.com/sergeyklay/zephir-mode/issues
 [forum]: https://forum.zephir-lang.com
 [language]: https://zephir-lang.com
