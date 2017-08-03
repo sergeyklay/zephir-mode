@@ -144,6 +144,15 @@
 (defvar zephir-website-url "https://zephir-lang.com"
   "Official website of Zephir programming language.")
 
+(defcustom zephir-speedbar-config t
+  "When set to true automatically configures Speedbar to observe Zephir files."
+  :type 'boolean
+  :set (lambda (sym val)
+         (set-default sym val)
+         (when val
+           (speedbar-add-supported-extension
+            "\\.zep"))))
+
 (defsubst zephir-in-string-p ()
   "Return t if if point is inside a string."
   (nth 3 (syntax-ppss)))

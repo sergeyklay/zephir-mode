@@ -25,6 +25,7 @@ supported with the `cc-mode`.
 1. Syntax highlighting
 2. Indentation and alignment of expressions and statements
 3. Tag navigation (aka `imenu`)
+4. [Speedbar][speedbar] support
 
 ## Installation
 
@@ -91,7 +92,7 @@ Keymaps can be added to the `zephir-mode-map` variable.
 
 ## Support
 
-Feel free to ask question or make suggestions in our [issue tracker][issues].
+Feel free to ask question or make suggestions in our [issue tracker][issues] .
 
 ## Changes
 
@@ -110,6 +111,7 @@ Zephir Mode is open source software licensed under the
 
 [license-badge]: https://img.shields.io/badge/license-GPL_3-green.svg
 [license]: https://www.gnu.org/licenses/gpl-3.0.txt
+[speedbar]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
 [travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
