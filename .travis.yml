@@ -9,7 +9,6 @@ cache:
   directories:
       # Cache stable Emacs binaries (saves 1min per job)
       - "$HOME/emacs/"
-      - "$HOME/.emacs.d/"
 
 # Allow Emacs snapshot builds to fail and don't wait for these as they can take
 # a looooong time
