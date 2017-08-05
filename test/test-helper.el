@@ -1,4 +1,4 @@
-;;; test-helper.el --- Test helper for zephir-mode-test.el
+;;; test-helper.el --- Zephir Mode: Non-interactive unit-test setup -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
@@ -41,5 +41,9 @@
        (load-prefer-newer t))
   ;; Load the file under test
   (load (expand-file-name "zephir-mode" source-directory)))
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 
 ;;; test-helper.el ends here

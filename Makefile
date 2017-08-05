@@ -2,7 +2,7 @@ EMACS=emacs
 CASK=cask
 PACKAGE-NAME=zephir-mode.el
 
-all: checkdoc test
+all: install checkdoc test
 
 checkdoc:
 	${CASK} exec $(EMACS) -Q -L . -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
@@ -20,7 +20,7 @@ build: package-lint
 		(setq byte-compile-error-on-warn t) \
 		(batch-byte-compile))" ${PACKAGE-NAME}
 
-test: install build
+test: build
 	${CASK} exec ert-runner
 
 clean:

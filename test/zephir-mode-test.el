@@ -1,4 +1,4 @@
-;;; zephir-mode-test.el --- Tests for zephir-mode
+;;; zephir-mode-test.el --- Zephir Mode: Unit test suite -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
@@ -35,6 +35,25 @@
 
 (require 'zephir-mode)
 (require 'ert)
-(require 'cl-lib)
+
+(defmacro zephir-test-with-temp-buffer (content &rest body)
+  "Evaluate BODY in a temporary buffer with CONTENT."
+  (declare (debug t)
+           (indent 1))
+  `(with-temp-buffer
+     (insert ,content)
+     (zephir-mode)
+     (font-lock-fontify-buffer)
+     (goto-char (point-min))
+     ,@body))
+
+(defun zephir-test-face-at (pos &optional content)
+  "Get the face at POS in CONTENT.
+
+If CONTENT is not given, return the face at POS in the current buffer."
+  (if content
+      (zephir-test-with-temp-buffer content
+                                    (get-text-property pos 'face))
+    (get-text-property pos 'face)))
 
 ;;; zephir-mode-test.el ends here
