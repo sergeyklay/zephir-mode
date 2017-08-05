@@ -7,13 +7,7 @@
 ;; Version: 0.3.2
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24"))
-
-(defconst zephir-mode-version-number "0.3.2"
-  "Zephir Mode version number.")
-
-(defconst zephir-mode-modified "2017-08-03"
-  "Zephir Mode build date.")
+;; Package-Requires: ((emacs "24.1"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -92,8 +86,19 @@
 ;;   History is tracked in the Git repository rather than in this file.
 ;; See https://github.com/sergeyklay/zephir-mode/commits/master
 
-
 ;;; Code:
+
+
+;;; Compatibility
+
+;; Work around emacs bug#18845, cc-mode expects cl to be loaded
+;; while zephir-mode only uses cl-lib (without compatibility aliases)
+(eval-and-compile
+  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
+      (require 'cl)))
+
+
+;;; Requirements
 
 (require 'cc-mode)
 
@@ -113,26 +118,20 @@
   ;; constants are evaluated then.
   (c-add-language 'zephir-mode 'java-mode))
 
-;;; Requirements
-(require 'font-lock)
-(require 'add-log)
-(require 'custom)
-(require 'speedbar)
-
-(require 'cl-lib)
-
 (eval-when-compile
   (require 'regexp-opt)
   (defvar syntax-propertize-via-font-lock))
 
 ;; muffle the warnings about using undefined functions
 (declare-function c-populate-syntax-table "cc-langs.el" (table))
+(declare-function pkg-info-version-info "pkg-info" (library))
 
-;; Work around emacs bug#18845, cc-mode expects cl to be loaded
-;; while zephir-mode only uses cl-lib (without compatibility aliases)
-(eval-and-compile
-  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
-      (require 'cl)))
+(require 'font-lock)
+(require 'add-log)
+(require 'custom)
+(require 'speedbar)
+(require 'cl-lib)
+(require 'pkg-info)
 
 
 ;;; Customization
@@ -160,6 +159,44 @@
            (speedbar-add-supported-extension
             "\\.zep"))))
 
+(defcustom zephir-namespace-suffix-when-insert "\\"
+  "Suffix for inserted namespace."
+  :group 'zephir
+  :type 'string)
+
+(defcustom zephir-class-suffix-when-insert "::"
+  "Suffix for inserted class."
+  :group 'zephir
+  :type 'string)
+
+(defcustom zephir-lineup-cascaded-calls nil
+  "Indent chained method calls to the previous line."
+  :type 'boolean)
+
+
+;;; Version information
+
+(defun zephir-mode-version (&optional show-version)
+  "Display string describing the version of Zephir Mode.
+
+If called interactively or if SHOW-VERSION is non-nil, show the
+version in the echo area and the messages buffer.
+
+The returned string includes both, the version from package.el
+and the library version, if both a present and different.
+
+If the version number could not be determined, signal an error,
+if called interactively, or if SHOW-VERSION is non-nil, otherwise
+just return nil."
+  (interactive (list t))
+  (let ((version (pkg-info-version-info 'zephir-mode)))
+    (when show-version
+      (message "Zephir Mode version: %s" version))
+    version))
+
+
+;;; Utilities
+
 (defsubst zephir-in-string-p ()
   "Return t if if point is inside a string."
   (nth 3 (syntax-ppss)))
@@ -171,10 +208,6 @@
 (defsubst zephir-in-string-or-comment-p ()
   "Return t if if point is inside a comment or a string."
   (nth 8 (syntax-ppss)))
-
-(defcustom zephir-lineup-cascaded-calls nil
-  "Indent chained method calls to the previous line."
-  :type 'boolean)
 
 (defun zephir-create-regexp-for-method (visibility)
   "Make a regular expression for methods with the given VISIBILITY.
@@ -237,12 +270,6 @@ can be used to match against definitions for that classlike."
     ("Named Functions"
      "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for Zephir Mode.  See `imenu-generic-expression'.")
-
-(defun zephir-mode-version ()
-  "Display string describing the version of Zephir Mode."
-  (interactive)
-  (message "Zephir Mode %s of %s"
-           zephir-mode-version-number zephir-mode-modified))
 
 (defvar zephir-mode-map
   ;; Add bindings which are only useful for Zephir Mode
@@ -793,16 +820,6 @@ this ^ lineup"
   "Default expressions to highlight in Zephir Mode.")
 
 
-(defcustom zephir-namespace-suffix-when-insert "\\"
-  "Suffix for inserted namespace."
-  :group 'zephir
-  :type 'string)
-
-(defcustom zephir-class-suffix-when-insert "::"
-  "Suffix for inserted class."
-  :group 'zephir
-  :type 'string)
-
 (defvar zephir--re-namespace-pattern
   (zephir-create-regexp-for-classlike "namespace"))
 
