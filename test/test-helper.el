@@ -32,15 +32,14 @@
 
 ;;; Code:
 
-;; Don't load old byte-compiled versions!
-(setq load-prefer-newer t)
-
-;; Load zephir-mode
-(require 'f)
-(add-to-list 'load-path (f-parent (f-dirname load-file-name)))
-(require 'zephir-mode)
-
 ;; Make sure the exact Emacs version can be found in the build output
 (message "Running tests on Emacs %s" emacs-version)
+
+(let* ((current-file (if load-in-progress load-file-name (buffer-file-name)))
+       (source-directory (locate-dominating-file current-file "Cask"))
+       ;; Don't load old byte-compiled versions
+       (load-prefer-newer t))
+  ;; Load the file under test
+  (load (expand-file-name "zephir-mode" source-directory)))
 
 ;;; test-helper.el ends here
