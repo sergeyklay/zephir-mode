@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog][keep-cl] and this project adheres
 to [Semantic Versioning][semver] .
 
 ## [Unreleased]
+### Changed
+- Cleaned the syntax table
 
 ## [0.3.1] - 2017-08-03
 ### Changed

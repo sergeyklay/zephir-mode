@@ -433,6 +433,7 @@ might be to handle switch and goto labels differently."
                                        (c-lang-const c-constant-kwds))
                                :test 'string-equal))))
 
+
 ;; Create Zephir Mode style.
 (defconst zephir-c-style
   '("java"
@@ -667,7 +668,21 @@ this ^ lineup"
   :group 'zephir-faces)
 
 
-;; Font Lock
+;;; Font Locking
+
+(defvar zephir-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    ;; Symbol constituents
+    (modify-syntax-entry ?_  "_" table)
+    ;; Characters used to delimit string constants
+    (modify-syntax-entry ?\" "\"" table)
+    ;; Comment enders
+    (modify-syntax-entry ?\n "> b" table)
+    ;; The dollar sign is an expression prefix for variables
+    (modify-syntax-entry ?$  "'" table)
+    table)
+  "Syntax table in use in `zephir-mode' buffers.")
+
 (defconst zephir-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource"
@@ -832,7 +847,6 @@ this ^ lineup"
 Key bindings:
 \\{zephir-mode-map}
 "
-
   (c-initialize-cc-mode t)
   (c-init-language-vars zephir-mode)
   (c-common-init 'zephir-mode)
@@ -844,15 +858,7 @@ Key bindings:
   (set (make-local-variable font-lock-variable-name-face) 'zephir-variable-name)
   (set (make-local-variable font-lock-constant-face) 'zephir-constant)
 
-  ;; Modifying the Emacs Syntax Table.  See the page
-  ;;     https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html
-  (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
-  (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
-  ;; ' is a string delimiter
-  (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
-  ;; \n is a comment ender
-  (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
-  (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
+  (set-syntax-table zephir-mode-syntax-table)
 
   (set (make-local-variable 'syntax-propertize-via-font-lock)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
@@ -861,6 +867,7 @@ Key bindings:
   (set (make-local-variable 'syntax-propertize-function)
        #'zephir-syntax-propertize-function)
 
+  ;; IMenu
   (setq imenu-generic-expression zephir-imenu-generic-expression)
 
   ;; Zephir vars are case-sensitive
