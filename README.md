@@ -3,7 +3,7 @@
 [![licence][license-badge]][license]
 [![travis badge][travis-badge]][travis-link]
 
-A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code
+A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
 Provides font-locking, indentation and navigation support.
 
 It developed as an extension of C mode; thus it inherits all C mode's
@@ -14,9 +14,6 @@ maintainability of extensions for PHP.  Zephir extensions are
 exported to C code that can be compiled and optimized by major C
 compilers such as gcc/clang/vc++.  Functionality is exposed to the
 PHP language. For more information see https://zephir-lang.com .
-
-The mode based on the [`derived-mode-ex.el`][derived-mode] code
-supported with the `cc-mode`.
 
 - [Features](#features)
 - [Installation](#installation)

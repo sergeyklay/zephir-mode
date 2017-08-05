@@ -35,6 +35,8 @@ before_install:
   - export PATH="$HOME/bin:$PATH"
   # Configure $EMACS_MAJOR_VERSION: The 'checkdoc-file' exist on Emacs >= 25.1
   - export EMACS_MAJOR_VERSION="$(echo $EMACS_VERSION | cut -d '.' -f 1)"
+
+install:
   # Download the makefile to emacs-travis.mk
   - wget --quiet 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
   # Install Emacs (according to $EMACS_VERSION) and Cask
@@ -43,13 +45,8 @@ before_install:
   # Install Texinfo
   - make -s -f emacs-travis.mk install_texinfo
 
-install:
-  # Install dependencies
-  - cask install
-
 script:
-  # Make sure the exact emacs version can be found in the build output
-  - emacs -Q --batch --eval '(message (emacs-version))'
+  - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
   - make test
 

@@ -7,9 +7,19 @@ to [Semantic Versioning][semver] .
 
 ## [Unreleased]
 
-## [0.3.1] - 2017-08-03
+## [0.3.2] - 2017-08-06
+### Removed
+- Removed no longer used `zephir-mode-version-number` and `zephir-mode-modified`
+
 ### Changed
+- Cleaned the syntax table
+- The `zephir-mode-version` function now require the [`pkg-info`][pkg-info]
+
+## [0.3.1] - 2017-08-03
+### Fixed
 - Fixed support of [Speedbar][speedbar] to observe Zephir files
+
+### Changed
 - Updated the documentation
 
 ## [0.3.0] - 2017-08-03
@@ -24,17 +34,19 @@ to [Semantic Versioning][semver] .
 - Added `zephir-mode-open-github` command to open the Zephir Mode GitHub page
 - Added `zephir-open-website-home` command to open the Zephir web site
 
-### Changed
+### Removed
 - Removed unused `heredoc` functionality
 
 ## 0.1.0 - 2017-07-30
 ### Added
 - Initial stable release
 
-[Unreleased]: https://github.com/sergeyklay/zephir-mode/compare/0.3.1...HEAD
+[Unreleased]: https://github.com/sergeyklay/zephir-mode/compare/0.3.2...HEAD
+[0.3.2]: https://github.com/sergeyklay/zephir-mode/compare/0.3.1...0.3.2
 [0.3.1]: https://github.com/sergeyklay/zephir-mode/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/sergeyklay/zephir-mode/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/sergeyklay/zephir-mode/compare/0.1.0...0.2.0
 [keep-cl]: http://keepachangelog.com
 [semver]: http://semver.org
 [speedbar]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html
+[pkg-info]: https://github.com/lunaryorn/pkg-info.el

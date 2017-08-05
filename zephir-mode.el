@@ -4,16 +4,10 @@
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24"))
-
-(defconst zephir-mode-version-number "0.3.1"
-  "Zephir Mode version number.")
-
-(defconst zephir-mode-modified "2017-08-03"
-  "Zephir Mode build date.")
+;; Package-Requires: ((emacs "24.1"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -65,6 +59,10 @@
 ;;   It developed  as an extension of C mode; thus it inherits all C mode's
 ;; navigation functionality.  But it colors according to the Zephir grammar.
 ;;
+;;   Syntax checking: Flymake support is _not_ provided.  See Flycheck at
+;; http://www.flycheck.org for on-the-fly validation and liniting of Zephir
+;; code.
+;;
 ;;   Zephir -- is a high level language that eases the creation and
 ;; maintainability of extensions for PHP.  Zephir extensions are
 ;; exported to C code that can be compiled and optimized by major C
@@ -88,8 +86,19 @@
 ;;   History is tracked in the Git repository rather than in this file.
 ;; See https://github.com/sergeyklay/zephir-mode/commits/master
 
-
 ;;; Code:
+
+
+;;; Compatibility
+
+;; Work around emacs bug#18845, cc-mode expects cl to be loaded
+;; while zephir-mode only uses cl-lib (without compatibility aliases)
+(eval-and-compile
+  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
+      (require 'cl)))
+
+
+;;; Requirements
 
 (require 'cc-mode)
 
@@ -109,28 +118,24 @@
   ;; constants are evaluated then.
   (c-add-language 'zephir-mode 'java-mode))
 
-(require 'font-lock)
-(require 'add-log)
-(require 'custom)
-(require 'speedbar)
-
-(require 'cl-lib)
-
 (eval-when-compile
   (require 'regexp-opt)
   (defvar syntax-propertize-via-font-lock))
 
 ;; muffle the warnings about using undefined functions
 (declare-function c-populate-syntax-table "cc-langs.el" (table))
+(declare-function pkg-info-version-info "pkg-info" (library))
 
-;; Work around emacs bug#18845, cc-mode expects cl to be loaded
-;; while zephir-mode only uses cl-lib (without compatibility aliases)
-(eval-and-compile
-  (if (and (= emacs-major-version 24) (>= emacs-minor-version 4))
-      (require 'cl)))
+(require 'font-lock)
+(require 'add-log)
+(require 'custom)
+(require 'speedbar)
+(require 'cl-lib)
+(require 'pkg-info)
 
 
-;; Local variables
+;;; Customization
+
 ;;;###autoload
 (defgroup zephir nil
   "Major mode for editing Zephir code."
@@ -154,6 +159,44 @@
            (speedbar-add-supported-extension
             "\\.zep"))))
 
+(defcustom zephir-namespace-suffix-when-insert "\\"
+  "Suffix for inserted namespace."
+  :group 'zephir
+  :type 'string)
+
+(defcustom zephir-class-suffix-when-insert "::"
+  "Suffix for inserted class."
+  :group 'zephir
+  :type 'string)
+
+(defcustom zephir-lineup-cascaded-calls nil
+  "Indent chained method calls to the previous line."
+  :type 'boolean)
+
+
+;;; Version information
+
+(defun zephir-mode-version (&optional show-version)
+  "Display string describing the version of Zephir Mode.
+
+If called interactively or if SHOW-VERSION is non-nil, show the
+version in the echo area and the messages buffer.
+
+The returned string includes both, the version from package.el
+and the library version, if both a present and different.
+
+If the version number could not be determined, signal an error,
+if called interactively, or if SHOW-VERSION is non-nil, otherwise
+just return nil."
+  (interactive (list t))
+  (let ((version (pkg-info-version-info 'zephir-mode)))
+    (when show-version
+      (message "Zephir Mode version: %s" version))
+    version))
+
+
+;;; Utilities
+
 (defsubst zephir-in-string-p ()
   "Return t if if point is inside a string."
   (nth 3 (syntax-ppss)))
@@ -165,10 +208,6 @@
 (defsubst zephir-in-string-or-comment-p ()
   "Return t if if point is inside a comment or a string."
   (nth 8 (syntax-ppss)))
-
-(defcustom zephir-lineup-cascaded-calls nil
-  "Indent chained method calls to the previous line."
-  :type 'boolean)
 
 (defun zephir-create-regexp-for-method (visibility)
   "Make a regular expression for methods with the given VISIBILITY.
@@ -231,12 +270,6 @@ can be used to match against definitions for that classlike."
     ("Named Functions"
      "^\\s-*function\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(" 1))
   "Imenu generic expression for Zephir Mode.  See `imenu-generic-expression'.")
-
-(defun zephir-mode-version ()
-  "Display string describing the version of Zephir Mode."
-  (interactive)
-  (message "Zephir Mode %s of %s"
-           zephir-mode-version-number zephir-mode-modified))
 
 (defvar zephir-mode-map
   ;; Add bindings which are only useful for Zephir Mode
@@ -433,6 +466,7 @@ might be to handle switch and goto labels differently."
                                        (c-lang-const c-constant-kwds))
                                :test 'string-equal))))
 
+
 ;; Create Zephir Mode style.
 (defconst zephir-c-style
   '("java"
@@ -667,7 +701,21 @@ this ^ lineup"
   :group 'zephir-faces)
 
 
-;; Font Lock
+;;; Font Locking
+
+(defvar zephir-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    ;; Symbol constituents
+    (modify-syntax-entry ?_  "_" table)
+    ;; Characters used to delimit string constants
+    (modify-syntax-entry ?\" "\"" table)
+    ;; Comment enders
+    (modify-syntax-entry ?\n "> b" table)
+    ;; The dollar sign is an expression prefix for variables
+    (modify-syntax-entry ?$  "'" table)
+    table)
+  "Syntax table in use in `zephir-mode' buffers.")
+
 (defconst zephir-phpdoc-type-keywords
   (list "string" "integer" "int" "boolean" "bool" "float"
         "double" "object" "mixed" "array" "resource"
@@ -772,16 +820,6 @@ this ^ lineup"
   "Default expressions to highlight in Zephir Mode.")
 
 
-(defcustom zephir-namespace-suffix-when-insert "\\"
-  "Suffix for inserted namespace."
-  :group 'zephir
-  :type 'string)
-
-(defcustom zephir-class-suffix-when-insert "::"
-  "Suffix for inserted class."
-  :group 'zephir
-  :type 'string)
-
 (defvar zephir--re-namespace-pattern
   (zephir-create-regexp-for-classlike "namespace"))
 
@@ -832,9 +870,17 @@ this ^ lineup"
 Key bindings:
 \\{zephir-mode-map}
 "
-
+  ;; Initialize CC Mode for use in the current buffer.
   (c-initialize-cc-mode t)
+  ;; `c-init-language-vars' is a macro that is expanded at compile
+  ;; time to a large `setq' with all the language variables and their
+  ;; customized values for Zephir.
   (c-init-language-vars zephir-mode)
+  ;; `c-common-init' initializes most of the components of a CC Mode
+  ;; buffer, including setup of the mode menu, font-lock, etc.
+  ;; There's also a lower level routine `c-basic-common-init' that
+  ;; only makes the necessary initialization to get the syntactic
+  ;; analysis and similar things working.
   (c-common-init 'zephir-mode)
 
   (set (make-local-variable font-lock-string-face) 'zephir-string)
@@ -844,15 +890,7 @@ Key bindings:
   (set (make-local-variable font-lock-variable-name-face) 'zephir-variable-name)
   (set (make-local-variable font-lock-constant-face) 'zephir-constant)
 
-  ;; Modifying the Emacs Syntax Table.  See the page
-  ;;     https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html
-  (modify-syntax-entry ?_    "_" zephir-mode-syntax-table)
-  (modify-syntax-entry ?`    "\"" zephir-mode-syntax-table)
-  ;; ' is a string delimiter
-  (modify-syntax-entry ?\"   "\"" zephir-mode-syntax-table)
-  ;; \n is a comment ender
-  (modify-syntax-entry ?\n   "> b" zephir-mode-syntax-table)
-  (modify-syntax-entry ?$    "'" zephir-mode-syntax-table)
+  (set-syntax-table zephir-mode-syntax-table)
 
   (set (make-local-variable 'syntax-propertize-via-font-lock)
        '(("\\(\"\\)\\(\\\\.\\|[^\"\n\\]\\)*\\(\"\\)" (1 "\"") (3 "\""))
@@ -861,6 +899,7 @@ Key bindings:
   (set (make-local-variable 'syntax-propertize-function)
        #'zephir-syntax-propertize-function)
 
+  ;; IMenu
   (setq imenu-generic-expression zephir-imenu-generic-expression)
 
   ;; Zephir vars are case-sensitive
@@ -871,16 +910,20 @@ Key bindings:
     (set (make-local-variable 'syntax-begin-function)
          'c-beginning-of-syntax))
 
+  ;; Navigation
+  ;;
   ;; We map the zephir-{beginning,end}-of-defun functions so that they
   ;; replace the similar commands that we inherit from CC Mode.
   ;; Because of our remapping we may not actually need to keep the
   ;; following two local variables, but we keep them for now until we
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
-  (set (make-local-variable 'beginning-of-defun-function)
-       'zephir-beginning-of-defun)
-  (set (make-local-variable 'end-of-defun-function)
-       'zephir-end-of-defun)
+  ;;
+  ;; TODO: SMIE
+  (set (make-local-variable beginning-of-defun-function)
+       #'zephir-beginning-of-defun)
+  (set (make-local-variable end-of-defun-function)
+       #'zephir-end-of-defun)
 
   (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
        nil)
