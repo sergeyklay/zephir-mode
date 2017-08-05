@@ -18,7 +18,7 @@ package-lint:
 
 build: $(COMPILED_OBJ)
 
-test: $(PKGDIR) checkdoc package-lint
+test: $(PKGDIR) package-lint
 	$(CASK) exec ert-runner $(TESTFLAGS)
 
 clean:
