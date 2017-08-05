@@ -885,9 +885,9 @@ Key bindings:
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
   (set (make-local-variable 'beginning-of-defun-function)
-       'zephir-beginning-of-defun)
+       #'zephir-beginning-of-defun)
   (set (make-local-variable 'end-of-defun-function)
-       'zephir-end-of-defun)
+       #'zephir-end-of-defun)
 
   (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
        nil)
