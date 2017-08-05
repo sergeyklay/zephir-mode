@@ -1,30 +1,34 @@
-EMACS=emacs
-CASK=cask
-PACKAGE-NAME=zephir-mode.el
+EMACS       = emacs
+CASK        = cask
 
-all: install checkdoc test
+EMACSFLAGS ?= --eval "(progn (setq byte-compile-error-on-warn t))"
+TESTFLAGS   =
+
+PKGDIR      := $(shell EMACS=$(EMACS) $(CASK) package-directory)
+PACKAGE_NAME = zephir-mode.el
+COMPILED_OBJ = $(PACKAGE_NAME:.el=.elc)
+
+all: build test
 
 checkdoc:
-	${CASK} exec $(EMACS) -Q -L . -batch --eval "(checkdoc-file \"${PACKAGE-NAME}\")"
+	${CASK} exec $(EMACS) -Q -L . --batch --eval "(checkdoc-file \"${PACKAGE_NAME}\")"
 
 package-lint:
-	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" \
-	-f "package-lint-batch-and-exit" ${PACKAGE-NAME}
+	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" -f "package-lint-batch-and-exit" ${PACKAGE_NAME}
 
-install:
-	${CASK} install
+build: $(COMPILED_OBJ)
 
-build: package-lint
-	${CASK} exec  $(EMACS) -Q -L . --batch \
-	--eval "(progn \
-		(setq byte-compile-error-on-warn t) \
-		(batch-byte-compile))" ${PACKAGE-NAME}
-
-test: build
-	${CASK} exec ert-runner
+test: $(PKGDIR) checkdoc package-lint
+	$(CASK) exec ert-runner $(TESTFLAGS)
 
 clean:
-	@rm -f *.elc
-	@rm -rf .cask
+	${CASK} clean-elc
 
-.PHONY: all checkdoc package-lint test install build clean
+%.elc : %.el $(PKGDIR)
+	${CASK} exec $(EMACS) -Q -L . --batch $(EMACSFLAGS) -f batch-byte-compile $<
+
+$(PKGDIR) : Cask
+	$(CASK) install
+	touch $(PKGDIR)
+
+.PHONY: all checkdoc package-lint build test clean
