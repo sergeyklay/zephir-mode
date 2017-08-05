@@ -847,8 +847,17 @@ this ^ lineup"
 Key bindings:
 \\{zephir-mode-map}
 "
+  ;; Initialize CC Mode for use in the current buffer.
   (c-initialize-cc-mode t)
+  ;; `c-init-language-vars' is a macro that is expanded at compile
+  ;; time to a large `setq' with all the language variables and their
+  ;; customized values for Zephir.
   (c-init-language-vars zephir-mode)
+  ;; `c-common-init' initializes most of the components of a CC Mode
+  ;; buffer, including setup of the mode menu, font-lock, etc.
+  ;; There's also a lower level routine `c-basic-common-init' that
+  ;; only makes the necessary initialization to get the syntactic
+  ;; analysis and similar things working.
   (c-common-init 'zephir-mode)
 
   (set (make-local-variable font-lock-string-face) 'zephir-string)

@@ -26,6 +26,10 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
 
+;;; Commentary:
+
+;; Non-interactive test suite setup for ERT Runner.
+
 ;;; Code:
 
 ;; Don't load old byte-compiled versions!
@@ -35,5 +39,8 @@
 (require 'f)
 (add-to-list 'load-path (f-parent (f-dirname load-file-name)))
 (require 'zephir-mode)
+
+;; Make sure the exact Emacs version can be found in the build output
+(message "Running tests on Emacs %s" emacs-version)
 
 ;;; test-helper.el ends here

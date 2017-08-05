@@ -11,17 +11,20 @@ package-lint:
 	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" \
 	-f "package-lint-batch-and-exit" ${PACKAGE-NAME}
 
+install:
+	${CASK} install
+
 build: package-lint
 	${CASK} exec  $(EMACS) -Q -L . --batch \
 	--eval "(progn \
-		(setq byte-compile-error-on-warn t)  \
+		(setq byte-compile-error-on-warn t) \
 		(batch-byte-compile))" ${PACKAGE-NAME}
 
-test: build
+test: install build
 	${CASK} exec ert-runner
 
 clean:
 	@rm -f *.elc
 	@rm -rf .cask
 
-.PHONY: all checkdoc package-lint test build clean
+.PHONY: all checkdoc package-lint test install build clean
