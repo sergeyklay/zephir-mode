@@ -9,6 +9,7 @@ cache:
   directories:
       # Cache stable Emacs binaries (saves 1min per job)
       - "$HOME/emacs/"
+      - "$HOME/.emacs.d/"
 
 # Allow Emacs snapshot builds to fail and don't wait for these as they can take
 # a looooong time
@@ -45,7 +46,7 @@ install:
   - make -s -f emacs-travis.mk install_texinfo
 
 script:
-  - make install
+  - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
   - make test
 
