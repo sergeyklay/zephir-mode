@@ -65,6 +65,10 @@
 ;;   It developed  as an extension of C mode; thus it inherits all C mode's
 ;; navigation functionality.  But it colors according to the Zephir grammar.
 ;;
+;;   Syntax checking: Flymake support is _not_ provided.  See Flycheck at
+;; http://www.flycheck.org for on-the-fly validation and liniting of Zephir
+;; code.
+;;
 ;;   Zephir -- is a high level language that eases the creation and
 ;; maintainability of extensions for PHP.  Zephir extensions are
 ;; exported to C code that can be compiled and optimized by major C
@@ -109,6 +113,7 @@
   ;; constants are evaluated then.
   (c-add-language 'zephir-mode 'java-mode))
 
+;;; Requirements
 (require 'font-lock)
 (require 'add-log)
 (require 'custom)
@@ -130,7 +135,8 @@
       (require 'cl)))
 
 
-;; Local variables
+;;; Customization
+
 ;;;###autoload
 (defgroup zephir nil
   "Major mode for editing Zephir code."
@@ -887,15 +893,19 @@ Key bindings:
     (set (make-local-variable 'syntax-begin-function)
          'c-beginning-of-syntax))
 
+  ;; Navigation
+  ;;
   ;; We map the zephir-{beginning,end}-of-defun functions so that they
   ;; replace the similar commands that we inherit from CC Mode.
   ;; Because of our remapping we may not actually need to keep the
   ;; following two local variables, but we keep them for now until we
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
-  (set (make-local-variable 'beginning-of-defun-function)
+  ;;
+  ;; TODO: SMIE
+  (set (make-local-variable beginning-of-defun-function)
        #'zephir-beginning-of-defun)
-  (set (make-local-variable 'end-of-defun-function)
+  (set (make-local-variable end-of-defun-function)
        #'zephir-end-of-defun)
 
   (set (make-local-variable 'open-paren-in-column-0-is-defun-start)
