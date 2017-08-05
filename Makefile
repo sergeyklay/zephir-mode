@@ -1,8 +1,8 @@
 EMACS       = emacs
 CASK        = cask
 
-EMACSFLAGS ?= --eval "(progn (setq byte-compile-error-on-warn t))"
-TESTFLAGS   =
+EMACSFLAGS ?=
+TESTFLAGS  ?=
 
 PKGDIR      := $(shell EMACS=$(EMACS) $(CASK) package-directory)
 PACKAGE_NAME = zephir-mode.el
