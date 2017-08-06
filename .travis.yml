@@ -1,17 +1,39 @@
+# Copyright (C) 2017 Serghei Iakovlev
+#
 # Based on https://github.com/flycheck/emacs-travis
+#
+# This file is not part of GNU Emacs.
+#
+# License
+#
+# This file is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this file; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
 
 language: emacs-lisp
 
 dist: trusty
 sudo: false
 
+ # Cache stable Emacs binaries, packages and Cask
 cache:
   apt: true
   timeout: 691200
   directories:
-      # Cache stable Emacs binaries (saves 1min per job)
-      - "$HOME/emacs/"
-      - "$HOME/.emacs.d/"
+      - "$HOME/emacs"
+      - "$HOME/.emacs.d"
+      - "$HOME/.cask"
 
 # Allow Emacs snapshot builds to fail and don't wait for these
 matrix:
@@ -42,11 +64,12 @@ install:
   - wget --quiet 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
   # Install Emacs (according to $EMACS_VERSION) and Cask
   - make -s -f emacs-travis.mk install_emacs
-  - make -s -f emacs-travis.mk install_cask
+  - '[[ -f "$HOME/.cask/bin/cask" ]] || make -s -f emacs-travis.mk install_cask'
   # We don't need to build info manuals for Zephir Mode yet. Diabled.
   #- make -s -f emacs-travis.mk install_texinfo
 
 script:
+  - cask version
   - make help
   - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
