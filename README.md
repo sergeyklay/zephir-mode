@@ -142,7 +142,7 @@ Zephir Mode is open source software licensed under the
 [tags]: https://github.com/sergeyklay/zephir-mode/tags
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
-[travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
+[travis-badge]: https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md
