@@ -46,6 +46,7 @@ install:
   - make -s -f emacs-travis.mk install_texinfo
 
 script:
+  - make help
   - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
   - make test
