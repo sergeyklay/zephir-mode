@@ -18,6 +18,7 @@ PHP language. For more information see https://zephir-lang.com .
 - [Features](#features)
 - [Installation](#installation)
   - [Manual Install](#manual-install)
+     - [Spacemacs Users](#spacemacs-users)
 - [Usage](#usage)
   - [Interactive Commands](#interactive-commands)
   - [Keymapping](#keymapping)
@@ -53,7 +54,7 @@ please switch to the relevant [branch][branches]/[tag][tags].
 
 2. Put the file in your Elisp common folder like `$HOME/.emacs.d/lisp/`
 
-3. Then you can include like this:`
+3. Then you can include like this:
    ```elisp
    (add-to-list 'load-path
                 (expand-file-name "lisp" user-emacs-directory))
@@ -69,6 +70,21 @@ please switch to the relevant [branch][branches]/[tag][tags].
 5. Optionally byte compile `zephir-mode.el` for faster startup:
    <kbd>M-x</kbd> `byte-compile`
 
+#### Spacemacs Users
+
+1. Download `zephir-mode.el`
+
+2. Put the file in Spacemacs private directory:
+   `$HOME/.emacs.d/private/local/zephir-mode/zephir-mode.el`
+
+3. Then you can enable `zephir-mode` in your `$HOME/.spacemacs` file as follows:
+   ```elisp
+   ;; ...
+   dotspacemacs-additional-packages
+   '(
+     (zephir-mode :location (recip :fetcher file
+                                   :path "~/.emacs.d/private/local/zephir-mode/zephir-mode.el")))
+   ```
 ## Usage
 
 ### Interactive Commands
