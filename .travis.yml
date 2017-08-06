@@ -1,6 +1,8 @@
 # Based on https://github.com/flycheck/emacs-travis
 
 language: emacs-lisp
+dist: trusty
+
 sudo: false
 
 cache:
@@ -44,6 +46,7 @@ install:
   - make -s -f emacs-travis.mk install_cask
   # Install Texinfo
   - make -s -f emacs-travis.mk install_texinfo
+  - which makeinfo
 
 script:
   - make help

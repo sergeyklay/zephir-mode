@@ -1,8 +1,8 @@
-SHELL      := $(shell which bash)
-ROOT_DIR   := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+SHELL       := $(shell which bash)
+ROOT_DIR    := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-EMACS       = emacs
-CASK        = cask
+EMACS        = emacs
+CASK         = cask
 
 EMACSFLAGS  ?=
 TESTFLAGS   ?=
@@ -19,7 +19,7 @@ default: help-default;   # default target
 Makefile: ;              # skip prerequisite discovery
 
 .title:
-	$(info Zepphir Mode version: $(shell cat $(ROOT_DIR)/zephir-mode.el | grep ";; Version:" | awk -F': ' '{print $$2}'))
+	$(info Zepphir Mode version: $(shell cat $(ROOT_DIR)/$(PACKAGE_NAME) | grep ";; Version:" | awk -F': ' '{print $$2}'))
 	$(info )
 
 help: .title
