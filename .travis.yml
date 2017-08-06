@@ -1,7 +1,5 @@
 # Copyright (C) 2017 Serghei Iakovlev
 #
-# Based on https://github.com/flycheck/emacs-travis
-#
 # This file is not part of GNU Emacs.
 #
 # License
@@ -34,7 +32,7 @@ cache:
       - "$HOME/emacs"
       - "$HOME/.emacs.d"
       - "$HOME/.cask"
-      - "$HOME/bin"
+      - "$HOME/.evm"
 
 # Allow Emacs snapshot builds to fail and don't wait for it
 matrix:
@@ -55,32 +53,23 @@ env:
     - EMACS_VERSION=snapshot
 
 before_install:
-  # Setup Emacs Version Manager and Cask
-  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > $HOME/bin/init_evm.sh && source $HOME/bin/init_evm.sh
   # Configure $PATH: Executables are installed to $HOME/bin
   - export PATH="$HOME/bin:$HOME/.cask/bin:$HOME/.evm/bin:$PATH"
   # Configure $EMACS_MAJOR_VERSION: The 'checkdoc-file' exist on Emacs >= 25.1
   - export EMACS_MAJOR_VERSION="$(echo $EMACS_VERSION | cut -d '.' -f 1)"
+  # Setup Emacs Version Manager
+  - '[[ -f "$HOME/.evm/bin/evm" ]] || git clone -q --depth=1 https://github.com/rejeep/evm.git $HOME/.evm'
+  - evm config path /tmp
 
 install:
-  # Download the makefile to emacs-travis.mk
-  - wget --quiet 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
   # Install Emacs (according to $EMACS_VERSION) and Cask
-  - make -s -f emacs-travis.mk install_emacs 2> /dev/null
-  - '[[ -f "$HOME/.cask/bin/cask" ]] || make -s -f emacs-travis.mk install_cask'
-  - which emacs
-  # We don't need to build info manuals for Zephir Mode yet. Diabled.
-  #- make -s -f emacs-travis.mk install_texinfo
+  - evm install emacs-$EMACS_VERSION-travis --use --skip
+  - '[[ -f "$HOME/.cask/bin/cask" ]] || curl -fsSkL https://raw.github.com/cask/cask/master/go | python'
 
 script:
   - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
   - make test
-
-addons:
-  apt:
-    packages:
-      - libperl-dev
 
 notifications:
   email:
