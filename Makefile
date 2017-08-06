@@ -44,15 +44,15 @@ Makefile: ;              # skip prerequisite discovery
 	$(info )
 
 help: .title
-	@echo "                          ====================================================================="
-	@echo "                    help: Show this help and exit"
-	@echo "                ckeckdoc: Checks Zephir Mode code for errors in documentation"
-	@echo "                pkg-lint: Run package linter for the Zephir Mode metadata"
-	@echo "                   build: Byte compile Zephir Mode package"
-	@echo "                    test: Run the non-interactive unit test suite"
-	@echo "                   clean: Remove all byte compiled Elisp files"
-	@echo "                          ====================================================================="
-	@echo ""
+	echo "                          ====================================================================="
+	echo "                    help: Show this help and exit"
+	echo "                ckeckdoc: Checks Zephir Mode code for errors in documentation"
+	echo "                pkg-lint: Run package linter for the Zephir Mode metadata"
+	echo "                   build: Byte compile Zephir Mode package"
+	echo "                    test: Run the non-interactive unit test suite"
+	echo "                   clean: Remove all byte compiled Elisp files"
+	echo "                          ====================================================================="
+	echo ""
 
 all: build test
 
