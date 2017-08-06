@@ -34,6 +34,7 @@ cache:
       - "$HOME/emacs"
       - "$HOME/.emacs.d"
       - "$HOME/.cask"
+      - "$HOME/bin"
 
 # Allow Emacs snapshot builds to fail and don't wait for it
 matrix:
@@ -54,8 +55,10 @@ env:
     - EMACS_VERSION=snapshot
 
 before_install:
+  # Setup Emacs Version Manager and Cask
+  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > $HOME/bin/init_evm.sh && source $HOME/bin/init_evm.sh
   # Configure $PATH: Executables are installed to $HOME/bin
-  - export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
+  - export PATH="$HOME/bin:$HOME/.cask/bin:$HOME/.evm/bin:$PATH"
   # Configure $EMACS_MAJOR_VERSION: The 'checkdoc-file' exist on Emacs >= 25.1
   - export EMACS_MAJOR_VERSION="$(echo $EMACS_VERSION | cut -d '.' -f 1)"
 
