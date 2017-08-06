@@ -57,7 +57,7 @@ help: .title
 all: build test
 
 checkdoc:
-	${CASK} exec $(EMACS) -Q -L . --batch --eval "(checkdoc-file \"${PACKAGE_NAME}\")"
+	${CASK} exec $(EMACS) -Q -L . --batch --eval '(checkdoc-file "${PACKAGE_NAME}")'
 
 pkg-lint:
 	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" -f "package-lint-batch-and-exit" ${PACKAGE_NAME}
