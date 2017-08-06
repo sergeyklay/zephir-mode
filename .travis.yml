@@ -25,8 +25,9 @@ git:
 
 env:
   matrix:
-    - EMACS_VERSION=24.1
-    - EMACS_VERSION=24.2
+    # I'll wait for better way to use it after https://github.com/flycheck/emacs-travis/issues/10
+    # - EMACS_VERSION=24.1
+    # - EMACS_VERSION=24.2
     - EMACS_VERSION=24.3
     - EMACS_VERSION=24.4
     - EMACS_VERSION=24.5
