@@ -35,7 +35,7 @@ cache:
       - "$HOME/.emacs.d"
       - "$HOME/.cask"
 
-# Allow Emacs snapshot builds to fail and don't wait for these
+# Allow Emacs snapshot builds to fail and don't wait for it
 matrix:
   fast_finish: true
   allow_failures:
@@ -63,14 +63,12 @@ install:
   # Download the makefile to emacs-travis.mk
   - wget --quiet 'https://raw.githubusercontent.com/flycheck/emacs-travis/master/emacs-travis.mk'
   # Install Emacs (according to $EMACS_VERSION) and Cask
-  - make -s -f emacs-travis.mk install_emacs
+  - '[[ -f "$HOME/emacs/bin/emacs" ]] ||  make -s -f emacs-travis.mk install_emacs'
   - '[[ -f "$HOME/.cask/bin/cask" ]] || make -s -f emacs-travis.mk install_cask'
   # We don't need to build info manuals for Zephir Mode yet. Diabled.
   #- make -s -f emacs-travis.mk install_texinfo
 
 script:
-  - cask version
-  - make help
   - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
   - make test
