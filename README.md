@@ -67,13 +67,13 @@ please switch to the relevant [branch][branches]/[tag][tags].
    (require 'zephir-mode)
    ```
 5. Optionally byte compile `zephir-mode.el` for faster startup:
-   <kbd>M</kbd> <kbd>x</kbd> `byte-compile`
+   <kbd>M-x</kbd> `byte-compile`
 
 ## Usage
 
 ### Interactive Commands
 
-| Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
+| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
 | --- | --- |
 | `zephir-mode` | Switches to Zephir Mode. |
 | `zephir-mode-version` | Print version info for Zephir Mode. |
@@ -87,9 +87,9 @@ it have two replacement functions specifically for Zephir.  Zephir Mode remap
 the commands themselves and not their default key-bindings so that
 zephir-specific versions will work even if the user has reconfigured their keys,
 e.g. if they rebind `c-end-of-defun` to something other than
-<kbd>C</kbd> <kbd>M</kbd> <kbd>e</kbd> .
+<kbd>C-M-e</kbd> .
 
-| Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
+| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
 | --- | --- |
 | `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
 | `zephir-end-of-defun` | Move to the end of the current or next function. |

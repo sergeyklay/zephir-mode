@@ -28,9 +28,6 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
 
-;; This file contains several functions and variables adapted from the
-;; code in https://github.com/ejmr/php-mode
-
 ;;; Usage
 
 ;;   Put this file in your Emacs lisp path (eg. site-lisp) and add to
