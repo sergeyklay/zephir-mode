@@ -4,7 +4,7 @@
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.2
+;; Version: 0.3.3
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
 ;; Package-Requires: ((emacs "24.1"))
