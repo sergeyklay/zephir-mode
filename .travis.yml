@@ -58,13 +58,13 @@ before_install:
   # Configure $EMACS_MAJOR_VERSION: The 'checkdoc-file' exist on Emacs >= 25.1
   - export EMACS_MAJOR_VERSION="$(echo $EMACS_VERSION | cut -d '.' -f 1)"
   # Setup Emacs Version Manager
-  - '[[ -f "$HOME/.evm/bin/evm" ]] || git clone -q --depth=1 https://github.com/rejeep/evm.git $HOME/.evm'
+  - '[[ -f "$HOME/.evm/bin/evm" ]] || rm -rf $HOME/.evm; git clone -q --depth=1 https://github.com/rejeep/evm.git $HOME/.evm'
   - evm config path /tmp
 
 install:
   # Install Emacs (according to $EMACS_VERSION) and Cask
   - evm install emacs-$EMACS_VERSION-travis --use --skip
-  - '[[ -f "$HOME/.cask/bin/cask" ]] || curl -fsSkL https://raw.github.com/cask/cask/master/go | python'
+  - '[[ -f "$HOME/.cask/bin/cask" ]] || rm -rf $HOME/.cask; curl -fsSkL https://raw.github.com/cask/cask/master/go | python'
 
 script:
   - make build
