@@ -18,6 +18,7 @@ PHP language. For more information see https://zephir-lang.com .
 - [Features](#features)
 - [Installation](#installation)
   - [Manual Install](#manual-install)
+     - [Spacemacs Users](#spacemacs-users)
 - [Usage](#usage)
   - [Interactive Commands](#interactive-commands)
   - [Keymapping](#keymapping)
@@ -35,7 +36,7 @@ PHP language. For more information see https://zephir-lang.com .
 
 ## Installation
 
-Known to work with GNU Emacs 24 and later. Zephir Mode may work with older
+Known to work with GNU Emacs 24.3 and later. Zephir Mode may work with older
 versions of Emacs, or with other flavors of Emacs (e.g. XEmacs) but this is
 _not_ guaranteed. Bug reports for problems related to using Zephir Mode with
 older versions of Emacs will most like _not_ be addressed.
@@ -53,7 +54,7 @@ please switch to the relevant [branch][branches]/[tag][tags].
 
 2. Put the file in your Elisp common folder like `$HOME/.emacs.d/lisp/`
 
-3. Then you can include like this:`
+3. Then you can include like this:
    ```elisp
    (add-to-list 'load-path
                 (expand-file-name "lisp" user-emacs-directory))
@@ -67,13 +68,28 @@ please switch to the relevant [branch][branches]/[tag][tags].
    (require 'zephir-mode)
    ```
 5. Optionally byte compile `zephir-mode.el` for faster startup:
-   <kbd>M</kbd> <kbd>x</kbd> `byte-compile`
+   <kbd>M-x</kbd> `byte-compile`
 
+#### Spacemacs Users
+
+1. Download `zephir-mode.el`
+
+2. Put the file in Spacemacs private directory:
+   `$HOME/.emacs.d/private/local/zephir-mode/zephir-mode.el`
+
+3. Then you can enable `zephir-mode` in your `$HOME/.spacemacs` file as follows:
+   ```elisp
+   ;; ...
+   dotspacemacs-additional-packages
+   '(
+     (zephir-mode :location (recip :fetcher file
+                                   :path "~/.emacs.d/private/local/zephir-mode/zephir-mode.el")))
+   ```
 ## Usage
 
 ### Interactive Commands
 
-| Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
+| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
 | --- | --- |
 | `zephir-mode` | Switches to Zephir Mode. |
 | `zephir-mode-version` | Print version info for Zephir Mode. |
@@ -87,9 +103,9 @@ it have two replacement functions specifically for Zephir.  Zephir Mode remap
 the commands themselves and not their default key-bindings so that
 zephir-specific versions will work even if the user has reconfigured their keys,
 e.g. if they rebind `c-end-of-defun` to something other than
-<kbd>C</kbd> <kbd>M</kbd> <kbd>e</kbd> .
+<kbd>C-M-e</kbd> .
 
-| Command (For the <kbd>M</kbd> <kbd>x</kbd> prompt.) | Description |
+| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
 | --- | --- |
 | `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
 | `zephir-end-of-defun` | Move to the end of the current or next function. |
@@ -126,7 +142,7 @@ Zephir Mode is open source software licensed under the
 [tags]: https://github.com/sergeyklay/zephir-mode/tags
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
-[travis-badge]: https://api.travis-ci.org/sergeyklay/zephir-mode.svg
+[travis-badge]: https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md

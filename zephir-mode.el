@@ -1,13 +1,13 @@
-;;; zephir-mode.el --- Major mode for editing Zephir code
+;;; zephir-mode.el --- Major mode for editing Zephir code -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.2
+;; Version: 0.3.3
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24.1"))
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -27,9 +27,6 @@
 ;; along with this file; if not, write to the Free Software
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
-
-;; This file contains several functions and variables adapted from the
-;; code in https://github.com/ejmr/php-mode
 
 ;;; Usage
 
