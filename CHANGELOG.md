@@ -9,6 +9,7 @@ to [Semantic Versioning][semver] .
 ### Changed
 - Use lexical binding for zephir-mode. Refs: [EmacWiki][emacswiki-article],
   [Yoo Box][yoobox-article], [Emacs Stack Exchange][emacs-stack-exchange]
+- Changed the minimal Emacs version to 24.3
 
 ## [0.3.2] - 2017-08-06
 ### Removed

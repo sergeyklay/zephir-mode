@@ -1,8 +1,8 @@
 # Based on https://github.com/flycheck/emacs-travis
 
 language: emacs-lisp
-dist: trusty
 
+dist: trusty
 sudo: false
 
 cache:
@@ -13,8 +13,7 @@ cache:
       - "$HOME/emacs/"
       - "$HOME/.emacs.d/"
 
-# Allow Emacs snapshot builds to fail and don't wait for these as they can take
-# a looooong time
+# Allow Emacs snapshot builds to fail and don't wait for these
 matrix:
   fast_finish: true
   allow_failures:
@@ -25,9 +24,6 @@ git:
 
 env:
   matrix:
-    # I'll wait for better way to use it after https://github.com/flycheck/emacs-travis/issues/10
-    # - EMACS_VERSION=24.1
-    # - EMACS_VERSION=24.2
     - EMACS_VERSION=24.3
     - EMACS_VERSION=24.4
     - EMACS_VERSION=24.5
@@ -55,6 +51,11 @@ script:
   - make build
   - '[[ "$EMACS_MAJOR_VERSION" = "24" ]] || make checkdoc'
   - make test
+
+addons:
+  apt:
+    packages:
+      - libperl-dev
 
 notifications:
   email:

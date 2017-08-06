@@ -36,7 +36,7 @@ PHP language. For more information see https://zephir-lang.com .
 
 ## Installation
 
-Known to work with GNU Emacs 24 and later. Zephir Mode may work with older
+Known to work with GNU Emacs 24.3 and later. Zephir Mode may work with older
 versions of Emacs, or with other flavors of Emacs (e.g. XEmacs) but this is
 _not_ guaranteed. Bug reports for problems related to using Zephir Mode with
 older versions of Emacs will most like _not_ be addressed.

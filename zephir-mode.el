@@ -7,7 +7,7 @@
 ;; Version: 0.3.3
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24.1"))
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This file is not part of GNU Emacs.
 
