@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog][keep-cl] and this project adheres
 to [Semantic Versioning][semver] .
 
 ## [Unreleased]
+### Changed
+- Use lexical binding for zephir-mode. Refs: [EmacWiki][emacswiki-article],
+  [Yoo Box][yoobox-article], [Emacs Stack Exchange][emacs-stack-exchange]
 
 ## [0.3.2] - 2017-08-06
 ### Removed
@@ -50,3 +53,6 @@ to [Semantic Versioning][semver] .
 [semver]: http://semver.org
 [speedbar]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html
 [pkg-info]: https://github.com/lunaryorn/pkg-info.el
+[emacswiki-binding]: (https://www.emacswiki.org/emacs/DynamicBindingVsLexicalBinding)
+[yoobox-binding]: https://yoo2080.wordpress.com/2013/09/11/emacs-lisp-lexical-binding-gotchas-and-related-best-practices/
+[emacs-stack-exchange]: (https://emacs.stackexchange.com/questions/2129/why-is-let-faster-with-lexical-scope)

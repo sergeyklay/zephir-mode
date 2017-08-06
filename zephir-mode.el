@@ -1,4 +1,4 @@
-;;; zephir-mode.el --- Major mode for editing Zephir code
+;;; zephir-mode.el --- Major mode for editing Zephir code -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
