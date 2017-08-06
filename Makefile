@@ -40,7 +40,7 @@ default: help-default;   # default target
 Makefile: ;              # skip prerequisite discovery
 
 .title:
-	$(info Zepphir Mode version: $(shell cat $(ROOT_DIR)/$(PACKAGE_NAME) | grep ";; Version:" | awk -F': ' '{print $$2}'))
+	$(info Zepphir Mode $(shell cat $(ROOT_DIR)/$(PACKAGE_NAME) | grep ";; Version:" | awk -F': ' '{print $$2}'))
 	$(info )
 
 help: .title

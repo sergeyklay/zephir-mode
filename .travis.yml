@@ -55,7 +55,7 @@ env:
 
 before_install:
   # Configure $PATH: Executables are installed to $HOME/bin
-  - export PATH="$HOME/bin:$PATH"
+  - export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
   # Configure $EMACS_MAJOR_VERSION: The 'checkdoc-file' exist on Emacs >= 25.1
   - export EMACS_MAJOR_VERSION="$(echo $EMACS_VERSION | cut -d '.' -f 1)"
 
