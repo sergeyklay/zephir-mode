@@ -4,7 +4,7 @@
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.3
+;; Version: 0.3.4
 ;; URL: https://github.com/sergeyklay/zephir-mode
 
 ;; This file is not part of GNU Emacs.
