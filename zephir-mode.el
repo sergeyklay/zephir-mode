@@ -148,7 +148,7 @@
   "Official website of Zephir programming language.")
 
 (defcustom zephir-speedbar-config t
-  "When set to true automatically configures Speedbar to observe Zephir files."
+  "When set to t automatically configures Speedbar to observe Zephir files."
   :type 'boolean
   :set (lambda (sym val)
          (set-default sym val)
@@ -195,7 +195,7 @@ just return nil."
 ;;; Utilities
 
 (defsubst zephir-in-string-p ()
-  "Return t if if point is inside a string."
+  "Return t if point is inside a string."
   (nth 3 (syntax-ppss)))
 
 (defsubst zephir-in-comment-p ()
