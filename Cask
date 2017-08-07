@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(package "zephir-mode" "0.3.2" "A GNU Emacs major mode for editing Zephir code.")
+(package "zephir-mode" "0.3.4" "A GNU Emacs major mode for editing Zephir code.")
 (package-file "zephir-mode.el")
 
 (depends-on "pkg-info")
