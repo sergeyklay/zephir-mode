@@ -2,6 +2,8 @@
 
 [![licence][license-badge]][license]
 [![travis badge][travis-badge]][travis-link]
+[![MELPA][zephir-badge]][zephir-link]
+[![MELPA Stable][zephir-stable-badge]][zephir-stable-link]
 
 A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
 Provides font-locking, indentation and navigation support.
@@ -17,6 +19,7 @@ PHP language. For more information see https://zephir-lang.com .
 
 - [Features](#features)
 - [Installation](#installation)
+  - [Using MELPA](#using-melpa)
   - [Manual Install](#manual-install)
      - [Spacemacs Users](#spacemacs-users)
 - [Usage](#usage)
@@ -47,6 +50,34 @@ https://github.com/sergeyklay/zephir-mode .
 **NOTE**: The `master` branch will always contain the latest stable version.
 If you wish to check older versions or newer ones currently under development,
 please switch to the relevant [branch][branches]/[tag][tags].
+
+### Using MELPA
+
+The best way of installing this major mode, at least for GNU Emacs 24, is to
+use the packaging system. Add MELPA or MELPA Stable to the list of repositories
+to access this mode. For those who want only formal, tagged releases use
+MELPA Stable:
+
+```elisp
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+```
+
+For those who want rolling releases as they happen use MELPA:
+
+```elisp
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+```
+
+and then use <kbd>M-x</kbd> `package-list-packages` to get to the
+package listing and install from there. MELPA tracks this Git repository and
+updates relatively soon after each commit or formal release. For more detail on
+setting up see [MELPA Getting Started][getting-started].
 
 ### Manual Install
 
@@ -140,9 +171,14 @@ Zephir Mode is open source software licensed under the
 [speedbar]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html
 [branches]: https://github.com/sergeyklay/zephir-mode/branches
 [tags]: https://github.com/sergeyklay/zephir-mode/tags
+[getting-started]: https://melpa.org/#/getting-started
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
 [travis-badge]: https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master
+[zephir-badge]: https://melpa.org/packages/zephir-mode-badge.svg
+[zephir-satble-badge]: https://stable.melpa.org/packages/zephir-mode-badge.svg
+[zephir-link]: https://melpa.org/#/zephir-mode
+[zephir-stable-link]: https://stable.melpa.org/#/zephir-mode
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md
