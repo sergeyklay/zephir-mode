@@ -1,9 +1,9 @@
 # Zephir Mode for GNU Emacs
 
-[![licence][license-badge]][license]
-[![travis badge][travis-badge]][travis-link]
-[![MELPA][zephir-badge]][zephir-link]
-[![MELPA Stable][zephir-stable-badge]][zephir-stable-link]
+[![Licence][license-badge]][license]
+[![Travis CI][travis-badge]][travis-link]
+[![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)(https://melpa.org/#/zephir-mode)
+[![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)(https://stable.melpa.org/#/zephir-mode)
 
 A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
 Provides font-locking, indentation and navigation support.
@@ -166,19 +166,15 @@ see the [CHANGELOG.md][changelog] .
 Zephir Mode is open source software licensed under the
 [GNU General Public Licence version 3][license] .
 
-[license-badge]: https://img.shields.io/badge/license-GPL_3-green.svg
+[license-badge]: "https://img.shields.io/badge/license-GPL_3-green.svg"
 [license]: https://www.gnu.org/licenses/gpl-3.0.txt
-[speedbar]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html
+[speedbar]: "https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html"
 [branches]: https://github.com/sergeyklay/zephir-mode/branches
 [tags]: https://github.com/sergeyklay/zephir-mode/tags
 [getting-started]: https://melpa.org/#/getting-started
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
-[travis-badge]: https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master
-[zephir-badge]: https://melpa.org/packages/zephir-mode-badge.svg
-[zephir-satble-badge]: https://stable.melpa.org/packages/zephir-mode-badge.svg
-[zephir-link]: https://melpa.org/#/zephir-mode
-[zephir-stable-link]: https://stable.melpa.org/#/zephir-mode
+[travis-badge]: "https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master"
 [travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md
