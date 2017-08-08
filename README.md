@@ -1,7 +1,7 @@
 # Zephir Mode for GNU Emacs
 
-[![Licence][license-badge]][license]
-[![Travis CI][travis-badge]][travis-link]
+[![Licence](https://img.shields.io/badge/license-GPL_3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.txt)
+[![Travis CI](https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master)](https://travis-ci.org/sergeyklay/zephir-mode)
 [![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)](https://melpa.org/#/zephir-mode)
 [![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)](https://stable.melpa.org/#/zephir-mode)
 
@@ -166,16 +166,12 @@ see the [CHANGELOG.md][changelog] .
 Zephir Mode is open source software licensed under the
 [GNU General Public Licence version 3][license] .
 
-[license-badge]: "https://img.shields.io/badge/license-GPL_3-green.svg"
-[license]: https://www.gnu.org/licenses/gpl-3.0.txt
 [speedbar]: "https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html"
 [branches]: https://github.com/sergeyklay/zephir-mode/branches
 [tags]: https://github.com/sergeyklay/zephir-mode/tags
 [getting-started]: https://melpa.org/#/getting-started
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
-[travis-badge]: "https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master"
-[travis-link]: https://travis-ci.org/sergeyklay/zephir-mode
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
 [changelog]: ./CHANGELOG.md
 [issues]: https://github.com/sergeyklay/zephir-mode/issues
