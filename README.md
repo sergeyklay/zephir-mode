@@ -2,8 +2,8 @@
 
 [![Licence][license-badge]][license]
 [![Travis CI][travis-badge]][travis-link]
-[![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)(https://melpa.org/#/zephir-mode)
-[![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)(https://stable.melpa.org/#/zephir-mode)
+[![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)](https://melpa.org/#/zephir-mode)
+[![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)](https://stable.melpa.org/#/zephir-mode)
 
 A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
 Provides font-locking, indentation and navigation support.
