@@ -7,7 +7,7 @@
 ;; Version: 0.3.4
 ;; URL: https://github.com/sergeyklay/zephir-mode
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((cl-lib "0.5") (pkg-info "0.4") (emacs "24.3"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -121,14 +121,15 @@
 
 ;; muffle the warnings about using undefined functions
 (declare-function c-populate-syntax-table "cc-langs.el" (table))
-(declare-function pkg-info-version-info "pkg-info" (library))
+
+;; Tell the byte compiler about autoloaded functions from packages
+(declare-function pkg-info-version-info "pkg-info" (package))
 
 (require 'font-lock)
 (require 'add-log)
 (require 'custom)
 (require 'speedbar)
 (require 'cl-lib)
-(require 'pkg-info)
 
 
 ;;; Customization
