@@ -19,62 +19,90 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-SHELL       := $(shell which bash)
-ROOT_DIR    := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+SHELL := $(shell which bash)
+ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+EMACS = emacs
+CASK = cask
+EMACSFLAGS ?=
+TESTFLAGS ?=
+PKGDIR := $(shell EMACS=$(EMACS) $(CASK) package-directory)
 
-EMACS        = emacs
-CASK         = cask
-
-EMACSFLAGS  ?=
-TESTFLAGS   ?=
-
-PKGDIR      := $(shell EMACS=$(EMACS) $(CASK) package-directory)
-PACKAGE_NAME = zephir-mode.el
-COMPILED_OBJ = $(PACKAGE_NAME:.el=.elc)
+# File lists
+SRCS = zephir-mode.el
+OBJS = $(SRCS:.el=.elc)
 
 .SILENT: ;               # no need for @
 .ONESHELL: ;             # recipes execute in same shell
 .NOTPARALLEL: ;          # wait for this target to finish
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
-default: help-default;   # default target
 Makefile: ;              # skip prerequisite discovery
 
-.title:
-	$(info Zepphir Mode $(shell cat $(ROOT_DIR)/$(PACKAGE_NAME) | grep ";; Version:" | awk -F': ' '{print $$2}'))
-	$(info )
+# Run make help by default
+.DEFAULT_GOAL = help
 
-help: .title
-	echo "                          ====================================================================="
-	echo "                    help: Show this help and exit"
-	echo "                ckeckdoc: Checks Zephir Mode code for errors in documentation"
-	echo "                pkg-lint: Run package linter for the Zephir Mode metadata"
-	echo "                   build: Byte compile Zephir Mode package"
-	echo "                    test: Run the non-interactive unit test suite"
-	echo "                   clean: Remove all byte compiled Elisp files"
-	echo "                          ====================================================================="
-	echo ""
+# Internal variables
+EMACSBATCH = $(EMACS) -Q --batch -L . $(EMACSFLAGS)
+RUNEMACS =
 
-all: build test
+# Program availability
+ifdef CASK
+RUNEMACS = $(CASK) exec $(EMACSBATCH)
+HAVE_CASK := $(shell sh -c "command -v $(CASK)")
+ifndef HAVE_CASK
+$(warning "$(CASK) is not available.  Please run make help")
+endif
+else
+RUNEMACS = $(EMACSBATCH)
+endif
 
-checkdoc:
-	${CASK} exec $(EMACS) -Q -L . --batch --eval '(checkdoc-file "${PACKAGE_NAME}")'
+%.elc: %.el $(PKGDIR)
+	$(RUNEMACS) -f batch-byte-compile $<
 
-pkg-lint:
-	${CASK} exec $(EMACS) -Q -L . --batch -l "package-lint.el" -f "package-lint-batch-and-exit" ${PACKAGE_NAME}
-
-build: $(COMPILED_OBJ)
-
-test: $(PKGDIR) pkg-lint
-	$(CASK) exec ert-runner $(TESTFLAGS)
-
-clean:
-	${CASK} clean-elc
-
-%.elc : %.el $(PKGDIR)
-	${CASK} exec $(EMACS) -Q -L . --batch $(EMACSFLAGS) -f batch-byte-compile $<
-
-$(PKGDIR) : Cask
+$(PKGDIR): Cask
 	$(CASK) install
+	$(CASK) update
 	touch $(PKGDIR)
 
-.PHONY: .title help all checkdoc pkg-lint build test clean
+# Public targets
+
+.PHONY: .title
+.title:
+	$(info Zepphir Mode $(shell cat $(ROOT_DIR)/$(SRCS) | grep ";; Version:" | awk -F': ' '{print $$2}'))
+	$(info )
+
+.PHONY: init
+init: $(PKGDIR)
+
+.PHONY: checkdoc
+checkdoc:
+	$(RUNEMACS) --eval '(checkdoc-file "$(SRCS)")'
+
+.PHONY: build
+build: $(OBJS)
+
+.PHONY: test
+test: build
+	$(CASK) exec ert-runner $(TESTFLAGS)
+
+.PHONY: clean
+clean:
+	$(CASK) clean-elc
+	rm -rf $(ROOT_DIR)/.cask
+
+.PHONY: help
+help: .title
+	echo 'Run `make init` first to install and update all local dependencies.'
+	echo ''
+	echo 'Available targets:'
+	echo '  help:     Show this help and exit'
+	echo '  init:     Initialise the project (has to be launched first)'
+	echo '  ckeckdoc: Checks Zephir Mode code for errors in documentation'
+	echo '  build:    Byte compile Zephir Mode package'
+	echo '  test:     Run the non-interactive unit test suite'
+	echo '  clean:    Remove all byte compiled Elisp files'
+	echo ''
+	echo 'Available programs:'
+	echo '  $(CASK): $(if $(HAVE_CASK),yes,no)'
+	echo ''
+	echo 'You need $(CASK) to develop Zephir Mode.  See http://cask.readthedocs.io/ for more.'
+	echo ''
