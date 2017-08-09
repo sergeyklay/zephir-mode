@@ -353,8 +353,22 @@ will be handled.
 Do not try to modify this list for end user customizations; the
 `*-font-lock-extra-types' variable, where `*' is the mode prefix, is
 the appropriate place for that."
-  zephir '("uint" "int" "bool" "boolean" "float" "double" "long"
-           "ulong" "char" "string" "resource" "void" "null"))
+  zephir '(
+           "int"
+           "uint"
+           "bool"
+           "boolean"
+           "float"
+           "double"
+           "long"
+           "ulong"
+           "char"
+           "uchar"
+           "string"
+           "resource"
+           "var"
+           "void"
+           "null"))
 
 (c-lang-defconst c-class-decl-kwds
   "Keywords introducing declarations where the following block (if any)

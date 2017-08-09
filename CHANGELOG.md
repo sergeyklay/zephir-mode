@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog][keep-cl] and this project adheres
 to [Semantic Versioning][semver] .
 
 ## [Unreleased]
+### Added
+- Amended `c-primitive-type-kwds` (`uchar`, `ulong`, etc)
 
 ## [0.3.3] - 2017-08-07
 ### Changed
