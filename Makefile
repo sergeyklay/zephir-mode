@@ -96,7 +96,7 @@ help: .title
 	echo 'Available targets:'
 	echo '  help:     Show this help and exit'
 	echo '  init:     Initialise the project (has to be launched first)'
-	echo '  ckeckdoc: Checks Zephir Mode code for errors in documentation'
+	echo '  checkdoc: Checks Zephir Mode code for errors in documentation'
 	echo '  build:    Byte compile Zephir Mode package'
 	echo '  test:     Run the non-interactive unit test suite'
 	echo '  clean:    Remove all byte compiled Elisp files'
