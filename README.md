@@ -47,9 +47,9 @@ older versions of Emacs will most like _not_ be addressed.
 The master of all the material is the Git repository at
 https://github.com/sergeyklay/zephir-mode .
 
-**NOTE**: The `master` branch will always contain the latest stable version.
-If you wish to check older versions or newer ones currently under development,
-please switch to the relevant [branch][branches]/[tag][tags].
+**NOTE**: The `master` branch will always contain the latest **unstable**
+version. If you wish to check older versions or formal, tagged release, please
+switch to the relevant [tag][tags].
 
 ### Using MELPA
 
@@ -167,7 +167,6 @@ Zephir Mode is open source software licensed under the
 [GNU General Public Licence version 3][license] .
 
 [speedbar]: "https://www.gnu.org/software/emacs/manual/html_node/emacs/Speedbar.html"
-[branches]: https://github.com/sergeyklay/zephir-mode/branches
 [tags]: https://github.com/sergeyklay/zephir-mode/tags
 [getting-started]: https://melpa.org/#/getting-started
 [emacs]: https://www.gnu.org/software/emacs/
