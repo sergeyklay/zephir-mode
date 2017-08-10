@@ -130,6 +130,7 @@
 (require 'custom)
 (require 'speedbar)
 (require 'cl-lib)
+(require 'pkg-info)
 
 
 ;;; Customization
@@ -878,6 +879,8 @@ this ^ lineup"
 ;;;###autoload
 (define-derived-mode zephir-mode c-mode "Zephir"
   "A major mode for editing Zephir code.
+
+See https://zephir-lang.com for more information about the Zephir language.
 
 Key bindings:
 \\{zephir-mode-map}
