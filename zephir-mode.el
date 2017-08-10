@@ -399,7 +399,7 @@ Zephir does not have an \"enum\"-like keyword."
 
 (c-lang-defconst c-protection-kwds
   "Access protection label keywords in classes."
-  zephir '("private" "protected" "public"))
+  zephir '("internal" "private" "protected" "public"))
 
 (c-lang-defconst c-postfix-decl-spec-kwds
   zephir '("implements" "extends"))
@@ -882,6 +882,7 @@ this ^ lineup"
 Key bindings:
 \\{zephir-mode-map}
 "
+  :group 'zephir-mode
   ;; Initialize CC Mode for use in the current buffer.
   (c-initialize-cc-mode t)
   ;; `c-init-language-vars' is a macro that is expanded at compile
@@ -895,6 +896,7 @@ Key bindings:
   ;; analysis and similar things working.
   (c-common-init 'zephir-mode)
 
+  ;; Local vars
   (set (make-local-variable font-lock-string-face) 'zephir-string)
   (set (make-local-variable font-lock-keyword-face) 'zephir-keyword)
   (set (make-local-variable font-lock-builtin-face) 'zephir-builtin)
