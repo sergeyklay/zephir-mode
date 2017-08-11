@@ -28,8 +28,35 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ;; 02110-1301, USA.
 
-;;; Usage
+;;; Commentary:
 
+;;   GNU Emacs major mode for editing Zephir code.  Provides font-locking,
+;; indentation, alignment and navigation support.
+
+;;   It developed  as an extension of C mode; thus it inherits all C mode's
+;; navigation functionality.  But it colors according to the Zephir grammar.
+;;
+;;   Syntax checking: Flymake support is not provided.  See Flycheck at
+;; http://www.flycheck.org for on-the-fly validation and liniting of Zephir
+;; code.
+;;
+;;   Zephir -- is a high level language that eases the creation and
+;; maintainability of extensions for PHP.  Zephir extensions are
+;; exported to C code that can be compiled and optimized by major C
+;; compilers such as gcc/clang/vc++.  Functionality is exposed to the
+;; PHP language.  For more information see https://zephir-lang.com
+;;
+;;   Bug tracking is currently handled using the GitHub issue tracker at
+;; https://github.com/sergeyklay/zephir-mode/issues
+;;
+;;   Issues with this code are managed via the project issue management
+;; on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
+;;
+;;   History is tracked in the Git repository rather than in this file.
+;; See https://github.com/sergeyklay/zephir-mode/commits/master
+;;
+;; Usage:
+;;
 ;;   Put this file in your Emacs lisp path (eg. site-lisp) and add to
 ;; your .emacs file:
 ;;
@@ -48,40 +75,6 @@
 ;;  Programming/Languages/Php
 ;; Since it inherits much functionality from c-mode, look there too
 ;;  Programming/Languages/C
-
-;;; Commentary:
-
-;;   GNU Emacs major mode for editing Zephir code.
-
-;;   It developed  as an extension of C mode; thus it inherits all C mode's
-;; navigation functionality.  But it colors according to the Zephir grammar.
-;;
-;;   Syntax checking: Flymake support is _not_ provided.  See Flycheck at
-;; http://www.flycheck.org for on-the-fly validation and liniting of Zephir
-;; code.
-;;
-;;   Zephir -- is a high level language that eases the creation and
-;; maintainability of extensions for PHP.  Zephir extensions are
-;; exported to C code that can be compiled and optimized by major C
-;; compilers such as gcc/clang/vc++.  Functionality is exposed to the
-;; PHP language.  For more information see https://zephir-lang.com
-
-;;; Bugs:
-
-;;   Bug tracking is currently handled using the GitHub issue tracker at
-;; https://github.com/sergeyklay/zephir-mode/issues
-
-;;; Notes:
-
-;;; TODO:
-
-;;   Issues with this code are managed via the project issue management
-;; on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
-
-;;; History:
-
-;;   History is tracked in the Git repository rather than in this file.
-;; See https://github.com/sergeyklay/zephir-mode/commits/master
 
 ;;; Code:
 
@@ -171,6 +164,8 @@
 (defcustom zephir-lineup-cascaded-calls nil
   "Indent chained method calls to the previous line."
   :type 'boolean)
+
+(defvar zephir-mode-hook nil)
 
 
 ;;; Version information
@@ -900,7 +895,7 @@ Key bindings:
   (c-common-init 'zephir-mode)
 
   ;; Local vars
-  (set (make-local-variable font-lock-string-face) 'zephir-string)
+  ;; (set (make-local-variable font-lock-string-face) 'zephir-string)
   (set (make-local-variable font-lock-keyword-face) 'zephir-keyword)
   (set (make-local-variable font-lock-builtin-face) 'zephir-builtin)
   (set (make-local-variable font-lock-function-name-face) 'zephir-function-name)
@@ -935,8 +930,6 @@ Key bindings:
   ;; following two local variables, but we keep them for now until we
   ;; are completely sure their removal will not break any current
   ;; behavior or backwards compatibility.
-  ;;
-  ;; TODO: SMIE
   (set (make-local-variable beginning-of-defun-function)
        #'zephir-beginning-of-defun)
   (set (make-local-variable end-of-defun-function)
@@ -955,6 +948,8 @@ Key bindings:
         (zephir-syntax-propertize-function (point-min) (point-max))))))
 
 
+;; Invoke zephir-mode when appropriate
+
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.zep\\'" . zephir-mode))
 

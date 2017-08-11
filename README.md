@@ -6,12 +6,12 @@
 [![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)](https://stable.melpa.org/#/zephir-mode)
 
 A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
-Provides font-locking, indentation and navigation support.
+Provides font-locking, indentation, alignment and navigation support.
 
 It developed as an extension of C mode; thus it inherits all C mode's
 navigation functionality.  But it colors according to the Zephir grammar.
 
-Zephir - is a high level language that eases the creation and
+Zephir -- is a high level language that eases the creation and
 maintainability of extensions for PHP.  Zephir extensions are
 exported to C code that can be compiled and optimized by major C
 compilers such as gcc/clang/vc++.  Functionality is exposed to the
