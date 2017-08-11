@@ -45,5 +45,4 @@
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
-
 ;;; test-helper.el ends here

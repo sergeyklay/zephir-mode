@@ -56,4 +56,7 @@ If CONTENT is not given, return the face at POS in the current buffer."
                                     (get-text-property pos 'face))
     (get-text-property pos 'face)))
 
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 ;;; zephir-mode-test.el ends here

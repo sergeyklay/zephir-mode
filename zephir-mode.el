@@ -955,8 +955,7 @@ Key bindings:
 
 (provide 'zephir-mode)
 
-;;; zephir-mode.el ends here
-
 ;; Local Variables:
 ;; firestarter: ert-run-tests-interactively
 ;; End:
+;;; zephir-mode.el ends here
