@@ -50,15 +50,6 @@
      (goto-char (point-min))
      ,@body))
 
-(defconst zephir-test-syntax-classes
-  [whitespace punctuation word symbol open-paren close-paren expression-prefix
-              string-quote paired-delim escape character-quote comment-start
-              comment-end inherit generic-comment generic-string]
-  "Readable symbols for syntax classes.
-
-Each symbol in this vector corresponding to the syntax code of
-its index.")
-
 (defun zephir-test-face-at (pos &optional content)
   "Get the face at POS in CONTENT.
 
@@ -86,6 +77,25 @@ POS"
 (ert-deftest zephir-mode-syntax-table/fontify-sq-string ()
   :tags '(fontification syntax-table)
   (should (eq (zephir-test-face-at 7 "foo = 'bar'") 'font-lock-string-face)))
+
+(ert-deftest zephir-mode-syntax-table/fontify-line-comment ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer "// class
+public function foo () {}"
+                                (should (eq (zephir-test-face-at 3) 'font-lock-comment-face))
+                                (should (eq (zephir-test-face-at 7) 'font-lock-comment-face))
+                                (should (eq (zephir-test-face-at 8) 'font-lock-comment-face))
+                                (should-not (zephir-test-face-at 10))))
+
+(ert-deftest zephir-mode-syntax-table/fontify-c-style-comment ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer "/*
+class */ public function foo () {}"
+                                (should (eq (zephir-test-face-at 1) 'font-lock-comment-face))
+                                (should (eq (zephir-test-face-at 4) 'font-lock-comment-face))
+                                (should (eq (zephir-test-face-at 8) 'font-lock-comment-face))
+                                (should (eq (zephir-test-face-at 11) 'font-lock-comment-face))
+                                (should-not (zephir-test-face-at 13))))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil

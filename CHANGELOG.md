@@ -12,7 +12,7 @@ to [Semantic Versioning][semver] .
 
 ## [0.3.3] - 2017-08-07
 ### Changed
-- Use the Lexical Binding for zephir-mode
+- Use lexical binding for zephir-mode
   Refs: [EmacWiki][emacswiki-binding], [Yoo Box][yoobox-binding], [Emacs Stack Exchange][emacs-stack-exchange]
 - Raised minimum Emacs support to 24.3
 

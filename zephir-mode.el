@@ -81,11 +81,10 @@
 
 ;;; Requirements
 
-(require 'pkg-info)
-
 ;; Tell the byte compiler about autoloaded functions from packages
 (declare-function pkg-info-version-info "pkg-info" (package))
 
+(require 'pkg-info)
 
 ;;; Customization
 
@@ -100,8 +99,41 @@
   :link '(url-link :tag "Official Site" "https://zephir-lang.com")
   :link '(emacs-commentary-link :tag "Commentary" "zephir-mode"))
 
+(defvar zephir-website-url "https://zephir-lang.com"
+  "Official website of Zephir programming language.")
+
+(defvar zephir-mode-website-url "https://github.com/sergeyklay/zephir-mode"
+  "Zephir Mode GitHub page.")
+
 (defvar zephir-mode-hook nil
   "List of functions to call when entering Zephir Mode.")
+
+
+;;; Utilities
+
+(defun zephir-syntax-context (&optional pos)
+  "Determine the syntax context at POS, defaulting to point.
+
+Return nil, if there is no special context at POS, or one of
+
+`comment'
+     POS is inside a comment
+
+`single-quoted'
+     POS is inside a single-quoted string
+
+`double-quoted'
+     POS is inside a double-quoted string"
+  (let ((state (save-excursion (syntax-ppss pos))))
+    (if (nth 4 state)
+        'comment
+      (pcase (nth 3 state)
+        (`?\' 'single-quoted)
+        (`?\" 'double-quoted)))))
+
+(defun zephir-in-string-or-comment-p (&optional pos)
+  "Determine whether POS is inside a string or comment."
+  (not (null (zephir-syntax-context pos))))
 
 
 ;;; Version information
@@ -125,7 +157,7 @@ just return nil."
     version))
 
 
-;; Faces
+;;; Faces
 
 ;;;###autoload
 (defgroup zephir-faces nil
@@ -133,6 +165,9 @@ just return nil."
   :tag "Zephir Faces"
   :group 'zephir
   :group 'faces)
+
+
+;;; Indentation code
 
 
 ;;; Font Locking
@@ -161,14 +196,35 @@ the comment syntax tokens handle both line style \"//\" and block style
 \"/*\" \"*/\" comments.")
 
 
+;;; Alignment
+
+
+;;; Dealing with strings
+
+
+;;; Imenu
+
+
 ;;; Initialization
 
 ;;;###autoload
-(define-derived-mode zephir-mode prog-mode "Zephir"
+(define-derived-mode zephir-mode prog-mode "Zephir" ()
   "A major mode for editing Zephir code."
   :group 'zephir-mode
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t))
+
+;;;###autoload
+(defun zephir-mode-open-github ()
+  "Go to the Zephir Mode GitHub page."
+  (interactive)
+  (browse-url zephir-mode-website-url))
+
+;;;###autoload
+(defun zephir-open-website-home ()
+  "Go to the Zephir website."
+  (interactive)
+  (browse-url zephir-website-url))
 
 
 ;; Invoke zephir-mode when appropriate
