@@ -7,8 +7,13 @@ to [Semantic Versioning][semver] .
 
 ## [Unreleased]
 ### Added
+- Added `zephir-indent-tabs-mode` user variable to setup indentation
 - Amended `c-primitive-type-kwds` (`uchar`, `ulong`, etc)
 - Amended `c-protection-kwds` (`internal`)
+- Amended syntax table (parenthesis, braces and brackets)
+
+### Changed
+- Now Zephir Mode derived from `prog-mode`
 
 ## [0.3.3] - 2017-08-07
 ### Changed
