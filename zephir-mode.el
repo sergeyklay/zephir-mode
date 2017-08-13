@@ -164,6 +164,18 @@ Return nil, if there is no special context at POS, or one of
   "Determine whether POS is inside a string or comment."
   (not (null (zephir-syntax-context pos))))
 
+(defun zephir-in-listlike (re-open-str)
+  "If point is in a listlike, return the position of the opening char of it.
+Otherwise return nil.  The RE-OPEN-STR is a regexp string
+matching the opening character."
+  (save-excursion
+    (let ((opoint (nth 1 (syntax-ppss))))
+      (when (and opoint
+                 (progn
+                   (goto-char opoint)
+                   (looking-at-p re-open-str)))
+        opoint))))
+
 
 ;;; Navigation
 
@@ -199,6 +211,13 @@ Return nil, if there is no special context at POS, or one of
     (modify-syntax-entry ?*   ". 23"   table)
     ;; The dollar sign is an expression prefix for variables
     (modify-syntax-entry ?$   "'"      table)
+    ;; The parenthesis, braces and brackets
+    (modify-syntax-entry ?\(  "()"     table)
+    (modify-syntax-entry ?\)  ")("     table)
+    (modify-syntax-entry ?\{  "(}"     table)
+    (modify-syntax-entry ?\}  "){"     table)
+    (modify-syntax-entry ?\[  "(]"     table)
+    (modify-syntax-entry ?\]  ")["     table)
     table)
   "Syntax table in use in `zephir-mode' buffers.
 
