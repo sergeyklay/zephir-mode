@@ -84,7 +84,9 @@
 ;; Tell the byte compiler about autoloaded functions from packages
 (declare-function pkg-info-version-info "pkg-info" (package))
 
+(require 'cl-lib)
 (require 'pkg-info)
+
 
 ;;; Customization
 
@@ -107,6 +109,33 @@
 
 (defvar zephir-mode-hook nil
   "List of functions to call when entering Zephir Mode.")
+
+(defcustom zephir-indent-tabs-mode t
+  "Indentation can insert tabs in Zephir Mode if this is non-nil."
+  :type 'boolean
+  :group 'zephir
+  :safe 'booleanp)
+
+
+;;; Version information
+
+(defun zephir-mode-version (&optional show-version)
+  "Display string describing the version of Zephir Mode.
+
+If called interactively or if SHOW-VERSION is non-nil, show the
+version in the echo area and the messages buffer.
+
+The returned string includes both, the version from package.el
+and the library version, if both a present and different.
+
+If the version number could not be determined, signal an error,
+if called interactively, or if SHOW-VERSION is non-nil, otherwise
+just return nil."
+  (interactive (list t))
+  (let ((version (pkg-info-version-info 'zephir-mode)))
+    (when show-version
+      (message "Zephir Mode version: %s" version))
+    version))
 
 
 ;;; Utilities
@@ -136,25 +165,10 @@ Return nil, if there is no special context at POS, or one of
   (not (null (zephir-syntax-context pos))))
 
 
-;;; Version information
+;;; Navigation
 
-(defun zephir-mode-version (&optional show-version)
-  "Display string describing the version of Zephir Mode.
-
-If called interactively or if SHOW-VERSION is non-nil, show the
-version in the echo area and the messages buffer.
-
-The returned string includes both, the version from package.el
-and the library version, if both a present and different.
-
-If the version number could not be determined, signal an error,
-if called interactively, or if SHOW-VERSION is non-nil, otherwise
-just return nil."
-  (interactive (list t))
-  (let ((version (pkg-info-version-info 'zephir-mode)))
-    (when show-version
-      (message "Zephir Mode version: %s" version))
-    version))
+
+;;; Indentation
 
 
 ;;; Faces
@@ -165,9 +179,6 @@ just return nil."
   :tag "Zephir Faces"
   :group 'zephir
   :group 'faces)
-
-
-;;; Indentation code
 
 
 ;;; Font Locking
@@ -211,6 +222,8 @@ the comment syntax tokens handle both line style \"//\" and block style
 (define-derived-mode zephir-mode prog-mode "Zephir" ()
   "A major mode for editing Zephir code."
   :group 'zephir-mode
+  ;; Indentation
+  (setq indent-tabs-mode zephir-indent-tabs-mode)
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t))
 
@@ -237,4 +250,5 @@ the comment syntax tokens handle both line style \"//\" and block style
 ;; Local Variables:
 ;; firestarter: ert-run-tests-interactively
 ;; End:
+
 ;;; zephir-mode.el ends here

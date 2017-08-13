@@ -100,4 +100,5 @@ class */ public function foo () {}"
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
+
 ;;; zephir-mode-test.el ends here
