@@ -36,6 +36,9 @@
 (require 'zephir-mode)
 (require 'ert)
 
+
+;;;; Utilities
+
 (defmacro zephir-test-with-temp-buffer (content &rest body)
   "Evaluate BODY in a temporary buffer with CONTENT."
   (declare (debug t)
@@ -47,6 +50,15 @@
      (goto-char (point-min))
      ,@body))
 
+(defconst zephir-test-syntax-classes
+  [whitespace punctuation word symbol open-paren close-paren expression-prefix
+              string-quote paired-delim escape character-quote comment-start
+              comment-end inherit generic-comment generic-string]
+  "Readable symbols for syntax classes.
+
+Each symbol in this vector corresponding to the syntax code of
+its index.")
+
 (defun zephir-test-face-at (pos &optional content)
   "Get the face at POS in CONTENT.
 
@@ -55,6 +67,25 @@ If CONTENT is not given, return the face at POS in the current buffer."
       (zephir-test-with-temp-buffer content
                                     (get-text-property pos 'face))
     (get-text-property pos 'face)))
+
+(defun zephir-test-syntax-at (pos)
+  "Get the syntax at POS.
+
+Get the syntax class symbol at POS, or nil if there is no syntax a
+POS"
+  (let ((code (syntax-class (syntax-after pos))))
+    (aref puppet-test-syntax-classes code)))
+
+
+;;;; Font locking
+
+(ert-deftest zephir-mode-syntax-table/fontify-dq-string ()
+  :tags '(fontification syntax-table)
+  (should (eq (zephir-test-face-at 7 "foo = \"bar\"") 'font-lock-string-face)))
+
+(ert-deftest zephir-mode-syntax-table/fontify-sq-string ()
+  :tags '(fontification syntax-table)
+  (should (eq (zephir-test-face-at 7 "foo = 'bar'") 'font-lock-string-face)))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil
