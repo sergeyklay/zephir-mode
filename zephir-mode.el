@@ -183,11 +183,11 @@ matching the opening character."
     `(
       ;; Identifier.
       ;; The first character of an identifier may be a dollar sign.
-      ;; After the we expect a letter or an underscore.
-      ;; Then they may contain any alphanumeric character + underscore.
+      ;; After that, we expect a letter or an underscore.
+      ;; The rest may contain any alphanumeric character + underscore.
       (identifier . ,(rx (optional "$")
-                         (one-or-more (any "A-Z" "a-z" "_"))
-                         (zero-or-more (any "A-Z" "a-z" "0-9" "_"))))
+                         (one-or-more (any alpha "_"))
+                         (zero-or-more (any alnum "_"))))
       ;; Function declaraion.
       (fn-decl . ,(rx line-start
                       symbol-start
@@ -196,7 +196,9 @@ matching the opening character."
     "Additional special sexps for `zephir-rx'.")
 
   (defmacro zephir-rx (&rest sexps)
-    "Specialized `rx' variant for Zephir Mode."
+    "Zephir-specific replacement for `rx'.
+
+See `rx' documentation for more information about REGEXPS param."
     (let ((rx-constituents (append zephir-rx-constituents rx-constituents)))
       (cond ((null sexps)
              (error "No regexp"))
@@ -259,8 +261,7 @@ the comment syntax tokens handle both line style \"//\" and block style
     ;; Function names, i.e. `function foo()'.
     (,(zephir-rx (group fn-decl)
                  (one-or-more space)
-                 (group identifier)
-                 (zero-or-more space))
+                 (group identifier))
      2 font-lock-function-name-face))
   "Font lock keywords for Zephir Mode.")
 
