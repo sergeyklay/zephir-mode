@@ -35,6 +35,9 @@
 ;; Make sure the exact Emacs version can be found in the build output
 (message "Running tests on Emacs %s" emacs-version)
 
+(when (require 'undercover nil t)
+  (undercover "zephir-mode.el"))
+
 (let* ((current-file (if load-in-progress load-file-name (buffer-file-name)))
        (source-directory (locate-dominating-file current-file "Cask"))
        ;; Don't load old byte-compiled versions
