@@ -160,20 +160,6 @@ Return nil, if there is no special context at POS, or one of
         (`?\' 'single-quoted)
         (`?\" 'double-quoted)))))
 
-(defsubst zephir-in-string-p (&optional pos)
-  "Determine whether POS is inside a string."
-  (or
-   (eql (zephir-syntax-context pos) 'single-quoted)
-   (eql (zephir-syntax-context pos) 'double-quoted)))
-
-(defsubst zephir-in-comment-p (&optional pos)
-  "Determine whether POS is inside a comment."
-  (eql (zephir-syntax-context pos) 'comment))
-
-(defun zephir-in-string-or-comment-p (&optional pos)
-  "Determine whether POS is inside a string or comment."
-  (not (null (zephir-syntax-context pos))))
-
 (defun zephir-in-listlike (re-open-str)
   "If point is in a listlike, return the position of the opening char of it.
 Otherwise return nil.  The RE-OPEN-STR is a regexp string
@@ -235,16 +221,6 @@ This includes setting ' and \" as string delimiters, and setting up
 the comment syntax tokens handle both line style \"//\" and block style
 \"/*\" \"*/\" comments.")
 
-(defun zephir-syntax-propertize-function (start end)
-  "Apply propertize rules from START to END.
-
-Used as `syntax-propertize-function' in Zephir Mode.  See help for
-`syntax-propertize-rules' function for more information."
-  (goto-char start)
-  (while (re-search-forward "['\"]" end t)
-    (when (zephir-in-comment-p)
-      (put-text-property (1- (point)) (point) 'syntax-table (string-to-syntax "_")))))
-
 
 ;;; Alignment
 
@@ -266,7 +242,7 @@ Used as `syntax-propertize-function' in Zephir Mode.  See help for
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
   ;; Font locking
-  (setq-local syntax-propertize-function #'zephir-syntax-propertize-function))
+  (setq-local syntax-propertize-function nil))
 
 ;;;###autoload
 (defun zephir-mode-open-github ()
