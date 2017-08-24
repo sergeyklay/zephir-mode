@@ -59,13 +59,22 @@ If CONTENT is not given, return the face at POS in the current buffer."
                                     (get-text-property pos 'face))
     (get-text-property pos 'face)))
 
+(defconst zephir-test-syntax-classes
+  [whitespace punctuation word symbol open-paren close-paren expression-prefix
+              string-quote paired-delim escape character-quote comment-start
+              comment-end inherit generic-comment generic-string]
+  "Readable symbols for syntax classes.
+
+Each symbol in this vector corresponding to the syntax code of
+its index.")
+
 (defun zephir-test-syntax-at (pos)
   "Get the syntax at POS.
 
 Get the syntax class symbol at POS, or nil if there is no syntax a
 POS"
   (let ((code (syntax-class (syntax-after pos))))
-    (aref puppet-test-syntax-classes code)))
+    (aref zephir-test-syntax-classes code)))
 
 
 ;;;; Font locking
