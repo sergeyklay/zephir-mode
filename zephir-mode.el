@@ -84,6 +84,9 @@
 ;; Tell the byte compiler about autoloaded functions from packages
 (declare-function pkg-info-version-info "pkg-info" (package))
 
+(eval-when-compile
+  (require 'rx))
+
 (require 'cl-lib)
 (require 'pkg-info)
 
@@ -173,6 +176,26 @@ matching the opening character."
         opoint))))
 
 
+;;; Specialized rx
+
+(eval-when-compile
+  ;; TODO
+  (defconst zephir-rx-constituents
+    `(
+      )
+    "Additional special sexps for `zephir-rx'")
+
+  (defmacro zephir-rx (&rest sexps)
+    "Specialized `rx' variant for Zephir Mode."
+    (let ((rx-constituents (append zephir-rx-constituents rx-constituents)))
+      (cond ((null sexps)
+             (error "No regexp"))
+            ((cdr sexps)
+             (rx-to-string `(and ,@sexps) t))
+            (t
+             (rx-to-string (car sexps) t))))))
+
+
 ;;; Navigation
 
 
@@ -221,6 +244,9 @@ This includes setting ' and \" as string delimiters, and setting up
 the comment syntax tokens handle both line style \"//\" and block style
 \"/*\" \"*/\" comments.")
 
+(defvar zephir-font-lock-keywords
+  nil
+  "Font lock keywords for Zephir Mode.")
 
 ;;; Alignment
 
@@ -242,6 +268,7 @@ the comment syntax tokens handle both line style \"//\" and block style
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
   ;; Font locking
+  (setq font-lock-defaults '((zephir-font-lock-keywords) nil nil))
   (setq-local syntax-propertize-function nil))
 
 ;;;###autoload
