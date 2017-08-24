@@ -14,6 +14,7 @@ to [Semantic Versioning][semver] .
 
 ### Changed
 - Now Zephir Mode derived from `prog-mode`
+- Renamed `zephir-mode-website-url` to `zephir-mode-github-url`
 
 ## [0.3.3] - 2017-08-07
 ### Changed

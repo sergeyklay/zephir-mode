@@ -2,7 +2,7 @@
 
 [![Licence](https://img.shields.io/badge/license-GPL_3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.txt)
 [![Travis CI](https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master)](https://travis-ci.org/sergeyklay/zephir-mode)
-[![Coverage Status](https://coveralls.io/repos/github/sergeyklay/zephir-mode/badge.svg?branch=master)](https://coveralls.io/github/sergeyklay/zephir-mode?branch=master)
+[![Coverage](https://coveralls.io/repos/github/sergeyklay/zephir-mode/badge.svg?branch=prog-mode)](https://coveralls.io/github/sergeyklay/zephir-mode?branch=prog-mode)
 [![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)](https://melpa.org/#/zephir-mode)
 [![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)](https://stable.melpa.org/#/zephir-mode)
 

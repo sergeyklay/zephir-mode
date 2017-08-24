@@ -107,7 +107,7 @@
 (defvar zephir-website-url "https://zephir-lang.com"
   "Official website of Zephir programming language.")
 
-(defvar zephir-mode-website-url "https://github.com/sergeyklay/zephir-mode"
+(defvar zephir-mode-repo-url "https://github.com/sergeyklay/zephir-mode"
   "Zephir Mode GitHub page.")
 
 (defvar zephir-mode-hook nil
@@ -295,7 +295,7 @@ the comment syntax tokens handle both line style \"//\" and block style
 (defun zephir-mode-open-github ()
   "Go to the Zephir Mode GitHub page."
   (interactive)
-  (browse-url zephir-mode-website-url))
+  (browse-url zephir-mode-github-url))
 
 ;;;###autoload
 (defun zephir-open-website-home ()
