@@ -264,6 +264,7 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (group identifier))
      2 font-lock-function-name-face))
   "Font lock keywords for Zephir Mode.")
+
 
 ;;; Alignment
 
@@ -280,13 +281,15 @@ the comment syntax tokens handle both line style \"//\" and block style
 (define-derived-mode zephir-mode prog-mode "Zephir" ()
   "A major mode for editing Zephir code."
   :group 'zephir-mode
+  ;; Comment setup
+  (setq-local comment-use-syntax t)
+  (setq-local comment-auto-fill-only-comments t)
   ;; Indentation
   (setq indent-tabs-mode zephir-indent-tabs-mode)
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
   ;; Font locking
-  (setq font-lock-defaults '((zephir-font-lock-keywords) nil nil))
-  (setq-local syntax-propertize-function nil))
+  (setq font-lock-defaults '((zephir-font-lock-keywords) nil nil)))
 
 ;;;###autoload
 (defun zephir-mode-open-github ()
