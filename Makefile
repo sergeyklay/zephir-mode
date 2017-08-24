@@ -87,7 +87,6 @@ test: build
 .PHONY: clean
 clean:
 	$(CASK) clean-elc
-	rm -rf $(ROOT_DIR)/.cask
 
 .PHONY: help
 help: .title

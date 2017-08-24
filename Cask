@@ -1,4 +1,5 @@
-;; -*- mode: Emacs-Lisp -*-
+;; -*- mode: emacs-lisp -*-
+
 (source gnu)
 (source melpa)
 
