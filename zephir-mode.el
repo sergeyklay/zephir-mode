@@ -46,11 +46,8 @@
 ;;   Bug tracking is currently handled using the GitHub issue tracker at
 ;; https://github.com/sergeyklay/zephir-mode/issues
 ;;
-;;   Issues with this code are managed via the project issue management
-;; on GitHub: https://github.com/sergeyklay/zephir-mode/issues?state=open
-;;
 ;;   History is tracked in the Git repository rather than in this file.
-;; See https://github.com/sergeyklay/zephir-mode/commits/master
+;; See https://github.com/sergeyklay/zephir-mode/blob/master/CHANGELOG.md
 ;;
 ;; Usage:
 ;;
@@ -65,7 +62,7 @@
 ;;
 ;; Many options available under Help:Customize
 ;; Options specific to zephir-mode are in
-;;  Programming/Languages/Php
+;;  Programming/Languages/Zephir
 
 ;;; Code:
 

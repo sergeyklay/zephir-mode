@@ -126,16 +126,6 @@ setting up see [MELPA Getting Started][getting-started].
 | `zephir-open-website-home` | Go to the Zephir website. |
 | `zephir-current-class` | Insert current class name if cursor in class context. |
 | `zephir-current-namespace` | Insert current namespace if cursor in namespace context. |
-
-This mode inherit `c-beginning-of-defun` and `c-end-of-defun` from CC Mode but
-it have two replacement functions specifically for Zephir.  Zephir Mode remap
-the commands themselves and not their default key-bindings so that
-zephir-specific versions will work even if the user has reconfigured their keys,
-e.g. if they rebind `c-end-of-defun` to something other than
-<kbd>C-M-e</kbd> .
-
-| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
-| --- | --- |
 | `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
 | `zephir-end-of-defun` | Move to the end of the current or next function. |
 
