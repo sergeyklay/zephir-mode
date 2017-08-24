@@ -106,6 +106,12 @@ class */ public function foo () {}"
                                 (should (eq (zephir-test-face-at 11) 'font-lock-comment-face))
                                 (should-not (zephir-test-face-at 13))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-function-name/1 ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer "function foo"
+                                (should-not (zephir-test-face-at 9))
+                                (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
+                                (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:

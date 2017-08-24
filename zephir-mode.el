@@ -179,11 +179,21 @@ matching the opening character."
 ;;; Specialized rx
 
 (eval-when-compile
-  ;; TODO
   (defconst zephir-rx-constituents
     `(
-      )
-    "Additional special sexps for `zephir-rx'")
+      ;; Identifier.
+      ;; The first character of an identifier may be a dollar sign.
+      ;; After the we expect a letter or an underscore.
+      ;; Then they may contain any alphanumeric character + underscore.
+      (identifier . ,(rx (optional "$")
+                         (one-or-more (any "A-Z" "a-z" "_"))
+                         (zero-or-more (any "A-Z" "a-z" "0-9" "_"))))
+      ;; Function declaraion.
+      (fn-decl . ,(rx line-start
+                      symbol-start
+                      "function"
+                      symbol-end)))
+    "Additional special sexps for `zephir-rx'.")
 
   (defmacro zephir-rx (&rest sexps)
     "Specialized `rx' variant for Zephir Mode."
@@ -245,7 +255,13 @@ the comment syntax tokens handle both line style \"//\" and block style
 \"/*\" \"*/\" comments.")
 
 (defvar zephir-font-lock-keywords
-  nil
+  `(
+    ;; Function names, i.e. `function foo()'.
+    (,(zephir-rx (group fn-decl)
+                 (one-or-more space)
+                 (group identifier)
+                 (zero-or-more space))
+     2 font-lock-function-name-face))
   "Font lock keywords for Zephir Mode.")
 
 ;;; Alignment
