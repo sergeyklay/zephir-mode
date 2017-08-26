@@ -192,12 +192,23 @@ matching the opening character."
       ;; Identifier.
       (identifier . ,(rx (optional "$")
                          (one-or-more (or (syntax word) (syntax symbol)))))
+      ;; Builtin declaraion.
       (builtin-decl . ,(rx symbol-start
                           (or "class" "interface" "namespace")
                           symbol-end))
       ;; Function declaraion.
       (fn-decl . ,(rx symbol-start
                       "function"
+                      symbol-end))
+      ;; Namespace name.
+      (ns-name . ,(rx symbol-start
+                      (optional "$")
+                      (one-or-more (any "A-Z" "a-z"))
+                      (zero-or-more (any "A-Z" "a-z" "_" "0-9"))
+                      (zero-or-more
+                       (and "\\"
+                            (one-or-more (any "A-Z" "a-z"))
+                            (zero-or-more (any "A-Z" "a-z" "_" "0-9"))))
                       symbol-end))
       ;; Abstraction  modifier.
       ;; Class or method may be declared as abstract or final.
@@ -228,6 +239,9 @@ are available:
 
 `fn-decl'
      Function declaraion.
+
+`ns-name'
+     A valid namespace name.
 
 `abstraction'
      Any valid abstraction modifier.
@@ -330,8 +344,7 @@ the comment syntax tokens handle both line style \"//\" and block style
   `(
     ;; Builtin declaration.
     (,(zephir-rx (and line-start
-                      (group (or builtin-decl))
-                      ))
+                      (group (or builtin-decl))))
      1 font-lock-keyword-face)
     ;; Class decclaration.
     ;; Class has its own font lock because it may have "abstract" or "final"
@@ -341,6 +354,12 @@ the comment syntax tokens handle both line style \"//\" and block style
                       (group symbol-start "class" symbol-end)))
      (1 font-lock-keyword-face)
      (2 font-lock-keyword-face))
+    ;; Namespace name
+    (,(zephir-rx line-start
+                 "namespace"
+                 (one-or-more (syntax whitespace))
+                 (group ns-name))
+     1 font-lock-type-face)
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
      (1 font-lock-keyword-face)
