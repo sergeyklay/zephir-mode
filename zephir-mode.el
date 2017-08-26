@@ -104,7 +104,7 @@
 (defvar zephir-website-url "https://zephir-lang.com"
   "Official website of Zephir programming language.")
 
-(defvar zephir-mode-repo-url "https://github.com/sergeyklay/zephir-mode"
+(defvar zephir-mode-github-url "https://github.com/sergeyklay/zephir-mode"
   "Zephir Mode GitHub page.")
 
 (defvar zephir-mode-hook nil
@@ -160,6 +160,10 @@ Return nil, if there is no special context at POS, or one of
         (`?\' 'single-quoted)
         (`?\" 'double-quoted)))))
 
+(defun zephir-in-string-or-comment-p (&optional pos)
+  "Determine whether POS is inside a string or comment."
+  (not (null (zephir-syntax-context pos))))
+
 (defun zephir-in-listlike (re-open-str)
   "If point is in a listlike, return the position of the opening char of it.
 Otherwise return nil.  The RE-OPEN-STR is a regexp string
@@ -179,21 +183,42 @@ matching the opening character."
   (defconst zephir-rx-constituents
     `(
       ;; Identifier.
-      ;; The first character of an identifier may be a dollar sign.
-      ;; After that, we expect a letter or an underscore.
-      ;; The rest may contain any alphanumeric character + underscore.
       (identifier . ,(rx (optional "$")
-                         (one-or-more (any alpha "_"))
-                         (zero-or-more (any alnum "_"))))
+                         (one-or-more (or (syntax word) (syntax symbol)))))
       ;; Function declaraion.
-      (fn-decl . ,(rx line-start
-                      symbol-start
+      (fn-decl . ,(rx symbol-start
                       "function"
-                      symbol-end)))
+                      symbol-end))
+      ;; Abstraction  modifier.
+      ;; Class or method may be declared as abstract or final.
+      (abstraction . ,(rx (or "abstract" "final")))
+      ;; Visibility modifier
+      (visibility . ,(rx (or "internal"
+                             "public"
+                             "protected"
+                             "private"
+                             "scoped"
+                             "inline"))))
     "Additional special sexps for `zephir-rx'.")
 
   (defmacro zephir-rx (&rest sexps)
     "Zephir-specific replacement for `rx'.
+
+In addition to the standard forms of `rx', the following forms
+are available:
+
+`identifier'
+     Any valid identifier with optional dollar sign, e.g. function name,
+     variable name, etc.
+
+`fn-decl'
+     Function declaraion.
+
+`abstraction'
+     Any valid abstraction modifier.
+
+`visibility'
+     Any valid visibility modifier.
 
 See `rx' documentation for more information about REGEXPS param."
     (let ((rx-constituents (append zephir-rx-constituents rx-constituents)))
@@ -206,6 +231,39 @@ See `rx' documentation for more information about REGEXPS param."
 
 
 ;;; Navigation
+
+(defconst zephir-beginning-of-defun-regexp
+  (zephir-rx line-start
+             (zero-or-more (syntax whitespace))
+             (optional "deprecated" (one-or-more (syntax whitespace)))
+             (optional abstraction (one-or-more (syntax whitespace)))
+             (optional visibility (one-or-more (syntax whitespace))
+                       (optional "static" (one-or-more (syntax whitespace))))
+             fn-decl
+             (one-or-more (syntax whitespace))
+             (group identifier)
+             (zero-or-more (syntax whitespace))
+             "(")
+  "Regular expression for a Zephir function.")
+
+(defun zephir-beginning-of-defun-function (&optional arg)
+  "Move to the ARG'th beginning of a block.
+
+Implements Zephir version of `beginning-of-defun-function'."
+  (interactive "p")
+  (let ((arg (or arg 1)))
+    (while (> arg 0)
+      (re-search-backward zephir-beginning-of-defun-regexp nil 'noerror)
+      (setq arg (1- arg)))
+    (while (< arg 0)
+      (end-of-line 1)
+      (let ((opoint (point)))
+        (beginning-of-defun 1)
+        (forward-list 2)
+        (forward-line 1)
+        (if (eq opoint (point))
+            (re-search-forward zephir-beginning-of-defun-regexp nil 'noerror))
+        (setq arg (1+ arg))))))
 
 
 ;;; Indentation
@@ -255,7 +313,7 @@ the comment syntax tokens handle both line style \"//\" and block style
 
 (defvar zephir-font-lock-keywords
   `(
-    ;; Function names, i.e. `function foo()'.
+    ;; Function names, i.e. `function foo'.
     (,(zephir-rx (group fn-decl)
                  (one-or-more space)
                  (group identifier))
@@ -281,6 +339,8 @@ the comment syntax tokens handle both line style \"//\" and block style
   ;; Comment setup
   (setq-local comment-use-syntax t)
   (setq-local comment-auto-fill-only-comments t)
+  ;; Navigation
+  (setq-local beginning-of-defun-function #'zephir-beginning-of-defun-function)
   ;; Indentation
   (setq indent-tabs-mode zephir-indent-tabs-mode)
   ;; Zephir vars are case-sensitive

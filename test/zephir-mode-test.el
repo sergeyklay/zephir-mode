@@ -112,6 +112,40 @@ class */ public function foo () {}"
                                 (should-not (zephir-test-face-at 9))
                                 (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
                                 (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
+
+
+;;;; Navigation
+
+(ert-deftest zephir-mode/beginning-of-defun/1 ()
+  :tags '(moving major-mode)
+  (zephir-test-with-temp-buffer
+   "public function foo () {
+    // body
+}"
+   (search-forward "body")
+   (call-interactively 'beginning-of-defun)
+   (should (= (point) (point-min)))))
+
+(ert-deftest zephir-mode/beginning-of-defun/2 ()
+  :tags '(moving major-mode)
+  (zephir-test-with-temp-buffer
+   "deprectaed internal static function $fetch() {
+    // body
+}"
+   (search-forward "body")
+   (call-interactively 'beginning-of-defun)
+   (should (= (point) (point-min)))))
+
+
+;;;; Major mode definition
+
+(ert-deftest zephir-mode/movement-setup ()
+  :tags '(moving major-mode)
+  (zephir-test-with-temp-buffer
+   "public function foo"
+   (should (local-variable-p 'beginning-of-defun-function))
+   (should (equal beginning-of-defun-function #'zephir-beginning-of-defun-function))))
+
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:

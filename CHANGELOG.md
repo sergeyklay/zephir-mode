@@ -16,6 +16,9 @@ to [Semantic Versioning][semver] .
 - Now Zephir Mode derived from `prog-mode`
 - Renamed `zephir-mode-website-url` to `zephir-mode-github-url`
 
+### Fixed
+- Fixed `zephir-beginning-of-defun-function`
+
 ## [0.3.3] - 2017-08-07
 ### Changed
 - Use lexical binding for zephir-mode
