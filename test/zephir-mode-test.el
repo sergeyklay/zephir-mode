@@ -113,6 +113,13 @@ class */ public function foo () {}"
                                 (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
                                 (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-function-decl/1 ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer "internal function test() -> string"
+                                (should (eq (zephir-test-face-at 10) 'font-lock-keyword-face))
+                                (should (eq (zephir-test-face-at 17) 'font-lock-keyword-face))
+                                (should-not (zephir-test-face-at 18))))
+
 (ert-deftest zephir-mode-syntax-table/fontify-namespaces-and-classes ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer

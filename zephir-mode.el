@@ -254,7 +254,7 @@ See `rx' documentation for more information about REGEXPS param."
              (optional abstraction (one-or-more (syntax whitespace)))
              (optional visibility (one-or-more (syntax whitespace))
                        (optional "static" (one-or-more (syntax whitespace))))
-             fn-decl
+             (group fn-decl)
              (one-or-more (syntax whitespace))
              (group identifier))
   "Regular expression for a Zephir function.")
@@ -343,7 +343,8 @@ the comment syntax tokens handle both line style \"//\" and block style
      (2 font-lock-keyword-face))
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
-     1 font-lock-function-name-face))
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face)))
   "Font lock keywords for Zephir Mode.")
 
 
