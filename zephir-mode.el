@@ -248,7 +248,7 @@ See `rx' documentation for more information about REGEXPS param."
              (group identifier))
   "Regular expression for a Zephir function.")
 
-(defun zephir-beginning-of-defun-function (&optional arg)
+(defun zephir-beginning-of-defun (&optional arg)
   "Move the beginning of the ARGth PHP function from point.
 
 Implements Zephir version of `beginning-of-defun-function'."
@@ -271,13 +271,13 @@ Implements Zephir version of `beginning-of-defun-function'."
             (re-search-forward regexp nil 'noerror))
         (setq arg (1+ arg))))))
 
-(defun zephir-end-of-defun-function (&optional arg)
+(defun zephir-end-of-defun (&optional arg)
   "Move the end of the ARG'th Zephir function from point.
 
 Implements Zephir version of `end-of-defun-function'.  For more
-see `zephir-beginning-of-defun-function'."
+see `zephir-beginning-of-defun'."
   (interactive "p")
-  (zephir-beginning-of-defun-function (- (or arg 1))))
+  (zephir-beginning-of-defun (- (or arg 1))))
 
 
 ;;; Indentation
@@ -352,8 +352,8 @@ the comment syntax tokens handle both line style \"//\" and block style
   (setq-local comment-use-syntax t)
   (setq-local comment-auto-fill-only-comments t)
   ;; Navigation
-  (setq-local beginning-of-defun-function #'zephir-beginning-of-defun-function)
-  (setq-local end-of-defun-function #'zephir-end-of-defun-function)
+  (setq-local beginning-of-defun-function #'zephir-beginning-of-defun)
+  (setq-local end-of-defun-function #'zephir-end-of-defun)
   ;; Indentation
   (setq indent-tabs-mode zephir-indent-tabs-mode)
   ;; Zephir vars are case-sensitive

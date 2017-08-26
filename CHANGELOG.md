@@ -15,8 +15,6 @@ to [Semantic Versioning][semver] .
 ### Changed
 - Now Zephir Mode derived from `prog-mode` instead of `cc-mode`
 - Renamed `zephir-mode-website-url` to `zephir-mode-github-url`
-- Renamed `zephir-end-of-defun` to `zephir-end-of-defun-function`
-- Renamed `zephir-beginning-of-defun` to `zephir-beginning-of-defun-function`
 
 ### Fixed
 - Fixed movement to the beginning or end of the current block

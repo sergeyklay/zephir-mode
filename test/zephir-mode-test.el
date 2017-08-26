@@ -165,8 +165,8 @@ class */ public function foo () {}"
    "public function foo"
    (should (local-variable-p 'beginning-of-defun-function))
    (should (local-variable-p 'end-of-defun-function))
-   (should (equal beginning-of-defun-function #'zephir-beginning-of-defun-function))
-   (should (equal end-of-defun-function #'zephir-end-of-defun-function))))
+   (should (equal beginning-of-defun-function #'zephir-beginning-of-defun))
+   (should (equal end-of-defun-function #'zephir-end-of-defun))))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil
