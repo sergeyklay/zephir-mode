@@ -113,6 +113,21 @@ class */ public function foo () {}"
                                 (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
                                 (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-namespaces-and-classes ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "namespace Foo;
+interface Bar {}
+abstract class Baz extends Buz implements A, B, C {}"
+   (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 10))
+   (should (eq (zephir-test-face-at 16) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 25))
+   (should (eq (zephir-test-face-at 33) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 41))
+   (should (eq (zephir-test-face-at 42) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 47))))
+
 
 ;;;; Navigation
 

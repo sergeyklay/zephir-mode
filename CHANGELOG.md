@@ -20,6 +20,9 @@ to [Semantic Versioning][semver] .
 ### Fixed
 - Fixed movement to the beginning or end of the current block
 
+### Removed
+- Romoved no longer used cusom `zephir-faces` group
+
 ## [0.3.3] - 2017-08-07
 ### Changed
 - Use lexical binding for zephir-mode

@@ -192,13 +192,18 @@ matching the opening character."
       ;; Identifier.
       (identifier . ,(rx (optional "$")
                          (one-or-more (or (syntax word) (syntax symbol)))))
+      (builtin-decl . ,(rx symbol-start
+                          (or "class" "interface" "namespace")
+                          symbol-end))
       ;; Function declaraion.
       (fn-decl . ,(rx symbol-start
                       "function"
                       symbol-end))
       ;; Abstraction  modifier.
       ;; Class or method may be declared as abstract or final.
-      (abstraction . ,(rx (or "abstract" "final")))
+      (abstraction . ,(rx symbol-start
+                          (or "abstract" "final")
+                          symbol-end))
       ;; Visibility modifier
       (visibility . ,(rx (or "internal"
                              "public"
@@ -217,6 +222,9 @@ are available:
 `identifier'
      Any valid identifier with optional dollar sign, e.g. function name,
      variable name, etc.
+
+`builtin-dcl'
+     Any valid builtin declaraion.
 
 `fn-decl'
      Function declaraion.
@@ -283,17 +291,7 @@ see `zephir-beginning-of-defun'."
   (zephir-beginning-of-defun (- (or arg 1))))
 
 
-;;; Indentation
-
-
-;;; Faces
-
-;;;###autoload
-(defgroup zephir-faces nil
-  "Faces used in Zephir Mode"
-  :tag "Zephir Faces"
-  :group 'zephir
-  :group 'faces)
+;;; Indentation code
 
 
 ;;; Font Locking
@@ -330,6 +328,19 @@ the comment syntax tokens handle both line style \"//\" and block style
 
 (defvar zephir-font-lock-keywords
   `(
+    ;; Builtin declaration.
+    (,(zephir-rx (and line-start
+                      (group (or builtin-decl))
+                      ))
+     1 font-lock-keyword-face)
+    ;; Class decclaration.
+    ;; Class has its own font lock because it may have "abstract" or "final"
+    (,(zephir-rx (and line-start
+                      (group abstraction)
+                      (one-or-more (syntax whitespace))
+                      (group symbol-start "class" symbol-end)))
+     (1 font-lock-keyword-face)
+     (2 font-lock-keyword-face))
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
      1 font-lock-function-name-face))
