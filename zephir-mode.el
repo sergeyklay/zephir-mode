@@ -352,7 +352,7 @@ the comment syntax tokens handle both line style \"//\" and block style
                       (group abstraction)
                       (one-or-more (syntax whitespace))
                       (group symbol-start "class" symbol-end)))
-     (1 font-lock-keyword-face)
+     (1 font-lock-preprocessor-face)
      (2 font-lock-keyword-face))
     ;; Namespace name
     (,(zephir-rx line-start

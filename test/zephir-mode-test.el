@@ -131,7 +131,7 @@ abstract class Baz extends Buz implements A, B, C {}"
    (should (eq (zephir-test-face-at 11) 'font-lock-type-face))
    (should (eq (zephir-test-face-at 16) 'font-lock-keyword-face))
    (should-not (zephir-test-face-at 25))
-   (should (eq (zephir-test-face-at 33) 'font-lock-keyword-face))
+   (should (eq (zephir-test-face-at 33) 'font-lock-preprocessor-face))
    (should-not (zephir-test-face-at 41))
    (should (eq (zephir-test-face-at 42) 'font-lock-keyword-face))
    (should-not (zephir-test-face-at 47))))
