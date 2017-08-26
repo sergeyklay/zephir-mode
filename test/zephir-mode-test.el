@@ -136,6 +136,26 @@ class */ public function foo () {}"
    (call-interactively 'beginning-of-defun)
    (should (= (point) (point-min)))))
 
+(ert-deftest zephir-mode/end-of-defun/1 ()
+  :tags '(moving)
+  (zephir-test-with-temp-buffer
+   "public function foo () {
+    // body
+}"
+   (search-forward "body")
+   (call-interactively 'end-of-defun)
+   (should (= (point) (point-max)))))
+
+(ert-deftest zephir-mode/end-of-defun/2 ()
+  :tags '(moving)
+  (zephir-test-with-temp-buffer
+   "deprectaed internal static function $fetch() {
+    // body
+}"
+   (search-forward "body")
+   (call-interactively 'end-of-defun)
+   (should (= (point) (point-max)))))
+
 
 ;;;; Major mode definition
 
@@ -144,7 +164,9 @@ class */ public function foo () {}"
   (zephir-test-with-temp-buffer
    "public function foo"
    (should (local-variable-p 'beginning-of-defun-function))
-   (should (equal beginning-of-defun-function #'zephir-beginning-of-defun-function))))
+   (should (local-variable-p 'end-of-defun-function))
+   (should (equal beginning-of-defun-function #'zephir-beginning-of-defun-function))
+   (should (equal end-of-defun-function #'zephir-end-of-defun-function))))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil

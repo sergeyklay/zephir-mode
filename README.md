@@ -126,8 +126,8 @@ setting up see [MELPA Getting Started][getting-started].
 | `zephir-open-website-home` | Go to the Zephir website. |
 | `zephir-current-class` | Insert current class name if cursor in class context. |
 | `zephir-current-namespace` | Insert current namespace if cursor in namespace context. |
-| `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
-| `zephir-end-of-defun` | Move to the end of the current or next function. |
+| `zephir-beginning-of-defun-function` | Move to the beginning of the current or next function. |
+| `zephir-end-of-defun-function` | Move to the end of the current or next function. |
 
 Any file that matches the glob `*.zep` is automatically opened in `zephir-mode`.
 

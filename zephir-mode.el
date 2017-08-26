@@ -49,6 +49,10 @@
 ;;   History is tracked in the Git repository rather than in this file.
 ;; See https://github.com/sergeyklay/zephir-mode/blob/master/CHANGELOG.md
 ;;
+;; Movement:
+;;   Move to the beginning or end of the current block with
+;;   `beginning-of-defun' (C-M-a) and `end-of-defun' (C-M-e) respectively.
+;;
 ;; Usage:
 ;;
 ;;   Put this file in your Emacs Lisp path (eg. site-lisp) and add to
@@ -245,7 +249,7 @@ See `rx' documentation for more information about REGEXPS param."
   "Regular expression for a Zephir function.")
 
 (defun zephir-beginning-of-defun-function (&optional arg)
-  "Move to the ARG'th beginning of a block.
+  "Move the beginning of the ARGth PHP function from point.
 
 Implements Zephir version of `beginning-of-defun-function'."
   (interactive "p")
@@ -266,6 +270,14 @@ Implements Zephir version of `beginning-of-defun-function'."
         (if (eq opoint (point))
             (re-search-forward regexp nil 'noerror))
         (setq arg (1+ arg))))))
+
+(defun zephir-end-of-defun-function (&optional arg)
+  "Move the end of the ARG'th Zephir function from point.
+
+Implements Zephir version of `end-of-defun-function'.  For more
+see `zephir-beginning-of-defun-function'."
+  (interactive "p")
+  (zephir-beginning-of-defun-function (- (or arg 1))))
 
 
 ;;; Indentation
@@ -341,6 +353,7 @@ the comment syntax tokens handle both line style \"//\" and block style
   (setq-local comment-auto-fill-only-comments t)
   ;; Navigation
   (setq-local beginning-of-defun-function #'zephir-beginning-of-defun-function)
+  (setq-local end-of-defun-function #'zephir-end-of-defun-function)
   ;; Indentation
   (setq indent-tabs-mode zephir-indent-tabs-mode)
   ;; Zephir vars are case-sensitive

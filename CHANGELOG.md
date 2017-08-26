@@ -13,11 +13,13 @@ to [Semantic Versioning][semver] .
 - Amended syntax table (parenthesis, braces and brackets)
 
 ### Changed
-- Now Zephir Mode derived from `prog-mode`
+- Now Zephir Mode derived from `prog-mode` instead of `cc-mode`
 - Renamed `zephir-mode-website-url` to `zephir-mode-github-url`
+- Renamed `zephir-end-of-defun` to `zephir-end-of-defun-function`
+- Renamed `zephir-beginning-of-defun` to `zephir-beginning-of-defun-function`
 
 ### Fixed
-- Fixed `zephir-beginning-of-defun-function`
+- Fixed movement to the beginning or end of the current block
 
 ## [0.3.3] - 2017-08-07
 ### Changed
