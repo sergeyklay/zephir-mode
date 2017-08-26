@@ -117,7 +117,7 @@ class */ public function foo () {}"
 ;;;; Navigation
 
 (ert-deftest zephir-mode/beginning-of-defun/1 ()
-  :tags '(moving major-mode)
+  :tags '(moving)
   (zephir-test-with-temp-buffer
    "public function foo () {
     // body
@@ -127,7 +127,7 @@ class */ public function foo () {}"
    (should (= (point) (point-min)))))
 
 (ert-deftest zephir-mode/beginning-of-defun/2 ()
-  :tags '(moving major-mode)
+  :tags '(moving)
   (zephir-test-with-temp-buffer
    "deprectaed internal static function $fetch() {
     // body
@@ -140,7 +140,7 @@ class */ public function foo () {}"
 ;;;; Major mode definition
 
 (ert-deftest zephir-mode/movement-setup ()
-  :tags '(moving major-mode)
+  :tags '(major-mode)
   (zephir-test-with-temp-buffer
    "public function foo"
    (should (local-variable-p 'beginning-of-defun-function))

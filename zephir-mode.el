@@ -241,9 +241,7 @@ See `rx' documentation for more information about REGEXPS param."
                        (optional "static" (one-or-more (syntax whitespace))))
              fn-decl
              (one-or-more (syntax whitespace))
-             (group identifier)
-             (zero-or-more (syntax whitespace))
-             "(")
+             (group identifier))
   "Regular expression for a Zephir function.")
 
 (defun zephir-beginning-of-defun-function (&optional arg)
@@ -251,9 +249,13 @@ See `rx' documentation for more information about REGEXPS param."
 
 Implements Zephir version of `beginning-of-defun-function'."
   (interactive "p")
-  (let ((arg (or arg 1)))
+  (let ((arg (or arg 1))
+        (regexp (concat
+                 zephir-beginning-of-defun-regexp
+                 (rx (zero-or-more (syntax whitespace)))
+                 "(")))
     (while (> arg 0)
-      (re-search-backward zephir-beginning-of-defun-regexp nil 'noerror)
+      (re-search-backward regexp nil 'noerror)
       (setq arg (1- arg)))
     (while (< arg 0)
       (end-of-line 1)
@@ -262,7 +264,7 @@ Implements Zephir version of `beginning-of-defun-function'."
         (forward-list 2)
         (forward-line 1)
         (if (eq opoint (point))
-            (re-search-forward zephir-beginning-of-defun-regexp nil 'noerror))
+            (re-search-forward regexp nil 'noerror))
         (setq arg (1+ arg))))))
 
 
@@ -314,10 +316,8 @@ the comment syntax tokens handle both line style \"//\" and block style
 (defvar zephir-font-lock-keywords
   `(
     ;; Function names, i.e. `function foo'.
-    (,(zephir-rx (group fn-decl)
-                 (one-or-more space)
-                 (group identifier))
-     2 font-lock-function-name-face))
+    (,zephir-beginning-of-defun-regexp
+     1 font-lock-function-name-face))
   "Font lock keywords for Zephir Mode.")
 
 
