@@ -8,13 +8,14 @@ to [Semantic Versioning][semver] .
 ## [Unreleased]
 ### Added
 - Added `zephir-indent-tabs-mode` user variable to setup indentation
+- Added `zephir-open-zephir-github` function
+- Amended syntax table (parenthesis, braces and brackets)
 - Amended `c-primitive-type-kwds` (`uchar`, `ulong`, etc)
 - Amended `c-protection-kwds` (`internal`)
-- Amended syntax table (parenthesis, braces and brackets)
 
 ### Changed
 - Now Zephir Mode derived from `prog-mode` instead of `cc-mode`
-- Renamed `zephir-mode-website-url` to `zephir-mode-github-url`
+- Reanmed `zephir-mode-open-github` function to `zephir-open-mode-github`
 
 ### Fixed
 - Fixed movement to the beginning or end of the current block

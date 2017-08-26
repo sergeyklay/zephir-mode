@@ -100,16 +100,19 @@
   :tag "Zephir"
   :prefix "zephir-"
   :group 'languages
-  :link '(url-link :tag "GitHub" "https://github.com/sergeyklay/zephir-mode")
+  :link '(url-link :tag "GitHub Page" "https://github.com/sergeyklay/zephir-mode")
   :link '(url-link :tag "Zephir Forum" "https://forum.zephir-lang.com")
-  :link '(url-link :tag "Official Site" "https://zephir-lang.com")
+  :link '(url-link :tag "Zephir Site" "https://zephir-lang.com")
   :link '(emacs-commentary-link :tag "Commentary" "zephir-mode"))
 
-(defvar zephir-website-url "https://zephir-lang.com"
+(defvar zephir-zephir-website "https://zephir-lang.com"
   "Official website of Zephir programming language.")
 
-(defvar zephir-mode-github-url "https://github.com/sergeyklay/zephir-mode"
-  "Zephir Mode GitHub page.")
+(defvar zephir-github-mode "https://github.com/sergeyklay/zephir-mode"
+  "Zephir Mode GitHub Page.")
+
+(defvar zephir-github-zephir "https://github.com/phalcon/zephir"
+  "Zephir GitHub Page.")
 
 (defvar zephir-mode-hook nil
   "List of functions to call when entering Zephir Mode.")
@@ -336,9 +339,6 @@ the comment syntax tokens handle both line style \"//\" and block style
 ;;; Alignment
 
 
-;;; Dealing with strings
-
-
 ;;; Imenu
 
 
@@ -362,16 +362,22 @@ the comment syntax tokens handle both line style \"//\" and block style
   (setq font-lock-defaults '((zephir-font-lock-keywords) nil nil)))
 
 ;;;###autoload
-(defun zephir-mode-open-github ()
+(defun zephir-open-mode-github ()
   "Go to the Zephir Mode GitHub page."
   (interactive)
-  (browse-url zephir-mode-github-url))
+  (browse-url zephir-github-mode))
+
+;;;###autoload
+(defun zephir-open-zephir-github ()
+  "Go to the Zephir Documentstion Website."
+  (interactive)
+  (browse-url zephir-github-zephir))
 
 ;;;###autoload
 (defun zephir-open-website-home ()
-  "Go to the Zephir website."
+  "Go to the Zephir Website."
   (interactive)
-  (browse-url zephir-website-url))
+  (browse-url zephir-zephir-website))
 
 
 ;; Invoke zephir-mode when appropriate

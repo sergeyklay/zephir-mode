@@ -122,8 +122,9 @@ setting up see [MELPA Getting Started][getting-started].
 | ---                                      | ---                                                      |
 | `zephir-mode`                            | Switches to Zephir Mode.                                 |
 | `zephir-mode-version`                    | Print version info for Zephir Mode.                      |
-| `zephir-mode-open-github`                | Go to the Zephir Mode GitHub page.                       |
-| `zephir-open-website-home`               | Go to the Zephir website.                                |
+| `zephir-open-mode-github`                | Go to the Zephir Mode GitHub Page.                       |
+| `zephir-open-zephir-github`              | Go to the Zephir GitHub Page.                            |
+| `zephir-open-website-home`               | Go to the Zephir Website.                                |
 | `zephir-current-class`                   | Insert current class name if cursor in class context.    |
 | `zephir-current-namespace`               | Insert current namespace if cursor in namespace context. |
 | `zephir-beginning-of-defun`              | Move to the beginning of the current or next function.   |
