@@ -193,6 +193,17 @@ abstract class Baz extends Buz implements A, B, C {}"
    (call-interactively 'beginning-of-defun)
    (should (= (point) (point-min)))))
 
+(ert-deftest zephir-mode/beginning-of-defun/3 ()
+  :tags '(moving)
+  (zephir-test-with-temp-buffer
+   "// Some comment
+public FuncTion CamelCased () {
+    // body
+}"
+   (search-forward "body")
+   (call-interactively 'beginning-of-defun)
+   (should (= (point) (point-min)))))
+
 (ert-deftest zephir-mode/end-of-defun/1 ()
   :tags '(moving)
   (zephir-test-with-temp-buffer
@@ -209,6 +220,18 @@ abstract class Baz extends Buz implements A, B, C {}"
    "deprectaed internal static function $fetch() {
     // body
 }"
+   (search-forward "body")
+   (call-interactively 'end-of-defun)
+   (should (= (point) (point-max)))))
+
+(ert-deftest zephir-mode/end-of-defun/3 ()
+  :tags '(moving)
+  (zephir-test-with-temp-buffer
+   "// Some comment
+public FuncTion CamelCased () {
+    // body
+}
+"
    (search-forward "body")
    (call-interactively 'end-of-defun)
    (should (= (point) (point-max)))))

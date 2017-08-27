@@ -296,7 +296,8 @@ Implements Zephir version of `beginning-of-defun-function'."
         (regexp (concat
                  zephir-beginning-of-defun-regexp
                  (rx (zero-or-more (syntax whitespace)))
-                 "(")))
+                 "("))
+        case-fold-search)
     (while (> arg 0)
       (re-search-backward regexp nil 'noerror)
       (setq arg (1- arg)))
