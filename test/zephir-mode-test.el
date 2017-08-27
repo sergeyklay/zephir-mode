@@ -111,11 +111,11 @@ class */ public function foo () {}"
   (zephir-test-with-temp-buffer
    "protected foo = null;
 public bar NULL;
-let baz = Null;"
+let baz = false;"
    (should (eq (zephir-test-face-at 17) 'font-lock-constant-face))
    (should (eq (zephir-test-face-at 34) 'font-lock-constant-face))
    (should (eq (zephir-test-face-at 50) 'font-lock-constant-face))
-   (should-not (zephir-test-face-at 54))))
+   (should-not (zephir-test-face-at 55))))
 
 (ert-deftest zephir-mode-syntax-table/fontify-function-name/1 ()
   :tags '(fontification syntax-table)
@@ -123,6 +123,29 @@ let baz = Null;"
                                 (should-not (zephir-test-face-at 9))
                                 (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
                                 (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
+
+(ert-deftest zephir-mode-syntax-table/fontify-constants ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "const FOO = 4;
+__FILE__
+x__FOO__x
+xFOOx
+self::FOO
+self::__CONST__
+qwerty"
+   (should-not (zephir-test-face-at 6))
+   (should (eq (zephir-test-face-at 7) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 10))
+   (should (eq (zephir-test-face-at 16) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 25))
+   (should-not (zephir-test-face-at 28))
+   (should-not (zephir-test-face-at 32))
+   (should-not (zephir-test-face-at 35))
+   (should (eq (zephir-test-face-at 47) 'font-lock-constant-face))
+   (should (eq (zephir-test-face-at 57) 'font-lock-constant-face))
+   (should (eq (zephir-test-face-at 65) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 67))))
 
 (ert-deftest zephir-mode-syntax-table/fontify-function-decl/1 ()
   :tags '(fontification syntax-table)

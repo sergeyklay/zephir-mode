@@ -121,15 +121,6 @@
   :group 'zephir
   :safe 'booleanp)
 
-(defcustom zephir-font-lock-keywords-case-fold-search t
-  "Case-insensitive highlighting Zephir code.
-
-Non-nil means `zephir-mode' will hilight keywords in a case insensitive
-way.  This variable is t by default."
-  :type 'boolean
-  :group 'zephir
-  :safe 'booleanp)
-
 
 ;;; Version information
 
@@ -203,10 +194,15 @@ matching the opening character."
       (builtin-decl . ,(rx symbol-start
                           (or "class" "interface" "namespace")
                           symbol-end))
-      ;; Constants
-      (boolean . ,(rx symbol-start
-                      (or "true" "false" "null")
+      ;; Predefined boolean constants
+      (bool-const . ,(rx symbol-start
+                      (or "true" "false")
                       symbol-end))
+      ;; Constants
+      (constant . ,(rx symbol-start
+                       (zero-or-more (or (any upper) ?_))
+                       (one-or-more (any upper upper digit ?_))
+                       symbol-end))
       ;; Function declaraion.
       (fn-decl . ,(rx symbol-start
                       "function"
@@ -248,8 +244,12 @@ are available:
 `builtin-dcl'
      Any valid builtin declaraion.
 
+`bool-const'
+     Predefined boolean constants.
+
 `constant'
-     Any valid constant name.
+     A valid constant name.
+     By convention, constant identifiers are always uppercase.
 
 `fn-decl'
      A function declaraion.
@@ -374,8 +374,14 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (one-or-more (syntax whitespace))
                  (group ns-name))
      1 font-lock-type-face)
+    ;; Booleans
+    (,(zephir-rx (group bool-const))
+     1 font-lock-constant-face)
     ;; Constants
-    (,(zephir-rx (group boolean))
+    (,(zephir-rx (group constant))
+     1 font-lock-constant-face)
+    ;; NULL
+    (,(rx (group symbol-start "null" symbol-end))
      1 font-lock-constant-face)
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
@@ -404,11 +410,8 @@ the comment syntax tokens handle both line style \"//\" and block style
   (setq-local end-of-defun-function #'zephir-end-of-defun)
   ;; Indentation
   (setq indent-tabs-mode zephir-indent-tabs-mode)
-  ;; Zephir vars are case-sensitive
-  (setq case-fold-search t)
   ;; Font locking
-  (setq font-lock-defaults '((zephir-font-lock-keywords)
-                             nil zephir-font-lock-keywords-case-fold-search)))
+  (setq font-lock-defaults '((zephir-font-lock-keywords) nil nil)))
 
 ;;;###autoload
 (defun zephir-open-mode-github ()
