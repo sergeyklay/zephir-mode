@@ -228,7 +228,16 @@ matching the opening character."
                              "protected"
                              "private"
                              "scoped"
-                             "inline"))))
+                             "inline")))
+      (primitives . ,(rx (and word-start
+                              (or "int" "int" "uint"
+                                  "bool" "boolean"
+                                  "float" "double"
+                                  "long" "ulong"
+                                  "char" "uchar" "string"
+                                  "resource"
+                                  "var" "void" "array")
+                              word-end))))
     "Additional special sexps for `zephir-rx'.")
 
   (defmacro zephir-rx (&rest sexps)
@@ -262,6 +271,9 @@ are available:
 
 `visibility'
      Any valid visibility modifier.
+
+`primitives'
+     Any valid primitive type keywords.
 
 See `rx' documentation for more information about REGEXPS param."
     (let ((rx-constituents (append zephir-rx-constituents rx-constituents)))
@@ -391,7 +403,12 @@ the comment syntax tokens handle both line style \"//\" and block style
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
      (1 font-lock-keyword-face)
-     (2 font-lock-function-name-face)))
+     (2 font-lock-function-name-face))
+    ;; Type primitives
+    (,(zephir-rx (not (any ?_))
+                 (group primitives)
+                 (not (any ?_)))
+     1 font-lock-type-face))
   "Font lock keywords for Zephir Mode.")
 
 

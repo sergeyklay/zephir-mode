@@ -117,6 +117,20 @@ let baz = false;"
    (should (eq (zephir-test-face-at 50) 'font-lock-constant-face))
    (should-not (zephir-test-face-at 55))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-primitives ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "function a(string b) {}
+function b (string! a) -> int {}
+function c (int a, var b) {}"
+   (should (eq (zephir-test-face-at 12) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 37) 'font-lock-type-face))
+   (should-not (zephir-test-face-at 43))
+   (should (eq (zephir-test-face-at 51) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 70) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 77) 'font-lock-type-face))
+   (should-not (zephir-test-face-at 80))))
+
 (ert-deftest zephir-mode-syntax-table/fontify-function-name/1 ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer "function foo"
