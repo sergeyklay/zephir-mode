@@ -106,6 +106,17 @@ class */ public function foo () {}"
                                 (should (eq (zephir-test-face-at 11) 'font-lock-comment-face))
                                 (should-not (zephir-test-face-at 13))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-builtin-constants ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "protected foo = null;
+public bar NULL;
+let baz = Null;"
+   (should (eq (zephir-test-face-at 17) 'font-lock-constant-face))
+   (should (eq (zephir-test-face-at 34) 'font-lock-constant-face))
+   (should (eq (zephir-test-face-at 50) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 54))))
+
 (ert-deftest zephir-mode-syntax-table/fontify-function-name/1 ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer "function foo"

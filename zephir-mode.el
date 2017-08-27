@@ -49,9 +49,8 @@
 ;;   History is tracked in the Git repository rather than in this file.
 ;; See https://github.com/sergeyklay/zephir-mode/blob/master/CHANGELOG.md
 ;;
-;; Movement:
-;;   Move to the beginning or end of the current block with
-;;   `beginning-of-defun' (C-M-a) and `end-of-defun' (C-M-e) respectively.
+;;   Movement: Move to the beginning or end of the current block with
+;; `beginning-of-defun' (C-M-a) and `end-of-defun' (C-M-e) respectively.
 ;;
 ;; Usage:
 ;;
@@ -65,8 +64,7 @@
 ;;     '(lambda () (define-abbrev zephir-mode-abbrev-table "ex" "extends")))
 ;;
 ;; Many options available under Help:Customize
-;; Options specific to zephir-mode are in
-;;  Programming/Languages/Zephir
+;; Options specific to zephir-mode are in Programming/Languages/Zephir
 
 ;;; Code:
 
@@ -119,6 +117,15 @@
 
 (defcustom zephir-indent-tabs-mode t
   "Indentation can insert tabs in Zephir Mode if this is non-nil."
+  :type 'boolean
+  :group 'zephir
+  :safe 'booleanp)
+
+(defcustom zephir-font-lock-keywords-case-fold-search t
+  "Case-insensitive highlighting Zephir code.
+
+Non-nil means `zephir-mode' will hilight keywords in a case insensitive
+way.  This variable is t by default."
   :type 'boolean
   :group 'zephir
   :safe 'booleanp)
@@ -196,6 +203,10 @@ matching the opening character."
       (builtin-decl . ,(rx symbol-start
                           (or "class" "interface" "namespace")
                           symbol-end))
+      ;; Constants
+      (boolean . ,(rx symbol-start
+                      (or "true" "false" "null")
+                      symbol-end))
       ;; Function declaraion.
       (fn-decl . ,(rx symbol-start
                       "function"
@@ -237,8 +248,11 @@ are available:
 `builtin-dcl'
      Any valid builtin declaraion.
 
+`constant'
+     Any valid constant name.
+
 `fn-decl'
-     Function declaraion.
+     A function declaraion.
 
 `ns-name'
      A valid namespace name.
@@ -360,6 +374,9 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (one-or-more (syntax whitespace))
                  (group ns-name))
      1 font-lock-type-face)
+    ;; Constants
+    (,(zephir-rx (group boolean))
+     1 font-lock-constant-face)
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
      (1 font-lock-keyword-face)
@@ -390,7 +407,8 @@ the comment syntax tokens handle both line style \"//\" and block style
   ;; Zephir vars are case-sensitive
   (setq case-fold-search t)
   ;; Font locking
-  (setq font-lock-defaults '((zephir-font-lock-keywords) nil nil)))
+  (setq font-lock-defaults '((zephir-font-lock-keywords)
+                             nil zephir-font-lock-keywords-case-fold-search)))
 
 ;;;###autoload
 (defun zephir-open-mode-github ()
