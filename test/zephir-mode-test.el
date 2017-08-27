@@ -196,10 +196,10 @@ abstract class Baz extends Buz implements A, B, C {}"
 (ert-deftest zephir-mode/beginning-of-defun/3 ()
   :tags '(moving)
   (zephir-test-with-temp-buffer
-   "// Some comment
-public FuncTion CamelCased () {
+   "public FuncTion CamelCased () {
     // body
-}"
+}
+"
    (search-forward "body")
    (call-interactively 'beginning-of-defun)
    (should (= (point) (point-min)))))
@@ -209,7 +209,8 @@ public FuncTion CamelCased () {
   (zephir-test-with-temp-buffer
    "public function foo () {
     // body
-}"
+}
+"
    (search-forward "body")
    (call-interactively 'end-of-defun)
    (should (= (point) (point-max)))))
@@ -217,9 +218,10 @@ public FuncTion CamelCased () {
 (ert-deftest zephir-mode/end-of-defun/2 ()
   :tags '(moving)
   (zephir-test-with-temp-buffer
-   "deprectaed internal static function $fetch() {
+   "deprectaed internal static function $fetch () {
     // body
-}"
+}
+"
    (search-forward "body")
    (call-interactively 'end-of-defun)
    (should (= (point) (point-max)))))
@@ -227,8 +229,8 @@ public FuncTion CamelCased () {
 (ert-deftest zephir-mode/end-of-defun/3 ()
   :tags '(moving)
   (zephir-test-with-temp-buffer
-   "// Some comment
-public FuncTion CamelCased () {
+   "public FuncTion CamelCased ()
+{
     // body
 }
 "
