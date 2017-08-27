@@ -381,8 +381,12 @@ the comment syntax tokens handle both line style \"//\" and block style
     ;; Constants
     (,(zephir-rx (group constant))
      1 font-lock-constant-face)
-    ;; NULL
+    ;; null
     (,(rx (group symbol-start "null" symbol-end))
+     1 font-lock-constant-face)
+    ;; Highlight special variables
+    (,(rx (group word-start "this" word-end)
+          (zero-or-more "->" (syntax word)))
      1 font-lock-constant-face)
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp

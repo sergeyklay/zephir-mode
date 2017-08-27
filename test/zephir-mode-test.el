@@ -124,6 +124,19 @@ let baz = false;"
                                 (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
                                 (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-this-call ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "this; this->var; this->_method(); this->method();"
+   (should (eq (zephir-test-face-at 1) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 5))
+   (should (eq (zephir-test-face-at 7) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 11))
+   (should (eq (zephir-test-face-at 18) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 22))
+   (should (eq (zephir-test-face-at 35) 'font-lock-constant-face))
+   (should-not (zephir-test-face-at 39))))
+
 (ert-deftest zephir-mode-syntax-table/fontify-constants ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
