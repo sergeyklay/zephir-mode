@@ -230,13 +230,16 @@ matching the opening character."
                              "scoped"
                              "inline")))
       (primitives . ,(rx (and word-start
-                              (or "int" "int" "uint"
-                                  "bool" "boolean"
+                              (or "int"   "uint"
+                                  "bool"  "boolean"
                                   "float" "double"
-                                  "long" "ulong"
-                                  "char" "uchar" "string"
+                                  "long"  "ulong"
+                                  "char"  "uchar"
+                                  "string"
                                   "resource"
-                                  "var" "void" "array")
+                                  "var"
+                                  "void"
+                                  "array")
                               word-end))))
     "Additional special sexps for `zephir-rx'.")
 
@@ -387,6 +390,23 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (one-or-more (syntax whitespace))
                  (group ns-name))
      1 font-lock-type-face)
+    ;; use Foo
+    (,(zephir-rx line-start
+                 (group word-start "use" word-end)
+                 (one-or-more (syntax whitespace))
+                 (group (optional "\\")
+                        (optional "$")
+                        ns-name))
+     (1 font-lock-keyword-face)
+     (2 font-lock-type-face))
+    ;; Highlight class name after "use .. as"
+    (,(zephir-rx ns-name
+                 (one-or-more (syntax whitespace))
+                 (group word-start "as" word-end)
+                 (one-or-more (syntax whitespace))
+                 (group identifier))
+     (1 font-lock-keyword-face)
+     (2 font-lock-type-face))
     ;; Booleans
     (,(zephir-rx (group bool-const))
      1 font-lock-constant-face)
@@ -400,6 +420,9 @@ the comment syntax tokens handle both line style \"//\" and block style
     (,(rx (group word-start "this" word-end)
           (zero-or-more "->" (syntax word)))
      1 font-lock-constant-face)
+    ;; Visibility
+    (,(zephir-rx (group symbol-start visibility symbol-end))
+     (1 font-lock-keyword-face))
     ;; Function names, i.e. `function foo'.
     (,zephir-beginning-of-defun-regexp
      (1 font-lock-keyword-face)

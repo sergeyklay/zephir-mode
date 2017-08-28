@@ -90,6 +90,7 @@ POS"
 (ert-deftest zephir-mode-syntax-table/fontify-line-comment ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer "// class
+
 public function foo () {}"
                                 (should (eq (zephir-test-face-at 3) 'font-lock-comment-face))
                                 (should (eq (zephir-test-face-at 7) 'font-lock-comment-face))
@@ -99,7 +100,7 @@ public function foo () {}"
 (ert-deftest zephir-mode-syntax-table/fontify-c-style-comment ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer "/*
-class */ public function foo () {}"
+class */  public function foo () {}"
                                 (should (eq (zephir-test-face-at 1) 'font-lock-comment-face))
                                 (should (eq (zephir-test-face-at 4) 'font-lock-comment-face))
                                 (should (eq (zephir-test-face-at 8) 'font-lock-comment-face))
@@ -137,6 +138,29 @@ function c (int a, var b) {}"
                                 (should-not (zephir-test-face-at 9))
                                 (should (eq (zephir-test-face-at 10) 'font-lock-function-name-face))
                                 (should (eq (zephir-test-face-at 12) 'font-lock-function-name-face))))
+
+(ert-deftest zephir-mode-syntax-table/fontify-visibility ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "
+public foo = 45;
+protected static function abc ();
+abstract public function xyz ();
+internal function abc();
+scoped function aaa();
+inline class Re {}"
+   (should-not (zephir-test-face-at 1))
+   (should (eq (zephir-test-face-at 2) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 8))
+   (should (eq (zephir-test-face-at 19) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 28))
+   (should (eq (zephir-test-face-at 62) 'font-lock-keyword-face))
+   (should (eq (zephir-test-face-at 86) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 94))
+   (should (eq (zephir-test-face-at 111) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 117))
+   (should (eq (zephir-test-face-at 134) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 140))))
 
 (ert-deftest zephir-mode-syntax-table/fontify-this-call ()
   :tags '(fontification syntax-table)
