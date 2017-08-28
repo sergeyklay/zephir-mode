@@ -188,7 +188,7 @@ matching the opening character."
   (defconst zephir-rx-constituents
     `(
       ;; Identifier.
-      (identifier . ,(rx (optional "$")
+      (identifier . ,(rx (optional ?$)
                          (one-or-more (or (syntax word) (syntax symbol)))))
       ;; Builtin declaraion.
       (builtin-decl . ,(rx symbol-start
@@ -200,8 +200,8 @@ matching the opening character."
                       symbol-end))
       ;; Constants
       (constant . ,(rx symbol-start
-                       (zero-or-more (or (any upper) ?_))
-                       (one-or-more (any upper upper digit ?_))
+                       (any "A-Z" ?_)
+                       (one-or-more (any "A-Z" "0-9" ?_))
                        symbol-end))
       ;; Function declaraion.
       (fn-decl . ,(rx symbol-start
@@ -209,13 +209,13 @@ matching the opening character."
                       symbol-end))
       ;; Namespace name.
       (ns-name . ,(rx symbol-start
-                      (optional "$")
+                      (optional ?$)
                       (one-or-more (any "A-Z" "a-z"))
-                      (zero-or-more (any "A-Z" "a-z" "_" "0-9"))
+                      (zero-or-more (any "A-Z" "a-z" "0-9" ?_))
                       (zero-or-more
                        (and "\\"
                             (one-or-more (any "A-Z" "a-z"))
-                            (zero-or-more (any "A-Z" "a-z" "_" "0-9"))))
+                            (zero-or-more (any "A-Z" "a-z" "0-9" ?_))))
                       symbol-end))
       ;; Abstraction  modifier.
       ;; Class or method may be declared as abstract or final.
@@ -223,10 +223,10 @@ matching the opening character."
                           (or "abstract" "final")
                           symbol-end))
       ;; Visibility modifier
-      (visibility . ,(rx (or "internal"
-                             "public"
+      (visibility . ,(rx (or "public"
                              "protected"
                              "private"
+                             "internal"
                              "scoped"
                              "inline")))
       (primitives . ,(rx (and word-start
@@ -395,7 +395,7 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (group word-start "use" word-end)
                  (one-or-more (syntax whitespace))
                  (group (optional "\\")
-                        (optional "$")
+                        (optional ?$)
                         ns-name))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
