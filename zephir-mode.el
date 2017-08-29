@@ -188,8 +188,11 @@ matching the opening character."
   (defconst zephir-rx-constituents
     `(
       ;; Identifier.
-      (identifier . ,(rx (optional ?$)
-                         (one-or-more (or (syntax word) (syntax symbol)))))
+      (identifier . ,(rx symbol-start
+                         (optional ?$)
+                         (any "A-Z" "a-z" ?_)
+                         (zero-or-more (any "A-Z" "a-z" "0-9" ?_))
+                         symbol-end))
       ;; Builtin declaraion.
       (builtin-decl . ,(rx symbol-start
                           (or "class" "interface" "namespace")
@@ -201,7 +204,7 @@ matching the opening character."
       ;; Constants
       (constant . ,(rx symbol-start
                        (any "A-Z" ?_)
-                       (one-or-more (any "A-Z" "0-9" ?_))
+                       (+ (any "A-Z" "0-9" ?_))
                        symbol-end))
       ;; Function declaraion.
       (fn-decl . ,(rx symbol-start
@@ -210,12 +213,12 @@ matching the opening character."
       ;; Namespace name.
       (ns-name . ,(rx symbol-start
                       (optional ?$)
-                      (one-or-more (any "A-Z" "a-z"))
-                      (zero-or-more (any "A-Z" "a-z" "0-9" ?_))
+                      (any "A-Z" "a-z" ?_)
+                      (+ (any "A-Z" "a-z" "0-9" ?_))
                       (zero-or-more
                        (and "\\"
-                            (one-or-more (any "A-Z" "a-z"))
-                            (zero-or-more (any "A-Z" "a-z" "0-9" ?_))))
+                            (any "A-Z" "a-z" ?_)
+                            (+ (any "A-Z" "a-z" "0-9" ?_))))
                       symbol-end))
       ;; Abstraction  modifier.
       ;; Class or method may be declared as abstract or final.
@@ -291,15 +294,20 @@ See `rx' documentation for more information about REGEXPS param."
 ;;; Navigation
 
 (defconst zephir-beginning-of-defun-regexp
+  ;; FIXME
+  ;; function _()
+  ;; function $_()
+  ;; function $a()
   (zephir-rx line-start
              (zero-or-more (syntax whitespace))
-             (optional "deprecated" (one-or-more (syntax whitespace)))
-             (optional abstraction (one-or-more (syntax whitespace)))
-             (optional visibility (one-or-more (syntax whitespace))
-                       (optional "static" (one-or-more (syntax whitespace))))
+             (optional "deprecated" (+ (syntax whitespace)))
+             (optional abstraction (+ (syntax whitespace)))
+             (optional visibility (+ (syntax whitespace))
+                       (optional "static" (+ (syntax whitespace))))
              (group fn-decl)
-             (one-or-more (syntax whitespace))
-             (group identifier))
+             (+ (syntax whitespace))
+             (group identifier)
+             (zero-or-more (syntax whitespace)))
   "Regular expression for a Zephir function.")
 
 (defun zephir-beginning-of-defun (&optional arg)
@@ -308,10 +316,7 @@ See `rx' documentation for more information about REGEXPS param."
 Implements Zephir version of `beginning-of-defun-function'."
   (interactive "p")
   (let ((arg (or arg 1))
-        (regexp (concat
-                 zephir-beginning-of-defun-regexp
-                 (rx (zero-or-more (syntax whitespace)))
-                 "("))
+        (regexp (concat zephir-beginning-of-defun-regexp "("))
         (case-fold-search t))
     (while (> arg 0)
       (re-search-backward regexp nil 'noerror)
@@ -380,20 +385,20 @@ the comment syntax tokens handle both line style \"//\" and block style
     ;; Class has its own font lock because it may have "abstract" or "final"
     (,(zephir-rx (and line-start
                       (group abstraction)
-                      (one-or-more (syntax whitespace))
+                      (+ (syntax whitespace))
                       (group symbol-start "class" symbol-end)))
      (1 font-lock-preprocessor-face)
      (2 font-lock-keyword-face))
     ;; Namespace name
     (,(zephir-rx line-start
                  "namespace"
-                 (one-or-more (syntax whitespace))
+                 (+ (syntax whitespace))
                  (group ns-name))
      1 font-lock-type-face)
     ;; use Foo
     (,(zephir-rx line-start
-                 (group word-start "use" word-end)
-                 (one-or-more (syntax whitespace))
+                 (group symbol-start "use" symbol-end)
+                 (+ (syntax whitespace))
                  (group (optional "\\")
                         (optional ?$)
                         ns-name))
@@ -401,9 +406,9 @@ the comment syntax tokens handle both line style \"//\" and block style
      (2 font-lock-type-face))
     ;; Highlight class name after "use .. as"
     (,(zephir-rx ns-name
-                 (one-or-more (syntax whitespace))
-                 (group word-start "as" word-end)
-                 (one-or-more (syntax whitespace))
+                 (+ (syntax whitespace))
+                 (group symbol-start "as" symbol-end)
+                 (+ (syntax whitespace))
                  (group identifier))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
@@ -417,8 +422,8 @@ the comment syntax tokens handle both line style \"//\" and block style
     (,(rx (group symbol-start "null" symbol-end))
      1 font-lock-constant-face)
     ;; Highlight special variables
-    (,(rx (group word-start "this" word-end)
-          (zero-or-more "->" (syntax word)))
+    (,(zephir-rx (group symbol-start "this" word-end)
+          (zero-or-more "->" identifier))
      1 font-lock-constant-face)
     ;; Visibility
     (,(zephir-rx (group symbol-start visibility symbol-end))
