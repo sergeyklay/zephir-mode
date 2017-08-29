@@ -205,6 +205,17 @@ qwerty"
                                 (should (eq (zephir-test-face-at 17) 'font-lock-keyword-face))
                                 (should-not (zephir-test-face-at 18))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-import/1 ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "use Super;"
+   (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
+   (should (eq (zephir-test-face-at 3) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 4))
+   (should (eq (zephir-test-face-at 5) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 9) 'font-lock-type-face))
+   (should-not (zephir-test-face-at 10))))
+
 (ert-deftest zephir-mode-syntax-table/fontify-namespaces-and-classes ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
