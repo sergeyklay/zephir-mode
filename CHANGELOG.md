@@ -10,8 +10,6 @@ to [Semantic Versioning][semver] .
 - Added `zephir-indent-tabs-mode` user variable to setup indentation
 - Added `zephir-open-zephir-github` function
 - Amended syntax table (parenthesis, braces and brackets)
-- Amended `c-primitive-type-kwds` (`uchar`, `ulong`, etc)
-- Amended `c-protection-kwds` (`internal`)
 
 ### Changed
 - Now Zephir Mode derived from `prog-mode` instead of `cc-mode`
@@ -22,6 +20,7 @@ to [Semantic Versioning][semver] .
 
 ### Removed
 - Romoved no longer used cusom `zephir-faces` group
+- Removed dollar sign as an expression prefix for variables
 
 ## [0.3.3] - 2017-08-07
 ### Changed

@@ -181,6 +181,7 @@ matching the opening character."
                    (looking-at-p re-open-str)))
         opoint))))
 
+
 
 ;;; Specialized rx
 
@@ -294,10 +295,6 @@ See `rx' documentation for more information about REGEXPS param."
 ;;; Navigation
 
 (defconst zephir-beginning-of-defun-regexp
-  ;; FIXME
-  ;; function _()
-  ;; function $_()
-  ;; function $a()
   (zephir-rx line-start
              (zero-or-more (syntax whitespace))
              (optional "deprecated" (+ (syntax whitespace)))
@@ -307,7 +304,8 @@ See `rx' documentation for more information about REGEXPS param."
              (group fn-decl)
              (+ (syntax whitespace))
              (group identifier)
-             (zero-or-more (syntax whitespace)))
+             (zero-or-more (syntax whitespace))
+             "(")
   "Regular expression for a Zephir function.")
 
 (defun zephir-beginning-of-defun (&optional arg)
@@ -316,10 +314,9 @@ See `rx' documentation for more information about REGEXPS param."
 Implements Zephir version of `beginning-of-defun-function'."
   (interactive "p")
   (let ((arg (or arg 1))
-        (regexp (concat zephir-beginning-of-defun-regexp "("))
         (case-fold-search t))
     (while (> arg 0)
-      (re-search-backward regexp nil 'noerror)
+      (re-search-backward zephir-beginning-of-defun-regexp nil 'noerror)
       (setq arg (1- arg)))
     (while (< arg 0)
       (end-of-line 1)
@@ -328,7 +325,7 @@ Implements Zephir version of `beginning-of-defun-function'."
         (forward-list 2)
         (forward-line 1)
         (if (eq opoint (point))
-            (re-search-forward regexp nil 'noerror))
+            (re-search-forward zephir-beginning-of-defun-regexp nil 'noerror))
         (setq arg (1+ arg))))))
 
 (defun zephir-end-of-defun (&optional arg)
@@ -359,8 +356,6 @@ see `zephir-beginning-of-defun'."
     ;; Set up block and line oriented comments
     (modify-syntax-entry ?/   ". 124b" table)
     (modify-syntax-entry ?*   ". 23"   table)
-    ;; The dollar sign is an expression prefix for variables
-    (modify-syntax-entry ?$   "'"      table)
     ;; The parenthesis, braces and brackets
     (modify-syntax-entry ?\(  "()"     table)
     (modify-syntax-entry ?\)  ")("     table)
@@ -415,9 +410,6 @@ the comment syntax tokens handle both line style \"//\" and block style
     ;; Booleans
     (,(zephir-rx (group bool-const))
      1 font-lock-constant-face)
-    ;; Constants
-    (,(zephir-rx (group constant))
-     1 font-lock-constant-face)
     ;; null
     (,(rx (group symbol-start "null" symbol-end))
      1 font-lock-constant-face)
@@ -436,7 +428,10 @@ the comment syntax tokens handle both line style \"//\" and block style
     (,(zephir-rx (not (any ?_))
                  (group primitives)
                  (not (any ?_)))
-     1 font-lock-type-face))
+     1 font-lock-type-face)
+    ;; Constants
+    (,(zephir-rx (group constant))
+     1 font-lock-constant-face))
   "Font lock keywords for Zephir Mode.")
 
 
