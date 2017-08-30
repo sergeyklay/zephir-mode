@@ -181,7 +181,6 @@ matching the opening character."
                    (looking-at-p re-open-str)))
         opoint))))
 
-
 
 ;;; Specialized rx
 
