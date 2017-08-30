@@ -4,7 +4,7 @@
 
 ;; Author: Serghei Iakovlev (serghei@phalconphp.com)
 ;; Maintainer: Serghei Iakovlev
-;; Version: 0.3.4
+;; Version: 0.4.0
 ;; URL: https://github.com/sergeyklay/zephir-mode
 
 ;; This file is not part of GNU Emacs.
@@ -34,6 +34,9 @@
 
 ;; Make sure the exact Emacs version can be found in the build output
 (message "Running tests on Emacs %s" emacs-version)
+
+(when (require 'undercover nil t)
+  (undercover "zephir-mode.el"))
 
 (let* ((current-file (if load-in-progress load-file-name (buffer-file-name)))
        (source-directory (locate-dominating-file current-file "Cask"))

@@ -1,4 +1,5 @@
-;; -*- mode: Emacs-Lisp -*-
+;; -*- mode: emacs-lisp -*-
+
 (source gnu)
 (source melpa)
 
@@ -7,4 +8,5 @@
 
 (development
  (depends-on "f")
- (depends-on "ert-runner"))
+ (depends-on "ert-runner")
+ (depends-on "undercover"))

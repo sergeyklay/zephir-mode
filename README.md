@@ -2,14 +2,12 @@
 
 [![Licence](https://img.shields.io/badge/license-GPL_3-green.svg)](https://www.gnu.org/licenses/gpl-3.0.txt)
 [![Travis CI](https://travis-ci.org/sergeyklay/zephir-mode.svg?branch=master)](https://travis-ci.org/sergeyklay/zephir-mode)
+[![Coverage Status](https://coveralls.io/repos/github/sergeyklay/zephir-mode/badge.svg?branch=master)](https://coveralls.io/github/sergeyklay/zephir-mode?branch=master)
 [![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)](https://melpa.org/#/zephir-mode)
 [![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)](https://stable.melpa.org/#/zephir-mode)
 
 A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
 Provides font-locking, indentation, alignment and navigation support.
-
-It developed as an extension of C mode; thus it inherits all C mode's
-navigation functionality.  But it colors according to the Zephir grammar.
 
 Zephir -- is a high level language that eases the creation and
 maintainability of extensions for PHP.  Zephir extensions are
@@ -120,26 +118,17 @@ setting up see [MELPA Getting Started][getting-started].
 
 ### Interactive Commands
 
-| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
-| --- | --- |
-| `zephir-mode` | Switches to Zephir Mode. |
-| `zephir-mode-version` | Print version info for Zephir Mode. |
-| `zephir-mode-open-github` | Go to the Zephir Mode GitHub page. |
-| `zephir-open-website-home` | Go to the Zephir website. |
-| `zephir-current-class` | Insert current class name if cursor in class context. |
-| `zephir-current-namespace` | Insert current namespace if cursor in namespace context. |
-
-This mode inherit `c-beginning-of-defun` and `c-end-of-defun` from CC Mode but
-it have two replacement functions specifically for Zephir.  Zephir Mode remap
-the commands themselves and not their default key-bindings so that
-zephir-specific versions will work even if the user has reconfigured their keys,
-e.g. if they rebind `c-end-of-defun` to something other than
-<kbd>C-M-e</kbd> .
-
-| Command (For the <kbd>M-x</kbd> prompt.)            | Description |
-| --- | --- |
-| `zephir-beginning-of-defun` | Move to the beginning of the current or next function. |
-| `zephir-end-of-defun` | Move to the end of the current or next function. |
+| Command (For the <kbd>M-x</kbd> prompt.) | Description                                              |
+| ---                                      | ---                                                      |
+| `zephir-mode`                            | Switches to Zephir Mode.                                 |
+| `zephir-mode-version`                    | Print version info for Zephir Mode.                      |
+| `zephir-open-mode-github`                | Go to the Zephir Mode GitHub Page.                       |
+| `zephir-open-zephir-github`              | Go to the Zephir GitHub Page.                            |
+| `zephir-open-website-home`               | Go to the Zephir Website.                                |
+| `zephir-current-class`                   | Insert current class name if cursor in class context.    |
+| `zephir-current-namespace`               | Insert current namespace if cursor in namespace context. |
+| `zephir-beginning-of-defun`              | Move to the beginning of the current or next function.   |
+| `zephir-end-of-defun`                    | Move to the end of the current or next function.         |
 
 Any file that matches the glob `*.zep` is automatically opened in `zephir-mode`.
 

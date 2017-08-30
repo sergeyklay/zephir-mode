@@ -7,14 +7,26 @@ to [Semantic Versioning][semver] .
 
 ## [Unreleased]
 ### Added
-- Amended `c-primitive-type-kwds` (`uchar`, `ulong`, etc)
-- Amended `c-protection-kwds` (`internal`)
+- Added `zephir-indent-tabs-mode` user variable to setup indentation
+- Added `zephir-open-zephir-github` function
+- Amended syntax table (parenthesis, braces and brackets)
+
+### Changed
+- Now Zephir Mode derived from `prog-mode` instead of `cc-mode`
+- Reanmed `zephir-mode-open-github` function to `zephir-open-mode-github`
+
+### Fixed
+- Fixed movement to the beginning or end of the current block
+
+### Removed
+- Romoved no longer used cusom `zephir-faces` group
+- Removed dollar sign as an expression prefix for variables
 
 ## [0.3.3] - 2017-08-07
 ### Changed
-- Use lexical binding for zephir-mode.
+- Use lexical binding for zephir-mode
   Refs: [EmacWiki][emacswiki-binding], [Yoo Box][yoobox-binding], [Emacs Stack Exchange][emacs-stack-exchange]
-- Changed the minimal Emacs version to 24.3
+- Raised minimum Emacs support to 24.3
 
 ## [0.3.2] - 2017-08-06
 ### Removed
