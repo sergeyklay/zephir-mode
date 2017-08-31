@@ -275,6 +275,32 @@ qwerty"
    (should (eq (zephir-test-face-at 9) 'font-lock-type-face))
    (should-not (zephir-test-face-at 10))))
 
+(ert-deftest zephir-mode-syntax-table/fontify-import/3 ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "use \\Supper\\Base;"
+   (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
+   (should (eq (zephir-test-face-at 3) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 4))
+   (should (eq (zephir-test-face-at 5) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 6) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 12) 'font-lock-type-face))
+   (should-not (zephir-test-face-at 17))))
+
+(ert-deftest zephir-mode-syntax-table/fontify-import/4 ()
+  :tags '(fontification syntax-table)
+  (zephir-test-with-temp-buffer
+   "use Supper\\Base as Super;"
+   (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
+   (should (eq (zephir-test-face-at 3) 'font-lock-keyword-face))
+   (should-not (zephir-test-face-at 4))
+   (should (eq (zephir-test-face-at 5) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 6) 'font-lock-type-face))
+   (should (eq (zephir-test-face-at 12) 'font-lock-type-face))
+   (should-not (zephir-test-face-at 16))
+   (should (eq (zephir-test-face-at 21) 'font-lock-type-face))
+   (should-not (zephir-test-face-at 26))))
+
 (ert-deftest zephir-mode-syntax-table/fontify-namespaces-and-classes ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
