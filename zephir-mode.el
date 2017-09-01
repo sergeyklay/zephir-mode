@@ -214,16 +214,17 @@ matching the opening character."
       (fn-decl . ,(rx symbol-start
                       "function"
                       symbol-end))
-      ;; Namespace name.
-      (ns-name . ,(rx symbol-start
-                      (optional ?$)
-                      (any "A-Z" "a-z" ?_)
-                      (+ (any "A-Z" "a-z" "0-9" ?_))
-                      (zero-or-more
-                       (and "\\"
-                            (any "A-Z" "a-z" ?_)
-                            (+ (any "A-Z" "a-z" "0-9" ?_))))
-                      symbol-end))
+      ;; Namespace, class or interface name.
+      (classlike . ,(rx (optional "\\")
+                        symbol-start
+                        (optional ?$)
+                        (any "A-Z" "a-z" ?_)
+                        (+ (any "A-Z" "a-z" "0-9" ?_))
+                        (zero-or-more
+                         (and "\\"
+                              (any "A-Z" "a-z" ?_)
+                              (+ (any "A-Z" "a-z" "0-9" ?_))))
+                        symbol-end))
       ;; Visibility modifier
       (visibility . ,(rx (or "public"
                              "protected"
@@ -268,8 +269,8 @@ are available:
 `fn-decl'
      A function declaraion.
 
-`ns-name'
-     A valid namespace name.
+`classlike'
+     A valid namespace, class or interface name with leading \.
 
 `visibility'
      Any valid visibility modifier.
@@ -389,19 +390,17 @@ the comment syntax tokens handle both line style \"//\" and block style
     (,(zephir-rx line-start
                  (or "namespace" "interface")
                  (+ (syntax whitespace))
-                 (group ns-name))
+                 (group classlike))
      1 font-lock-type-face)
     ;; use Foo
     (,(zephir-rx line-start
                  (group symbol-start "use" symbol-end)
                  (+ (syntax whitespace))
-                 (group (optional "\\")
-                        (optional ?$)
-                        ns-name))
+                 (group classlike))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
     ;; Highlight class name after "use .. as"
-    (,(zephir-rx ns-name
+    (,(zephir-rx classlike
                  (+ (syntax whitespace))
                  (group symbol-start "as" symbol-end)
                  (+ (syntax whitespace))
