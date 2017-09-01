@@ -386,20 +386,16 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (group identifier))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
-    ;; Namespace/Interface name
+    ;; "namespace Foo", "interface Foo" or "use Foo"
     (,(zephir-rx line-start
-                 (or "namespace" "interface")
-                 (+ (syntax whitespace))
-                 (group classlike))
-     1 font-lock-type-face)
-    ;; use Foo
-    (,(zephir-rx line-start
-                 (group symbol-start "use" symbol-end)
+                 (group symbol-start
+                        (or "namespace" "interface" "use")
+                        symbol-end)
                  (+ (syntax whitespace))
                  (group classlike))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
-    ;; Highlight class name after "use .. as"
+    ;; Highlight class name after "use ... as"
     (,(zephir-rx classlike
                  (+ (syntax whitespace))
                  (group symbol-start "as" symbol-end)
