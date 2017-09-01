@@ -195,7 +195,11 @@ matching the opening character."
                          symbol-end))
       ;; Builtin declaraion.
       (builtin-decl . ,(rx symbol-start
-                          (or "class" "interface" "namespace")
+                           (or "class"
+                               "interface"
+                               "namespace"
+                               "abstract"
+                               "final")
                           symbol-end))
       ;; Predefined boolean constants
       (bool-const . ,(rx symbol-start
@@ -220,11 +224,6 @@ matching the opening character."
                             (any "A-Z" "a-z" ?_)
                             (+ (any "A-Z" "a-z" "0-9" ?_))))
                       symbol-end))
-      ;; Abstraction  modifier.
-      ;; Class or method may be declared as abstract or final.
-      (abstraction . ,(rx symbol-start
-                          (or "abstract" "final")
-                          symbol-end))
       ;; Visibility modifier
       (visibility . ,(rx (or "public"
                              "protected"
@@ -272,9 +271,6 @@ are available:
 `ns-name'
      A valid namespace name.
 
-`abstraction'
-     Any valid abstraction modifier.
-
 `visibility'
      Any valid visibility modifier.
 
@@ -297,7 +293,10 @@ See `rx' documentation for more information about REGEXPS param."
   (zephir-rx line-start
              (zero-or-more (syntax whitespace))
              (optional "deprecated" (+ (syntax whitespace)))
-             (optional abstraction (+ (syntax whitespace)))
+             (optional symbol-start
+                       (or "abstract" "final")
+                       symbol-end
+                       (+ (syntax whitespace)))
              (optional visibility (+ (syntax whitespace))
                        (optional "static" (+ (syntax whitespace))))
              (group fn-decl)
@@ -373,19 +372,22 @@ the comment syntax tokens handle both line style \"//\" and block style
   `(
     ;; Builtin declaration.
     (,(zephir-rx (and line-start
-                      (group (or builtin-decl))))
+                      (group builtin-decl)))
      1 font-lock-keyword-face)
     ;; Class decclaration.
     ;; Class has its own font lock because it may have "abstract" or "final"
-    (,(zephir-rx (and line-start
-                      (group abstraction)
-                      (+ (syntax whitespace))
-                      (group symbol-start "class" symbol-end)))
-     (1 font-lock-preprocessor-face)
-     (2 font-lock-keyword-face))
-    ;; Namespace name
+    (,(zephir-rx (optional symbol-start
+                           (or "abstract" "final")
+                           symbol-end
+                           (+ (syntax whitespace)))
+                 (group symbol-start "class" symbol-end)
+                 (+ (syntax whitespace))
+                 (group identifier))
+     (1 font-lock-keyword-face)
+     (2 font-lock-type-face))
+    ;; Namespace/Interface name
     (,(zephir-rx line-start
-                 "namespace"
+                 (or "namespace" "interface")
                  (+ (syntax whitespace))
                  (group ns-name))
      1 font-lock-type-face)
