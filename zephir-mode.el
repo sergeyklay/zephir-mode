@@ -223,11 +223,10 @@ matching the opening character."
                       "function"
                       symbol-end))
       ;; Namespace, class or interface name.
-      (classlike . ,(rx (optional "\\")
-                        symbol-start
+      (classlike . ,(rx symbol-start
                         (optional ?$)
                         (any "A-Z" "a-z" ?_)
-                        (+ (any "A-Z" "a-z" "0-9" ?_))
+                        (zero-or-more (any "A-Z" "a-z" "0-9" ?_))
                         (zero-or-more
                          (and "\\"
                               (any "A-Z" "a-z" ?_)
@@ -278,7 +277,7 @@ are available:
      A function declaraion.
 
 `classlike'
-     A valid namespace, class or interface name with leading \.
+     A valid namespace, class or interface name without leading \.
 
 `visibility'
      Any valid visibility modifier.
@@ -400,11 +399,12 @@ the comment syntax tokens handle both line style \"//\" and block style
                         (or "namespace" "interface" "use")
                         symbol-end)
                  (+ (syntax whitespace))
-                 (group classlike))
+                 (group (optional "\\") classlike))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
     ;; Highlight class name after "use ... as"
-    (,(zephir-rx classlike
+    (,(zephir-rx (optional "\\")
+                 classlike
                  (+ (syntax whitespace))
                  (group symbol-start "as" symbol-end)
                  (+ (syntax whitespace))
