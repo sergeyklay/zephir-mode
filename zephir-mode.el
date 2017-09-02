@@ -411,6 +411,16 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (group identifier))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
+    ;; Highlight extends
+    (,(zephir-rx classlike
+                 (+ (syntax whitespace))
+                 (group symbol-start "extends" symbol-end)
+                 (+ (syntax whitespace))
+                 (group classlike)
+                 (optional (+ (syntax whitespace)))
+                 (or ";" (group (or "implements" "as"))))
+     (1 font-lock-keyword-face)
+     (2 font-lock-type-face))
     ;; Booleans
     (,(zephir-rx (group bool-const))
      1 font-lock-constant-face)
