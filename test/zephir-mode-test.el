@@ -304,7 +304,7 @@ qwerty"
 (ert-deftest zephir-mode-syntax-table/fontify-extends/1 ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
-   "class A extends B;"
+   "class A extends B {};"
    (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
    (should-not (zephir-test-face-at 6))
    (should (eq (zephir-test-face-at 7) 'font-lock-type-face))
@@ -317,7 +317,7 @@ qwerty"
 (ert-deftest zephir-mode-syntax-table/fontify-extends/2 ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
-   "class $Abc\\Cde extends Super implements Aaa;"
+   "class $Abc\\Cde extends Super implements Aaa {};"
    (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
    (should-not (zephir-test-face-at 6))
    (should (eq (zephir-test-face-at 7) 'font-lock-type-face))
@@ -328,7 +328,7 @@ qwerty"
 (ert-deftest zephir-mode-syntax-table/fontify-extends/3 ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
-   "class A extends B as C;"
+   "class A extends B as C {};"
    (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
    (should-not (zephir-test-face-at 6))
    (should (eq (zephir-test-face-at 7) 'font-lock-type-face))

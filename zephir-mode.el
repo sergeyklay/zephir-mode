@@ -200,18 +200,14 @@ matching the opening character."
                                "final")
                           symbol-end))
       ;; Predefined boolean constants
-      (bool-const . ,(rx symbol-start
-                      (or "true" "false")
-                      symbol-end))
+      (bool-const . ,(rx symbol-start (or "true" "false") symbol-end))
       ;; Constants
       (constant . ,(rx symbol-start
                        (any "A-Z" ?_)
                        (+ (any "A-Z" "0-9" ?_))
                        symbol-end))
       ;; Function declaraion.
-      (fn-decl . ,(rx symbol-start
-                      "function"
-                      symbol-end))
+      (fn-decl . ,(rx symbol-start "function" symbol-end))
       ;; Namespace, class or interface name.
       (classlike . ,(rx symbol-start
                         (optional ?$)
@@ -408,7 +404,7 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (+ (syntax whitespace))
                  (group classlike)
                  (optional (+ (syntax whitespace)))
-                 (or ";" (group (or "implements" "as"))))
+                 (or ";" "{" (group (or "implements" "as"))))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
     ;; Booleans
