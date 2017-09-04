@@ -404,7 +404,7 @@ the comment syntax tokens handle both line style \"//\" and block style
                  (+ (syntax whitespace))
                  (group classlike)
                  (optional (+ (syntax whitespace)))
-                 (or ?{ (group (or "implements" "as"))))
+                 (or ?{ "implements"))
      (1 font-lock-keyword-face)
      (2 font-lock-type-face))
     ;; Booleans

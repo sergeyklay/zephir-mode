@@ -325,23 +325,6 @@ qwerty"
    (should (eq (zephir-test-face-at 16) 'font-lock-keyword-face))
    (should-not (zephir-test-face-at 23))))
 
-(ert-deftest zephir-mode-syntax-table/fontify-extends/3 ()
-  :tags '(fontification syntax-table)
-  (zephir-test-with-temp-buffer
-   "class A extends B as C {};"
-   (should (eq (zephir-test-face-at 1) 'font-lock-keyword-face))
-   (should-not (zephir-test-face-at 6))
-   (should (eq (zephir-test-face-at 7) 'font-lock-type-face))
-   (should-not (zephir-test-face-at 8))
-   (should (eq (zephir-test-face-at 9) 'font-lock-keyword-face))
-   (should-not (zephir-test-face-at 16))
-   (should (eq (zephir-test-face-at 17) 'font-lock-type-face))
-   (should-not (zephir-test-face-at 18))
-   (should (eq (zephir-test-face-at 19) 'font-lock-keyword-face))
-   (should-not (zephir-test-face-at 21))
-   (should (eq (zephir-test-face-at 22) 'font-lock-type-face))
-   (should-not (zephir-test-face-at 23))))
-
 (ert-deftest zephir-mode-syntax-table/fontify-namespaces-and-classes ()
   :tags '(fontification syntax-table)
   (zephir-test-with-temp-buffer
