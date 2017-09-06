@@ -186,7 +186,8 @@ Zephir Mode is open source software licensed under the
 [emacs]: https://www.gnu.org/software/emacs/
 [zephir]: https://zephir-lang.com
 [derived-mode]: http://cc-mode.sourceforge.net/derived-mode-ex.el
-[changelog]: ./CHANGELOG.md
+[changelog]: ./CHANGELOG.mds
 [issues]: https://github.com/sergeyklay/zephir-mode/issues
 [forum]: https://forum.zephir-lang.com
 [language]: https://zephir-lang.com
+[license]: https://github.com/sergeyklay/zephir-mode/blob/master/LICENSE
