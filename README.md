@@ -19,6 +19,7 @@ PHP language. For more information see https://zephir-lang.com .
 - [Installation](#installation)
   - [Using `use-package`](#using-use-package)
   - [Using MELPA](#using-melpa)
+     - [Using Cask](#using-cask)
   - [Manual Install](#manual-install)
      - [Spacemacs Users](#spacemacs-users)
 - [Usage](#usage)
@@ -74,6 +75,9 @@ MELPA Stable:
 (package-initialize)
 ```
 
+Or manually from MELPA with <kbd>M-x</kbd> `package-refresh-contents` and
+<kbd>M-x</kbd> `package-install` <kbd>RET</kbd> `zephir-mode` .
+
 For those who want rolling releases as they happen use MELPA:
 
 ```elisp
@@ -87,6 +91,16 @@ and then use <kbd>M-x</kbd> `package-list-packages` to get to the
 package listing and install from there. MELPA tracks this Git repository and
 updates relatively soon after each commit or formal release. For more detail on
 setting up see [MELPA Getting Started][getting-started].
+
+#### Using Cask
+
+Add following to your [Cask](http://cask.github.io/) file:
+
+```elisp
+(source melpa)
+
+(depends-on "zephir-mode")
+```
 
 ### Manual Install
 
