@@ -17,6 +17,7 @@ PHP language. For more information see https://zephir-lang.com .
 
 - [Features](#features)
 - [Installation](#installation)
+  - [Using `use-package`](#using-use-package)
   - [Using MELPA](#using-melpa)
   - [Manual Install](#manual-install)
      - [Spacemacs Users](#spacemacs-users)
@@ -48,6 +49,16 @@ https://github.com/sergeyklay/zephir-mode .
 **NOTE**: The `master` branch will always contain the latest **unstable**
 version. If you wish to check older versions or formal, tagged release, please
 switch to the relevant [tag][tags].
+
+### Using [`use-package`](https://github.com/jwiegley/use-package)
+
+Add following to your init file:
+
+```elisp
+(use-package zephir-mode
+  :ensure t
+  :defer t)
+```
 
 ### Using MELPA
 
