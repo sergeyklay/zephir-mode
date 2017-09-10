@@ -1,4 +1,4 @@
-;;; zephir-mode-test.el --- Zephir Mode: Unit test suite -*- lexical-binding: t; -*-
+;;; zephir-mode-moving-test.el --- Zephir Mode: Tests for moving cursor functions -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Serghei Iakovlev
 
@@ -56,7 +56,7 @@ POS"
     (aref zephir-test-syntax-classes code)))
 
 
-;;;; Navigation
+;;;; Moving
 
 (ert-deftest zephir-mode/beginning-of-defun/1 ()
   :tags '(moving)
@@ -135,8 +135,6 @@ POS"
    (should (equal beginning-of-defun-function #'zephir-beginning-of-defun))
    (should (equal end-of-defun-function #'zephir-end-of-defun))))
 
-;; Local Variables:
-;; indent-tabs-mode: nil
-;; End:
+(provide 'zephir-mode-moving-test)
 
-;;; zephir-mode-test.el ends here
+;;; zephir-mode-helper-test.el ends here
