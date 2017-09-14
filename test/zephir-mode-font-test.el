@@ -33,8 +33,6 @@
 
 ;;; Code:
 
-(require 'test-helper)
-
 
 ;;;; Utilities
 
