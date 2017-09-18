@@ -78,7 +78,7 @@ checkdoc:
 build: $(OBJS)
 
 .PHONY: test
-test: build
+test:
 	$(CASK) exec ert-runner $(TESTFLAGS)
 
 .PHONY: clean
