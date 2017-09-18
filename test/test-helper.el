@@ -96,8 +96,6 @@
   (defun ert-runner/run-tests-batch-and-exit (selector)
     (ert-run-tests-interactively selector)))
 
-(provide 'test-helper)
-
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; End:
