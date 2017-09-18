@@ -29,11 +29,11 @@ cache:
   apt: true
   timeout: 604800
   directories:
-      - "$HOME/emacs"
-      # Cache Zephir Mode dependencies
-      - ".cask/"
-      # Cache Cask bootstrap dependencies
-      - "$HOME/.emacs.d/.cask"
+    - "$HOME/emacs"
+    # Cache Zephir Mode dependencies
+    - ".cask/"
+    # Cache Cask bootstrap dependencies
+    - "$HOME/.emacs.d/.cask"
 
 # Allow Emacs snapshot builds to fail and don't wait for it
 matrix:

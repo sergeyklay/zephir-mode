@@ -4,7 +4,8 @@
 (source melpa)
 
 (package-file "zephir-mode.el")
-(files "zephir-mode.el")
+
+(files "*.el")
 
 (development
  (depends-on "f")

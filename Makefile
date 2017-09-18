@@ -60,7 +60,6 @@ endif
 
 $(PKGDIR): Cask
 	$(CASK) install
-	$(CASK) update
 	touch $(PKGDIR)
 
 # Public targets
