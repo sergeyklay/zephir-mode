@@ -301,7 +301,7 @@ See `rx' documentation for more information about REGEXPS param."
   "Regular expression for a Zephir function.")
 
 (defun zephir-beginning-of-defun (&optional arg)
-  "Move the beginning of the ARGth PHP function from point.
+  "Move the beginning of the ARGth Zephir function from point.
 
 Implements Zephir version of `beginning-of-defun-function'."
   (interactive "p")
