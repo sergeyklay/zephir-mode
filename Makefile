@@ -45,14 +45,12 @@ EMACSBATCH = $(EMACS) -Q --batch -L . $(EMACSFLAGS)
 RUNEMACS =
 
 # Program availability
-ifdef CASK
-RUNEMACS = $(CASK) exec $(EMACSBATCH)
 HAVE_CASK := $(shell sh -c "command -v $(CASK)")
 ifndef HAVE_CASK
 $(warning "$(CASK) is not available.  Please run make help")
-endif
-else
 RUNEMACS = $(EMACSBATCH)
+else
+RUNEMACS = $(CASK) exec $(EMACSBATCH)
 endif
 
 %.elc: %.el $(PKGDIR)
@@ -74,7 +72,7 @@ init: $(PKGDIR)
 
 .PHONY: checkdoc
 checkdoc:
-	$(RUNEMACS) --eval '(checkdoc-file "$(SRCS)")'
+	$(EMACSBATCH) --eval '(checkdoc-file "$(SRCS)")'
 
 .PHONY: build
 build: $(OBJS)
