@@ -6,6 +6,9 @@
 [![MELPA](https://melpa.org/packages/zephir-mode-badge.svg)](https://melpa.org/#/zephir-mode)
 [![MELPA Stable](https://stable.melpa.org/packages/zephir-mode-badge.svg)](https://stable.melpa.org/#/zephir-mode)
 
+##### This repository is archived in favor of https://github.com/zephir-lang/zephir-mode
+
+
 A [GNU Emacs][emacs] major mode for editing [Zephir][zephir] code.
 Provides font-locking, indentation, alignment and navigation support.
 
